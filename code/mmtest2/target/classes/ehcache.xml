@@ -1,0 +1,22 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ehcache.xsd">
+    <!-- <diskStore path="c:\\mdcp_temp" />-->
+    <cacheManagerEventListenerFactory class="" properties="" />
+
+    <defaultCache
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="600"
+        overflowToDisk="false"
+    />
+
+    <cache
+        name="configCache"
+        maxElementsInMemory="1000"
+        maxElementsOnDisk="1000"
+        eternal="false"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="1000"
+        overflowToDisk="false"
+    />
+
+</ehcache>
