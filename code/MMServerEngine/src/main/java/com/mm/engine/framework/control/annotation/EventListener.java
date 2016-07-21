@@ -1,0 +1,22 @@
+package com.mm.engine.framework.control.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Created by Administrator on 2015/11/16.
+ * 需要监听一个事件的函数添加此注释，并将event参数定义为需要监听的事件
+ * 要求，监听事件接收一个参数EventData
+ *
+ * 每个event可以有多个处理方法，分布在多个Service中
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface EventListener {
+    /**
+     * event,
+     * **/
+    short event();
+}
