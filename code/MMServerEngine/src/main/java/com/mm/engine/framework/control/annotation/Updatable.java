@@ -1,7 +1,5 @@
 package com.mm.engine.framework.control.annotation;
 
-import com.mm.engine.framework.server.Server;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,6 +12,8 @@ import java.lang.annotation.Target;
  * Updatable分为同步和异步
  *
  * 对应的方法存在一个参数。实际的更新时间间隔
+ *
+ * 后面可以改成job和cronExpression？？
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -31,6 +31,7 @@ public @interface Updatable {
     /**
      * interval,更新周期，毫秒计
      * 异步更新时有效
+     * 这个可以用定义系统参数的方式，就可以不写死了
      * **/
     int cycle() default -1;
 }

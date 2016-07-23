@@ -1,10 +1,9 @@
-# MMServerEngine
 MMServerEngine是一个游戏服务端引擎。
-#目标：
+目标：
 1、灵活的框架结构，即可以灵活的选择服务实现方式，如通信协议，缓存等
 2、注解驱动，较少的写配置文件
 3、异步更新数据库，使框架可以支持实时性较强的游戏
-# 具体
+
 一、层次结构
 通信层：接收不同的通信方式的数据，包括tcp，http，udp，webSocket，并通过对应的解码器，将数据加工成统一的对象，NetPacket
 -控制层：接收NetPacket并交给其访问的控制器处理，包括通信协议的解码。（控制器：添加注解@Controller，实现接口EntranceController）

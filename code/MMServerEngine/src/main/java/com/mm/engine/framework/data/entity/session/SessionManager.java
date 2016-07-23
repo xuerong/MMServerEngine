@@ -85,7 +85,7 @@ public final class SessionManager {
         return session;
     }
 
-    // 这个地方如何赋值？
+    // 这个地方如何赋值？可以取final值，所以可以从配置文件中取
     @Updatable(isAsynchronous = true,cycle = 200000)
     public void update(int interval){
         long currentTime=System.currentTimeMillis();

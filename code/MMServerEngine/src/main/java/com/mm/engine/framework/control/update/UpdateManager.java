@@ -27,14 +27,20 @@ public class UpdateManager {
     private static List<UpdatableBean> syncUpdatableList=new ArrayList<>();
 
     private static final int syncUpdateInterval;
+    // 线程数量可以是处理器数量*2+1：Runtime.getRuntime().availableProcessors()
+    // 线程池这里最好也重写，给线程命名标记
     private static ScheduledExecutorService asyncExecutor = new ScheduledThreadPoolExecutor(6, new RejectedExecutionHandler() {
         @Override
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
             // 拒绝执行处理
-        }
-    });
-    private static ScheduledExecutorService syncExecutor=Executors.newSingleThreadScheduledExecutor();
 
+        }
+    }){
+        protected void afterExecute(Runnable r, Throwable t) {
+            // 执行后处理，注意异常的处理
+        }
+    };
+    private static ScheduledExecutorService syncExecutor=Executors.newSingleThreadScheduledExecutor();
 
     static {
         Map<Class<?>,List<Method>> updatableClassMap= ServiceHelper.getUpdatableClassMap();
@@ -103,7 +109,7 @@ public class UpdateManager {
             this.isAsynchronous=isAsynchronous;
             this.interval=interval;
         }
-
+        // 这里必须捕获异常，防止阻塞其它更新器
         private void execute(){
             try {
                 long currentTime=System.nanoTime();
