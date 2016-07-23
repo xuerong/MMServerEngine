@@ -1,5 +1,5 @@
 # MMServerEngine
-MMServerEngine是一个游戏服务端引擎。   
+MMServerEngine是一个游戏服务端引擎。还没有完成   
 #目标：
 * 灵活的框架结构，即可以灵活的选择服务实现方式，如通信协议，缓存等
 * 注解驱动，较少的写配置文件
