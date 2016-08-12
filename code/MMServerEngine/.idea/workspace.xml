@@ -86,8 +86,8 @@
       <file leaf-file-name="ThreadLocalTxCache.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/ThreadLocalTxCache.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="64" column="9" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
+            <state relative-caret-position="89">
+              <caret line="63" column="56" selection-start-line="63" selection-start-column="56" selection-end-line="63" selection-end-column="56" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1985,12 +1985,12 @@
       <workItem from="1470793289137" duration="16915000" />
       <workItem from="1470881244171" duration="8153000" />
       <workItem from="1470967505425" duration="23286000" />
-      <workItem from="1471014103257" duration="1523000" />
+      <workItem from="1471014103257" duration="1798000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="380897000" />
+    <option name="totallyTimeSpent" value="381172000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-48" y="22" width="1936" height="735" extended-state="0" />
@@ -2393,8 +2393,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/ThreadLocalTxCache.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="64" column="9" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
+        <state relative-caret-position="89">
+          <caret line="63" column="56" selection-start-line="63" selection-start-column="56" selection-end-line="63" selection-end-column="56" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
