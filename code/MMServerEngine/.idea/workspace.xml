@@ -86,8 +86,8 @@
       <file leaf-file-name="ThreadLocalTxCache.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/ThreadLocalTxCache.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-571">
-              <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+            <state relative-caret-position="344">
+              <caret line="80" column="20" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -249,7 +249,7 @@
     <option name="jreName" value="1.7" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-2" />
+    <option name="x" value="-48" />
     <option name="y" value="22" />
     <option name="width" value="1936" />
     <option name="height" value="735" />
@@ -1985,15 +1985,15 @@
       <workItem from="1470793289137" duration="16915000" />
       <workItem from="1470881244171" duration="8153000" />
       <workItem from="1470967505425" duration="23286000" />
-      <workItem from="1471014103257" duration="996000" />
+      <workItem from="1471014103257" duration="1022000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="380370000" />
+    <option name="totallyTimeSpent" value="380396000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="22" width="1936" height="735" extended-state="0" />
+    <frame x="-48" y="22" width="1936" height="735" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2291,7 +2291,7 @@
         <state relative-caret-position="0">
           <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2393,8 +2393,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/ThreadLocalTxCache.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-571">
-          <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+        <state relative-caret-position="344">
+          <caret line="80" column="20" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
