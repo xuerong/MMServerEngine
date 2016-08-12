@@ -4,6 +4,7 @@ import com.mm.engine.framework.entrance.code.protocol.RetPacket;
 import com.mm.engine.framework.entrance.code.protocol.RetPacketImpl;
 import com.mm.engine.framework.control.annotation.EventListener;
 import com.mm.engine.framework.control.annotation.Request;
+import com.mm.engine.framework.control.annotation.Updatable;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.event.EventManager;
 import com.mm.engine.framework.control.event.EventData;
@@ -66,8 +67,8 @@ public class TestService {
     public void eventListener3(EventData eventData){
         System.out.println("eventListener2 eventData:"+eventData.getEvent());
     }
-//    @Updatable(isAsynchronous = false)
-//    public void testUpdateSync1(int interval){
+    @Updatable(isAsynchronous = false)
+    public void testUpdateSync1(int interval){
 //        System.out.println("testUpdateSync1"+interval);
-//    }
+    }
 }

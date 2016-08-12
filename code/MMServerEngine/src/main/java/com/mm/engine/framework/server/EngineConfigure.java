@@ -1,14 +1,18 @@
 package com.mm.engine.framework.server;
 
 import com.mm.engine.framework.data.cache.CacheCenter;
+import com.mm.engine.framework.entrance.Entrance;
 import com.mm.engine.framework.entrance.code.net.http.HttpDecoder;
 import com.mm.engine.framework.entrance.code.net.http.HttpEncoder;
 import com.mm.engine.framework.data.persistence.dao.DataAccessor;
 import com.mm.engine.framework.data.persistence.ds.DataSourceFactory;
+import com.mm.engine.framework.entrance.http.EntranceJetty;
 import com.mm.engine.framework.tool.helper.ConfigHelper;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +25,9 @@ public final class EngineConfigure {
     private int sessionCycle = 1000;
     private int sessionSurvivalTime = 1000*60*10;
 
+    // 系统开启的网络入口
+    private final List<Entrance> entranceList = new ArrayList<Entrance>();
+
     public EngineConfigure(){
         // 初始化配置：从配置文件中读取
         configureBeans.put(HttpEncoder.class,getBeanFromConfigure("httpEncoder"));
@@ -30,6 +37,8 @@ public final class EngineConfigure {
         configureBeans.put(CacheCenter.class,getBeanFromConfigure("cacheCenter"));
 
         defaultRequestController="DefaultRequestController";
+
+        entranceList.add(new EntranceJetty("first",8080));
     }
     private Class<?> getBeanFromConfigure(String beanType){
         String classPath= ConfigHelper.getString(beanType);
@@ -70,5 +79,8 @@ public final class EngineConfigure {
     }
     public String getString(String key){
         return ConfigHelper.getString(key);
+    }
+    public List<Entrance> getEntranceList() {
+        return entranceList;
     }
 }

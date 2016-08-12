@@ -105,6 +105,11 @@
       <artifactId>tomcat-websocket-api</artifactId>
       <version>9.0.0.M1</version>
     </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.3.10.v20160621</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -117,8 +122,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>1.7</source>
+          <target>1.7</target>
         </configuration>
       </plugin>
       <!-- test -->
@@ -139,6 +144,7 @@
           <path>/${project.artifactId}}</path>
         </configuration>
       </plugin>
+
     </plugins>
   </build>
 </project>

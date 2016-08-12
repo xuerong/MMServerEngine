@@ -41,7 +41,7 @@ public final class EventManager {
             public boolean execute(short i, Set<Class<?>> classes) {
                 Set<EventListenerHandler> handlerSet=new HashSet<EventListenerHandler>();
                 for(Class<?> cls : classes){
-                    handlerSet.add(BeanHelper.getServiceBean(cls));
+                    handlerSet.add((EventListenerHandler)BeanHelper.getServiceBean(cls));
                 }
                 handlerMap.put(i,handlerSet);
                 return true;

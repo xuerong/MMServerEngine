@@ -25,8 +25,8 @@
         <module name="MMServerEngine" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="MMServerEngine" target="1.8" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="MMServerEngine" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

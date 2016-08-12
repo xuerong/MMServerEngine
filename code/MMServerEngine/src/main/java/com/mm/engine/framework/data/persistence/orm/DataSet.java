@@ -13,6 +13,8 @@ import java.util.Map;
 /**
  * 提供与实体相关的数据库操作
  *
+ * 持久层也要做成可插件性质的吗?
+ *
  * @author huangyong
  * @since 1.0
  */

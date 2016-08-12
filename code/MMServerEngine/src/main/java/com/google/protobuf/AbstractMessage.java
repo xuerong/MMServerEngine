@@ -471,7 +471,7 @@ public abstract class AbstractMessage extends AbstractMessageLite
                 rawBytes = null;
               }
             } else {
-              // Unknown extension number.  If we already saw data, put it
+              // Unknown extension number.  If we already saw data, insert it
               // in rawBytes.
               if (rawBytes != null) {
                 unknownFields.mergeField(typeId,

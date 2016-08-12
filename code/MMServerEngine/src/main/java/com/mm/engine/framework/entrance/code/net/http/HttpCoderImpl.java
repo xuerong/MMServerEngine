@@ -70,10 +70,10 @@ public class HttpCoderImpl implements HttpEncoder, HttpDecoder {
             headers.put(key,request.getHeader(key));
         }
 //        if(opcode!=-1) {
-//            headers.put("opcode", opcode);
+//            headers.insert("opcode", opcode);
 //        }
 //        if(!StringUtils.isEmpty(session)){
-//            headers.put("session",session);
+//            headers.insert("session",session);
 //        }
         return new NetPacketImpl(headers,buffer);
     }

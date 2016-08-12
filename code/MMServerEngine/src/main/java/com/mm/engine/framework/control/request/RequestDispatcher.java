@@ -18,7 +18,7 @@ public final class RequestDispatcher {
         requestHandlerClassMap.forEachEntry(new TIntObjectProcedure<Class<?>>(){
             @Override
             public boolean execute(int i, Class<?> aClass) {
-                handlerMap.put(i, BeanHelper.getServiceBean(aClass));
+                handlerMap.put(i, (RequestHandler)BeanHelper.getServiceBean(aClass));
                 return true;
             }
         });

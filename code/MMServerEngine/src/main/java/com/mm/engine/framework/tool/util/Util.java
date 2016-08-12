@@ -37,7 +37,7 @@ public final class Util {
                 ip = null;
             }
         }
-        // If the ip is still null, we put 0.0.0.0 to avoid null values
+        // If the ip is still null, we insert 0.0.0.0 to avoid null values
         if (ip == null) {
             ip = "0.0.0.0";
         }

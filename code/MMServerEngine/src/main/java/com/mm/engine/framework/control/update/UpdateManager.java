@@ -75,6 +75,7 @@ public class UpdateManager {
         for(UpdatableBean updatableBean : asyncUpdatableList){
             updatableBean.lastUpdateTime=System.nanoTime();
         }
+
         syncExecutor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {

@@ -57,7 +57,7 @@ public final class AopHelper {
      *  这里面存储的是该类的代理类，每个代理类并不一定是对所有的方法进行代理
      * 在前面赛选目标类和对应的代理类的时候，就要将对应的代理类是否代理该目标类中的所有方法标识出来，用来赛选方法
      * */
-    private static <T> T createProxyObject(Class<?> target,List<Proxy> proxyList){
+    private static <T> T createProxyObject(final Class<?> target,final List<Proxy> proxyList){
         Enhancer enhancer=new Enhancer();
         enhancer.setSuperclass(target);
         enhancer.setCallback(new MethodInterceptor() {

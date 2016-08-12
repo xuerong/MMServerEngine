@@ -5,6 +5,11 @@ package com.mm.engine.framework.exception;
  */
 public final class ExceptionHelper {
     public static void handle(ExceptionLevel level,String describe,java.lang.Exception e){
-        throw  new RuntimeException(e);
+        String log = "ExceptionLevel:"+level+",describe:"+describe;
+        if(e != null){
+            log+=e.getLocalizedMessage();
+        }
+
+        throw  new RuntimeException(log);
     }
 }

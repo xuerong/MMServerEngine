@@ -1,7 +1,5 @@
 package com.mm.engine.framework.data.entity;
 
-import com.mm.engine.framework.data.SynchronousLevel;
-import com.mm.engine.framework.data.cache.CacheEntity;
 import com.mm.engine.framework.data.entity.session.SessionClient;
 
 import java.util.Date;
@@ -9,7 +7,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2016/1/4.
  */
-public abstract class Player extends CacheEntity implements SessionClient {
+public abstract class Player implements SessionClient {
     //
     protected int id;
     protected String name="";
@@ -33,10 +31,6 @@ public abstract class Player extends CacheEntity implements SessionClient {
     protected String networkType; // 联网类型名称
     protected String prisonBreak; // 是否越狱(0:否 1:是)
     protected String operator; // 运营商名称
-
-    public Player() {
-        super(SynchronousLevel.NoSync);
-    }
 
     @Override
     public void destroySession() {

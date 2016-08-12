@@ -224,7 +224,7 @@ public final class Descriptors {
       // Building decsriptors involves two steps:  translating and linking.
       // In the translation step (implemented by FileDescriptor's
       // constructor), we build an object tree mirroring the
-      // FileDescriptorProto's tree and put all of the descriptors into the
+      // FileDescriptorProto's tree and insert all of the descriptors into the
       // DescriptorPool's lookup tables.  In the linking step, we look up all
       // type references in the DescriptorPool, so that, for example, a
       // FieldDescriptor for an embedded message contains a pointer directly

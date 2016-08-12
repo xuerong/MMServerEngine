@@ -5,7 +5,7 @@ import com.mm.engine.framework.data.persistence.orm.annotation.DBEntity;
 /**
  * Created by Administrator on 2015/11/26.
  */
-@DBEntity(tableName = "user")
+@DBEntity(tableName = "user",pks = {"id"})
 public class User {
     private int id;
     private String name;

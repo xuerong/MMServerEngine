@@ -1,51 +1,42 @@
 package com.mm.engine.framework.data.cache;
 
-import com.mm.engine.framework.data.Entity;
-import com.mm.engine.framework.data.SynchronousLevel;
-
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicLong;
-
 /**
- * Created by Administrator on 2015/11/24.
- * 可以缓存的对象都要继承自该抽象类
+ * Created by a on 2016/8/12.
+ *
+ * 对需要缓存的数据进行一下封装，然后缓存CacheEntity
+ * 这里面可以记录一些特殊的点
  */
-public abstract class CacheEntity implements Entity {
-    private SynchronousLevel synchronousLevel;
-    private AtomicLong version=new AtomicLong(0);
-    private long cacheId;
-    public CacheEntity(SynchronousLevel synchronousLevel){
-        this.synchronousLevel=synchronousLevel;
-        cacheId = CacheIdCreate.createId(getClass());
+public class CacheEntity {
+    private Object entity;
+    private CacheEntityState state;
+
+    public CacheEntity(){
+        this(null);
+    }
+    public CacheEntity(Object entity){
+        this.entity = entity;
+        this.state = CacheEntityState.Normal;
     }
 
-    public SynchronousLevel getSynchronousLevel() {
-        return synchronousLevel;
+    public Object getEntity() {
+        return entity;
     }
 
-    public AtomicLong getVersion() {
-        return version;
+    public void setEntity(Object entity) {
+        this.entity = entity;
     }
 
-    public long getCacheId() {
-        return cacheId;
+    public CacheEntityState getState() {
+        return state;
     }
-}
-class CacheIdCreate{
-    public static HashMap<Class<?>,AtomicLong> idMap = new HashMap<>();
 
-    public static long createId(Class<?> cls){
-        AtomicLong idA = idMap.get(cls);
-        if(idA==null){
-            synchronized (idMap){
-                if(!idMap.containsKey(cls)){
-                    idA=new AtomicLong(0);
-                    idMap.put(cls,idA);
-                }else{
-                    idA = idMap.get(cls);
-                }
-            }
-        }
-        return idA.decrementAndGet();
+    public void setState(CacheEntityState state) {
+        this.state = state;
+    }
+    //
+    public static enum CacheEntityState{
+        Normal,
+        Delete, // 这个说明该数据已经被删除
+        HasNot//说明数据库中也没有，这样就不要穿透到数据库判断一个没有的数据，可以考虑用Delete？
     }
 }

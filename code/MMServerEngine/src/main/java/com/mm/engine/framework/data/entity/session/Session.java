@@ -1,7 +1,5 @@
 package com.mm.engine.framework.data.entity.session;
 
-import com.mm.engine.framework.data.SynchronousLevel;
-import com.mm.engine.framework.data.cache.CacheEntity;
 import com.mm.engine.framework.entrance.NetType;
 
 import java.util.Date;
@@ -14,7 +12,7 @@ import java.util.Date;
  * 每一个Request都包含一个Session，在Protocol解码中需要解出sessionId和opcode，由系统创建session
  */
 
-public final class Session extends CacheEntity {
+public final class Session {
     private NetType netType;
     private String url;
     // sessionid的组成包括两部分，一是前缀，用来记录和登陆相关的一些信息，二是cacheEntity的id
@@ -26,11 +24,9 @@ public final class Session extends CacheEntity {
     // session是否过期，入登出时，设置为过期
 
     public Session(NetType netType, String url, String sessionIdPrefix, String ip, Date createTime){
-        super(SynchronousLevel.NoSync);
-
         this.netType = netType;
         this.url=url;
-        this.sessionId=sessionIdPrefix+"_"+ getCacheId();
+        this.sessionId="Session_"+sessionIdPrefix;
         this.ip=ip;
         this.createTime=createTime;
         this.lastUpdateTime=createTime;

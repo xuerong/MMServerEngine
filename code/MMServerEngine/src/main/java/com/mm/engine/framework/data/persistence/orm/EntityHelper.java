@@ -6,12 +6,12 @@ import com.mm.engine.framework.tool.helper.ClassHelper;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  * @since 1.0
  */
 public class EntityHelper {
-
+    private static final Logger log = LoggerFactory.getLogger(EntityHelper.class);
     /**
      * 实体类 => 表名
      */
@@ -33,12 +33,31 @@ public class EntityHelper {
      */
     private static final Map<Class<?>, Map<String, String>> entityClassFieldMapMap = new HashMap<Class<?>, Map<String, String>>();
 
+    /**
+     * DBEntity类与所有的get方法
+     */
+    private static final Map<Class<?>,Map<String,Method>> getMethodMap = new HashMap<>();
+
+    /**
+     * DBEntity类与所有的主键的get方法
+     * fieldName-method
+     */
+    private static final Map<Class<?>,Map<String,Method>> getPkMethodMap = new HashMap<>();
+
+    public static Map<String,Method> getGetMethodMap(Class<?> entityClass){
+        return getMethodMap.get(entityClass);
+    }
+    public static Map<String,Method> getPkGetMethodMap(Class<?> entityClass){
+        return getPkMethodMap.get(entityClass);
+    }
+
     static {
         // 获取并遍历所有实体类
         List<Class<?>> entityClassList = ClassHelper.getClassListByAnnotation(DBEntity.class);
         for (Class<?> entityClass : entityClassList) {
             initEntityNameMap(entityClass);
             initEntityFieldMapMap(entityClass);
+            initEntityGetMethods(entityClass);
         }
     }
 
@@ -69,6 +88,44 @@ public class EntityHelper {
             }
             entityClassFieldMapMap.put(entityClass, fieldMap);
         }
+    }
+
+    private static void initEntityGetMethods(Class<?> entityClass){
+        Set<String> set = entityClassFieldMapMap.get(entityClass).keySet();
+        Map<String,Method> getMethodMap = new HashMap<>(set.size());
+        Map<String,Method> getPkMethodMap = new HashMap<>(set.size());
+        DBEntity dbEntity = entityClass.getAnnotation(DBEntity.class);
+        String[] pks = dbEntity.pks();
+        if(pks == null || pks.length==0){
+            pks = (String[])set.toArray();
+            log.warn("DBEntity has no pk Annotation : use all field as pks");
+        }
+        List<String> pkList = Arrays.asList(pks);
+        for (String fieldName:set) {
+            String first = fieldName.substring(0, 1);
+            StringBuilder sb = new StringBuilder("get");
+            sb.append(first.toUpperCase());
+            sb.append(fieldName.substring(1));
+            String methodName = sb.toString();
+            Method method = null;
+            try{
+                method = entityClass.getMethod(methodName);
+            }catch (NoSuchMethodException e){
+                method = null;
+            }
+            if (method != null) {
+                getMethodMap.put(fieldName,method);
+                if(pkList.contains(fieldName)){
+                    getPkMethodMap.put(fieldName,method);
+                }
+            } else {
+                log.error("DBEntity get method not found: class="
+                        + entityClass + ",methodName="
+                        + methodName);
+            }
+        }
+        EntityHelper.getMethodMap.put(entityClass,getMethodMap);
+        EntityHelper.getPkMethodMap.put(entityClass,getPkMethodMap);
     }
     /**
      * 将驼峰风格替换为下划线风格

@@ -13,5 +13,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DBEntity {
-    String tableName();
+    String tableName(); // 表明
+    String[] pks(); // 主键，这个是需要的，至少要有一个id作为主键
 }

@@ -1,8 +1,11 @@
 package com.mm.engine.framework.server;
 
 import com.mm.engine.framework.control.update.UpdateManager;
+import com.mm.engine.framework.entrance.Entrance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2015/11/16.
@@ -25,10 +28,33 @@ public final class Server {
 
     public static void start(){
         UpdateManager.start();
+        // 启动所有入口
+        List<Entrance> entranceList = configure.getEntranceList();
+        for (Entrance entrance :entranceList) {
+            try {
+                entrance.start();
+            }catch (Exception e){
+                log.error("entrance start fail , entrance name = "+entrance.getName()+e.getCause());
+                try{
+                    entrance.stop();
+                }catch (Exception e2){
+                    log.error("entrance stop fail , entrance name = "+entrance.getName()+":"+e2.getStackTrace());
+                }
+            }
+
+        }
     }
 
     public static void stop(){
         UpdateManager.stop();
+        List<Entrance> entranceList = configure.getEntranceList();
+        for (Entrance entrance :entranceList) {
+            try{
+                entrance.stop();
+            }catch (Exception e2){
+                log.error("entrance stop fail , entrance name = "+entrance.getName()+":"+e2.getStackTrace());
+            }
+        }
     }
 
     public static EngineConfigure getEngineConfigure(){
@@ -37,5 +63,14 @@ public final class Server {
             throw new RuntimeException("configure is not init,don't getEngineConfigure() before server start");
         }
         return configure;
+    }
+
+    /**
+     * 应用程序启动，如果在容器中运行，请在容器中调用init和start方法
+     * @param args
+     */
+    public static void main(String[] args){
+        Server.init();
+        Server.start();
     }
 }
