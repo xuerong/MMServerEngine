@@ -76,7 +76,7 @@ public class ThreadLocalTxCache {
         prepareCachedData.setOperType(OperType.Insert);
         PrepareCachedData older = map.put(key,prepareCachedData);
         if(older!= null){
-            log.warn("older !=  null , while   insert key = "+key);
+            log.warn("older !=  null , while   insert  key = "+key);
         }
         return true;
     }

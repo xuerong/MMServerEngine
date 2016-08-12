@@ -1,7 +1,8 @@
 *.class
-workspace.xml
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+
+.idea/
 
 # Package Files #
 *.jar
