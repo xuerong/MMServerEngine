@@ -86,8 +86,8 @@
       <file leaf-file-name="ThreadLocalTxCache.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/ThreadLocalTxCache.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
-              <caret line="80" column="20" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
+            <state relative-caret-position="314">
+              <caret line="78" column="46" selection-start-line="78" selection-start-column="46" selection-end-line="78" selection-end-column="46" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1985,12 +1985,12 @@
       <workItem from="1470793289137" duration="16915000" />
       <workItem from="1470881244171" duration="8153000" />
       <workItem from="1470967505425" duration="23286000" />
-      <workItem from="1471014103257" duration="1022000" />
+      <workItem from="1471014103257" duration="1414000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="380396000" />
+    <option name="totallyTimeSpent" value="380788000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-48" y="22" width="1936" height="735" extended-state="0" />
@@ -2393,8 +2393,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/ThreadLocalTxCache.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="80" column="20" selection-start-line="80" selection-start-column="20" selection-end-line="80" selection-end-column="20" />
+        <state relative-caret-position="314">
+          <caret line="78" column="46" selection-start-line="78" selection-start-column="46" selection-end-line="78" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
