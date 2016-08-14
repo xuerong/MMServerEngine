@@ -1,6 +1,7 @@
 package com.mm.engine.framework.control.netEvent;
 
 import com.mm.engine.framework.control.ServiceHelper;
+import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TIntObjectProcedure;
@@ -19,6 +20,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class NetEventManager{
     private static final Logger log = LoggerFactory.getLogger(NetEventManager.class);
+
+
+    private static final String SERVERSKEY = "servers";
+    private static final Map<String,ServerClient> serverClientMap = new HashMap<>();
+    // 这里可以考虑用多个服务器用作主服务器
+    private static final ServerClient mainServer;
+
     private static Map<Integer,NetEventListenerHandler> handlerMap=new HashMap<Integer,NetEventListenerHandler>();
 
     private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(
@@ -30,6 +38,11 @@ public class NetEventManager{
                 }
             });
     static {
+        // 初始化所有服务器
+        String serversStr = Server.getEngineConfigure().getString(SERVERSKEY);
+        mainServer = new ServerClient();
+
+
         TIntObjectHashMap<Class<?>> netEventHandlerClassMap = ServiceHelper.getNetEventListenerHandlerClassMap();
         netEventHandlerClassMap.forEachEntry(new TIntObjectProcedure<Class<?>>(){
             @Override
@@ -67,6 +80,13 @@ public class NetEventManager{
             e.printStackTrace();
             log.error("exception happened while fire netEvent :"+netEvent.getNetEvent());
         }
+        return null;
+    }
+    /**
+     * 向主服务器发送事件
+     */
+    public static Object fireMainServerNetEvent(NetEventData netEvent){
+//        mainServer.
         return null;
     }
 }

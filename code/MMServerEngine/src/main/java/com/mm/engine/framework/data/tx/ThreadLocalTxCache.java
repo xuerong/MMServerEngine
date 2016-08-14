@@ -1,13 +1,14 @@
 package com.mm.engine.framework.data.tx;
 
 import com.mm.engine.framework.data.OperType;
+import com.mm.engine.framework.data.cache.CacheEntity;
 import com.mm.engine.framework.data.cache.KeyParser;
+import com.mm.engine.framework.tool.util.ObjectUtil;
+import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by a on 2016/8/12.
@@ -25,11 +26,22 @@ public class ThreadLocalTxCache {
         }
     };
 
+    private static final ThreadLocal<Set<Class<?>>> lockClasses = new ThreadLocal<Set<Class<?>>>(){
+        protected Set<Class<?>> initialValue() {
+            return new HashSet<Class<?>>();
+        }
+    };
+
     private static ThreadLocal<TxState> txStates = new ThreadLocal<TxState>(){
         protected TxState initialValue() {
             return TxState.Absent;
         }
     };
+
+    public static boolean isLockClass(Class<?> cls){
+        Set<Class<?>> lockClassSet = lockClasses.get();
+        return lockClassSet != null && lockClassSet.contains(cls);
+    }
 
     public static boolean isInTx(){
         return txStates.get() == TxState.In;
@@ -42,13 +54,49 @@ public class ThreadLocalTxCache {
 
     public static <T> List<T> replaceCacheObjectToList(String listKey,List<T> objectList){
         Map<String, PrepareCachedData> map = cacheDatas.get();
-        for (String key:map.keySet()) {
-            PrepareCachedData prepareCachedData = map.get(key);
-            if(!KeyParser.isObjectBelongToList(prepareCachedData.getData(),listKey)){
-                continue;
-            }
-            // 替换，或添加，或删除
+        if(map.size() > 0 && objectList.size() > 0){
+            Map<String,Integer> keyMap = null;
 
+            for (String key:map.keySet()) {
+                PrepareCachedData prepareCachedData = map.get(key);
+                if(!KeyParser.isObjectBelongToList(prepareCachedData.getData(),listKey)){
+                    continue;
+                }
+                // 替换，或添加，或删除
+                if(keyMap == null &&
+                        prepareCachedData.getOperType() != OperType.Select){
+                    keyMap = new HashMap<>();
+                    int i = 0;
+                    for (T t:objectList) {
+                        keyMap.put(KeyParser.parseKey(t),i++);
+                    }
+                }
+                // 替换和添加,如果objectMap中存在,都要替换
+                Integer index = keyMap.get(key);
+                if(index != null){
+                    if(prepareCachedData.getOperType() == OperType.Update
+                            || prepareCachedData.getOperType() == OperType.Insert){
+                        objectList.remove(index);
+                        objectList.add(index,(T)prepareCachedData.getData());
+                        if(prepareCachedData.getOperType() == OperType.Insert){
+                            log.warn("insert object in this threadLocalCache is exist in objectList ,objectKey = "
+                                    +key+",listKey = "+listKey);
+                        }
+                    }else if(prepareCachedData.getOperType() == OperType.Delete){
+                        objectList.remove(index);
+                    }
+                }else{
+                    if(prepareCachedData.getOperType() == OperType.Insert
+                            || prepareCachedData.getOperType() == OperType.Update){
+                        objectList.add((T)prepareCachedData.getData());
+                        if(prepareCachedData.getOperType() == OperType.Update){
+                            log.warn("update object in this threadLocalCache is not exist in objectList ,objectKey = "
+                                    +key+",listKey = "+listKey);
+                        }
+                    }
+                }
+
+            }
         }
         return objectList;
     }
@@ -76,7 +124,7 @@ public class ThreadLocalTxCache {
         prepareCachedData.setOperType(OperType.Insert);
         PrepareCachedData older = map.put(key,prepareCachedData);
         if(older!= null){
-            log.warn("older !=  null , while   insert  key = "+key);
+            log.warn("older !=  null , while insert  key = "+key);
         }
         return true;
     }

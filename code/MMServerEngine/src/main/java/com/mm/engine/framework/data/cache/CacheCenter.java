@@ -2,24 +2,26 @@ package com.mm.engine.framework.data.cache;
 
 /**
  * Created by Administrator on 2015/11/24.
+ *
+ * 这里面的数据可以考虑不用返回(flush)而是出现错误抛出异常
  */
 public interface CacheCenter {
     /**
      * 存入新的CacheEntity，返回缓存是否成功
      * 如果缓存中已经存在，返回false
      * */
-    public Object putIfAbsent(String key,Object entity);
+    public CacheEntity putIfAbsent(String key,CacheEntity entity);
     /**
      * 获取
      * */
-    public Object get(String key);
+    public CacheEntity get(String key);
     /**
      * 移除
      * */
-    public Object remove(String key);
+    public CacheEntity remove(String key);
     /**
-     *  用户保存回用这个函数
-     * 要根据更新需要进行更新
+     *  更新,不考虑版本
+     *  不用cas,因为cas失败了会导致事务无法回退,用的是先所有的加锁之后校验,
      * */
-    public boolean update(String key,Object entity);
+    public boolean update(String key,CacheEntity entity);
 }
