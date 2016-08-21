@@ -6,8 +6,11 @@ import java.util.Date;
 
 /**
  * Created by Administrator on 2016/1/4.
+ * 账号的抽象类,实际使用可继承自该类,也可不继承自该类,
+ * 但要实现SessionClient接口,并在客户端登陆的时候将相应的对象放入session,以便系统在传给其它服务的
+ * session中存有该账号的信息
  */
-public abstract class Player implements SessionClient {
+public abstract class Account implements SessionClient {
     //
     protected int id;
     protected String name="";

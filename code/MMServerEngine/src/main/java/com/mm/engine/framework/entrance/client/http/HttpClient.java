@@ -25,8 +25,8 @@ public class HttpClient {
 
 	private HttpClient(){
 	}
-	private String urlStr="http://192.168.1.240:8080/";
-	private static final String KEY_GAME_SESSION="HE-VALUEID";
+	private String urlStr="http://127.0.0.1:8080/";
+	private static final String KEY_GAME_SESSION="mmsession";
 	/*
 	 * 返回一个PBPacket值,对应result值
 	 * 如果成功，返回1

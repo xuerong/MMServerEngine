@@ -28,10 +28,33 @@ public class EhCacheHelper {
         cache.put(key,entity);
         return true;
     }
+    public static boolean putList(Map<String,CacheEntity> entityMap) {
+        for(Map.Entry<String,CacheEntity> entry : entityMap.entrySet()){
+            Cache<String, CacheEntity> cache=getCache(null);
+            cache.put(entry.getKey(),entry.getValue());
+        }
+        return true;
+    }
 
     public static CacheEntity get(String key) {
         Cache<String, CacheEntity> cache=getCache(null);
         return cache.get(key);
+    }
+
+    public static List<CacheEntity> getList(String... keys){
+        Cache<String, CacheEntity> cache=getCache(null);
+        List<CacheEntity> result = null;
+        for(String key : keys){
+            CacheEntity cacheEntity = cache.get(key);
+            if(cacheEntity == null){ // 只要有一个不存在,就不存在
+                return null;
+            }
+            if(result == null){
+                result = new ArrayList<>();
+            }
+            result.add(cacheEntity);
+        }
+        return result;
     }
 
     public static boolean remove(String key) {

@@ -24,6 +24,7 @@ public class TestService {
     @Request(opcode = 20002)
     public RetPacket handlerLogin(Object clientData, Session session){
         PBMessage.SCLoginRet.Builder builder= PBMessage.SCLoginRet.newBuilder();
+//        session.setSessionClient(new Play);
         builder.setHasNewVersion(1);
         builder.setNewVersionUrl("123456");
         System.out.println("---------------------------------------------------------------------------------------");

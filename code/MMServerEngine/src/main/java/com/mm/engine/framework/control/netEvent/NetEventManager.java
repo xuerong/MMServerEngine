@@ -71,8 +71,9 @@ public class NetEventManager{
 
     /**
      * 同步触发事假，即事件完成方可返回
+     * 别忘了截取一些出问题的事件
      * */
-    public static Map<Integer,Object> broadcastNetEventSyn(NetEventData netEvent){
+    public static NetEventData broadcastNetEventSyn(NetEventData netEvent){
         try {
             // 通过NetEvent的网络接口发出事件
             return null;
@@ -84,8 +85,15 @@ public class NetEventManager{
     }
     /**
      * 向主服务器发送事件
+     * 异步
      */
-    public static Object fireMainServerNetEvent(NetEventData netEvent){
+    public static void fireMainServerNetEvent(NetEventData netEvent){
+//        mainServer.
+    }
+    /**
+     * 向主服务器发送事件
+     */
+    public static NetEventData fireMainServerNetEventSyn(NetEventData netEvent){
 //        mainServer.
         return null;
     }

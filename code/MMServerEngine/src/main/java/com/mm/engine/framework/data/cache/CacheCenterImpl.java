@@ -4,7 +4,13 @@ import com.mm.engine.framework.control.annotation.NetEventListener;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.control.netEvent.NetEventManager;
+import com.mm.engine.framework.entrance.code.protocol.RetPacket;
+import com.mm.engine.framework.entrance.code.protocol.RetPacketImpl;
 import com.mm.engine.framework.server.SysConstantDefine;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2015/11/24.
@@ -39,6 +45,12 @@ public class CacheCenterImpl implements CacheCenter {
         EhCacheHelper.put(key,entity);
         return null;
     }
+    @Override
+    public void putList(Map<String,CacheEntity> entityMap){
+        MemCachedHelper.putList(entityMap);
+        EhCacheHelper.putList(entityMap);
+        return ;
+    }
 
     /**
      * 从缓存中获取数据
@@ -58,6 +70,26 @@ public class CacheCenterImpl implements CacheCenter {
             }
         }
         return entity;
+    }
+    @Override
+    public List<CacheEntity> getList(String... keys){
+        List<CacheEntity> result = EhCacheHelper.getList(keys);
+        if(result != null){
+            return result;
+        }
+        result = MemCachedHelper.getList(keys);
+        if(result != null && result.size() > 0){
+            // 这个是否放入本地,或许可以不
+            Map<String,CacheEntity> map = new HashMap<>();
+            int length = keys.length;
+            for(int i=0;i<length;i++){
+                map.put(keys[i],result.get(i));
+            }
+            if(!EhCacheHelper.putList(map)){
+                // 缓存本地失败
+            }
+        }
+        return result;
     }
     /**
      * 从本地缓存中移除，并从公共缓存中移除
@@ -93,7 +125,7 @@ public class CacheCenterImpl implements CacheCenter {
         NetEventManager.broadcastNetEvent(eventData);
     }
     @NetEventListener(netEvent = SysConstantDefine.CACHEUPDATE)
-    public void updateCacheListener(NetEventData eventData){
-
+    public RetPacket updateCacheListener(NetEventData eventData){
+        return new RetPacketImpl(eventData.getNetEvent(),eventData.getParam());
     }
 }

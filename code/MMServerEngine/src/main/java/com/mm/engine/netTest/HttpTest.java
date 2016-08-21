@@ -16,6 +16,6 @@ public class HttpTest {
         builder.setChannelId(10);
         PBPacket pbPacket = new PBPacket(OpCode.CSLogin,builder);
         PBPacket retPacket = HttpClient.getInstance().send(pbPacket,null);
-        System.out.println(retPacket.getOpcode()+" success"+retPacket.getSession());
+        System.out.println(retPacket.getResult()+","+retPacket.getOpcode()+" success,"+retPacket.getSession());
     }
 }

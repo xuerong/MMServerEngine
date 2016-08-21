@@ -1,5 +1,8 @@
 package com.mm.engine.framework.data.cache;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Administrator on 2015/11/24.
  *
@@ -11,10 +14,21 @@ public interface CacheCenter {
      * 如果缓存中已经存在，返回false
      * */
     public CacheEntity putIfAbsent(String key,CacheEntity entity);
+
+    /**
+     * 缓存一个列表的数据
+     * 有则不修改
+     * @param entityMap
+     */
+    public void putList(Map<String,CacheEntity> entityMap);
     /**
      * 获取
      * */
     public CacheEntity get(String key);
+    /**
+     * 获取多个值
+     */
+    public List<CacheEntity> getList(String... keys);
     /**
      * 移除
      * */

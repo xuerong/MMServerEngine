@@ -104,7 +104,9 @@ public final class SessionManager {
     }
 
     private void removeSession(Session session){
-        session.getSessionClient().destroySession();
+        if(session.getSessionClient() != null) {
+            session.getSessionClient().destroySession();
+        }
         updateTime.remove(session.getSessionId());
         // 是否从当前缓存中剔除：1不踢，2踢本地缓存，3踢本地和远程
         cacheCenter.remove(session.getSessionId());
