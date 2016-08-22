@@ -17,4 +17,6 @@ public @interface Tx {
      * 2、服务编写者写isolation和PROPAGATION
      * **/
     boolean tx() default false;
+    boolean lock() default false;
+    Class<?>[] lockClass() default {};
 }

@@ -4,7 +4,13 @@ import com.mm.engine.framework.control.annotation.NetEventListener;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.control.netEvent.NetEventManager;
+import com.mm.engine.framework.entrance.code.protocol.RetPacket;
+import com.mm.engine.framework.entrance.code.protocol.RetPacketImpl;
 import com.mm.engine.framework.server.SysConstantDefine;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2015/11/24.
@@ -30,8 +36,8 @@ public class CacheCenterImpl implements CacheCenter {
      *
      * */
     @Override
-    public Object putIfAbsent(String key,Object entity) {
-        Object older = MemCachedHelper.putIfAbsent(key,entity);
+    public CacheEntity putIfAbsent(String key,CacheEntity entity) {
+        CacheEntity older = MemCachedHelper.putIfAbsent(key,entity);
         if(older != null){ // 说明里面已经有了，可能是另外一个线程放入的
             EhCacheHelper.put(key,older);
             return older;
@@ -39,14 +45,20 @@ public class CacheCenterImpl implements CacheCenter {
         EhCacheHelper.put(key,entity);
         return null;
     }
+    @Override
+    public void putList(Map<String,CacheEntity> entityMap){
+        MemCachedHelper.putList(entityMap);
+        EhCacheHelper.putList(entityMap);
+        return ;
+    }
 
     /**
      * 从缓存中获取数据
      * 如果本地存在，返回本地，否则返回公共缓存的，否则，返回null
      * */
     @Override
-    public Object get(String key) {
-        Object entity=EhCacheHelper.get(key);
+    public CacheEntity get(String key) {
+        CacheEntity entity=EhCacheHelper.get(key);
         if(entity!=null){
             return entity;
         }
@@ -59,25 +71,46 @@ public class CacheCenterImpl implements CacheCenter {
         }
         return entity;
     }
+    @Override
+    public List<CacheEntity> getList(String... keys){
+        List<CacheEntity> result = EhCacheHelper.getList(keys);
+        if(result != null){
+            return result;
+        }
+        result = MemCachedHelper.getList(keys);
+        if(result != null && result.size() > 0){
+            // 这个是否放入本地,或许可以不
+            Map<String,CacheEntity> map = new HashMap<>();
+            int length = keys.length;
+            for(int i=0;i<length;i++){
+                map.put(keys[i],result.get(i));
+            }
+            if(!EhCacheHelper.putList(map)){
+                // 缓存本地失败
+            }
+        }
+        return result;
+    }
     /**
      * 从本地缓存中移除，并从公共缓存中移除
      *
      * 注意，这个显然是移除数据，不是删除数据库数据，删除数据库数据，应该是在缓存中对该对象加删除标记
      * */
     @Override
-    public Object remove(String key) {
+    public CacheEntity remove(String key) {
         EhCacheHelper.remove(key);
         MemCachedHelper.remove(key);
-        return false;
+        return null;
     }
 
     /**
      * 重新保存数据
      * 缓存中的数据不需要变动，因为是引用
      * 更新memcached中的变动数据
+     * 不用cas了
      * */
     @Override
-    public boolean update(String key,Object entity) {
+    public boolean update(String key,CacheEntity entity) {
         EhCacheHelper.update(key,entity);
         MemCachedHelper.update(key,entity);
 
@@ -92,7 +125,7 @@ public class CacheCenterImpl implements CacheCenter {
         NetEventManager.broadcastNetEvent(eventData);
     }
     @NetEventListener(netEvent = SysConstantDefine.CACHEUPDATE)
-    public void updateCacheListener(NetEventData eventData){
-
+    public RetPacket updateCacheListener(NetEventData eventData){
+        return new RetPacketImpl(eventData.getNetEvent(),eventData.getParam());
     }
 }

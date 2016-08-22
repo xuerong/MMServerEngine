@@ -9,6 +9,7 @@ package com.mm.engine.framework.data.cache;
 public class CacheEntity {
     private Object entity;
     private CacheEntityState state;
+    private long casUnique;
 
     public CacheEntity(){
         this(null);
@@ -33,6 +34,15 @@ public class CacheEntity {
     public void setState(CacheEntityState state) {
         this.state = state;
     }
+
+    public long getCasUnique() {
+        return casUnique;
+    }
+
+    public void setCasUnique(long casUnique) {
+        this.casUnique = casUnique;
+    }
+
     //
     public static enum CacheEntityState{
         Normal,
