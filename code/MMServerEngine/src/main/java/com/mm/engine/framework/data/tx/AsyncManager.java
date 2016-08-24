@@ -61,7 +61,7 @@ public class AsyncManager {
     }
 
     /**
-     * TODO 服务器停止之前别忘了调用该方法
+     * 服务器停止之前别忘了调用该方法
      * 由于要等待各个线程处理完成，所以可能要等待一段时间
      */
     public static void stop(){
@@ -356,6 +356,10 @@ public class AsyncManager {
 
                                 }
                             }
+                            if(success){ // 删除记录 TODO 这里删除是不是有点慢
+                                List<AsyncData> asyncDataList = asyncDataMap.get(asyncData.getClass().getName());
+                                asyncDataList.remove(asyncData);
+                            }
                         }catch (Throwable e){
                             if(e instanceof InterruptedException && asyncData == null && !running){
                                 // stop发生了
@@ -364,6 +368,7 @@ public class AsyncManager {
                             // 这里失败怎么办
                             asyncDbFail(asyncData);
                         }
+
                     }
                 }
             };

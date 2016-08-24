@@ -26,9 +26,25 @@ public class KeyParser {
     static {
         // 要校验所有的DBEntity，确保Class.getName()不能有一样的
     }
-
+    // TODO 这个方法用的比较多，可以考虑用增加字节码的方式给对象添加函数，来获取key，而不是用invoke
     public static String parseKey(Object entity){
-        return null;
+        Class<?> cls = entity.getClass();
+        Map<String,Method> pkMethodMap = EntityHelper.getPkGetMethodMap(cls);
+        if(pkMethodMap.size() == 0){
+            ExceptionHelper.handle(ExceptionLevel.Serious,"没找到主键方法"+cls.getName(),null);
+        }
+        StringBuilder sb = new StringBuilder(cls.getName());
+
+        try {
+            for(Method method : pkMethodMap.values()){
+                sb.append("_"+parseParamToString(method.invoke(entity)));
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 
     /**
@@ -39,7 +55,7 @@ public class KeyParser {
         // 判断条件中的主键
         Map<String,Method> pkMethodMap = EntityHelper.getPkGetMethodMap(entityClass);
         Set<String> pks = pkMethodMap.keySet(); // 注意这里面的排序
-        if(pks == null){
+        if(pks == null || pks.size() == 0){
             ExceptionHelper.handle(ExceptionLevel.Serious,"没找到主键方法"+entityClass.getName(),null);
         }
         String resultCondition = parseParamsToString(condition,params);
@@ -150,7 +166,8 @@ public class KeyParser {
         }
         return sb.toString();
     }
-    private static String parseParamToString(Object param){
+    // TODO 这个地方得看看人家是怎么用的
+    public static String parseParamToString(Object param){
         if(param instanceof Timestamp){
             return ((Timestamp)param).getTime()+"";
         }

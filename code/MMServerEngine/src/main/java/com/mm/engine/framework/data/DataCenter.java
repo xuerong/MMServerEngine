@@ -132,9 +132,19 @@ public class DataCenter {
                 if(asyncDataList != null && asyncDataList.size()>0){
                     // 放入objcetList
                     Set<String> deleteObjecKeys = null;
+                    Set<String> objectListKeys = null;
                     for(AsyncManager.AsyncData asyncData : asyncDataList){
                         if(asyncData.getOperType() == OperType.Insert){
-                            objectList.add((T)asyncData.getObject());
+                            // TODO 为了防止重复数据，这样去除效率有点低，能通过其它方法提高吗，尽管发生的概率比较小，下面删除能否利用上?
+                            if(objectListKeys == null){
+                                objectListKeys = new HashSet<>(objectList.size());
+                                for (Object object : objectList) {
+                                    objectListKeys.add(KeyParser.parseKey(object));
+                                }
+                            }
+                            if(!objectListKeys.contains(KeyParser.parseKey(asyncData.getObject()))){
+                                objectList.add((T)asyncData.getObject());
+                            }
                         }else if(asyncData.getOperType() == OperType.Delete){
                             if(deleteObjecKeys == null){
                                 deleteObjecKeys = new HashSet<>();
