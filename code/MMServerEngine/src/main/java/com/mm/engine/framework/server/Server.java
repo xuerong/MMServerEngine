@@ -1,6 +1,7 @@
 package com.mm.engine.framework.server;
 
 import com.mm.engine.framework.control.update.UpdateManager;
+import com.mm.engine.framework.data.tx.AsyncManager;
 import com.mm.engine.framework.entrance.Entrance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,12 +42,15 @@ public final class Server {
                     log.error("entrance stop fail , entrance name = "+entrance.getName()+":"+e2.getStackTrace());
                 }
             }
-
         }
+        // 服务器启动完成
+        log.info("服务器启动完成!");
     }
 
     public static void stop(){
+        // 关闭更新器
         UpdateManager.stop();
+        // 关闭入口
         List<Entrance> entranceList = configure.getEntranceList();
         for (Entrance entrance :entranceList) {
             try{
@@ -55,6 +59,13 @@ public final class Server {
                 log.error("entrance stop fail , entrance name = "+entrance.getName()+":"+e2.getStackTrace());
             }
         }
+        // 异步服务器关闭
+        if(Server.getEngineConfigure().isAsyncServer()){
+            AsyncManager.stop();
+            log.info("异步服务器关闭完成!");
+        }
+
+        log.info("服务器关闭完成!");
     }
 
     public static EngineConfigure getEngineConfigure(){

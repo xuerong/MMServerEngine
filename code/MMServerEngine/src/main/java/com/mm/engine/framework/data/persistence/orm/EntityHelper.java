@@ -2,6 +2,9 @@ package com.mm.engine.framework.data.persistence.orm;
 
 import com.mm.engine.framework.data.persistence.orm.annotation.Column;
 import com.mm.engine.framework.data.persistence.orm.annotation.DBEntity;
+import com.mm.engine.framework.exception.ExceptionHelper;
+import com.mm.engine.framework.exception.ExceptionLevel;
+import com.mm.engine.framework.exception.MMException;
 import com.mm.engine.framework.tool.helper.ClassHelper;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -10,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -58,6 +62,59 @@ public class EntityHelper {
             initEntityNameMap(entityClass);
             initEntityFieldMapMap(entityClass);
             initEntityGetMethods(entityClass);
+        }
+    }
+
+    /**
+     * 构建key组成的sql语句中的condition
+     * @param object
+     * @return
+     */
+    public static ConditionItem parsePkCondition(Object object){
+        Map<String,Method> map = getPkGetMethodMap(object.getClass());
+        if(map == null || map.size() == 0){
+            ExceptionHelper.handle(ExceptionLevel.Error,"getPkGetMethodMap is null , class = "+object.getClass(),null);
+        }
+
+        Object[] params = new Object[map.size()];
+        StringBuilder sb = new StringBuilder();
+        int i=0;
+        try {
+            for(Map.Entry<String,Method> entry : map.entrySet()){
+                sb.append(entry.getKey()+"=? and");
+                params[i++] = entry.getValue().invoke(object);
+            }
+        }catch (IllegalAccessException |InvocationTargetException e){
+            throw new MMException(e);
+        }
+        String condition = "";
+        if(sb.length()>0){
+            condition = sb.substring(0,sb.length()-4);
+        }
+        ConditionItem result = new ConditionItem();
+        result.setParams(params);
+        result.setCondition(condition);
+        return result;
+    }
+
+    public static class ConditionItem{
+        private String condition;
+        private Object[] params;
+
+        public String getCondition() {
+            return condition;
+        }
+
+        public void setCondition(String condition) {
+            this.condition = condition;
+        }
+
+        public Object[] getParams() {
+            return params;
+        }
+
+        public void setParams(Object[] params) {
+            this.params = params;
         }
     }
 

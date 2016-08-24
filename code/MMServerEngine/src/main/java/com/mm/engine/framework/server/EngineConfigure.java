@@ -83,4 +83,7 @@ public final class EngineConfigure {
     public List<Entrance> getEntranceList() {
         return entranceList;
     }
+    public boolean isAsyncServer(){ // 是否是异步服务器
+        return true;
+    }
 }

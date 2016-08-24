@@ -69,6 +69,10 @@ public class KeyParser {
 
         return sb.toString();
     }
+    // 从listKey中获取对应的class的名字
+    public static String getClassNameFromListKey(String listKey){
+        return listKey.split("#")[0];
+    }
     // 判断一个对象是否属于一个list
     public static <T> boolean isObjectBelongToList(Object object,String listKey){
         if(!listKey.startsWith(object.getClass().getName())){ // 是否是同一中类

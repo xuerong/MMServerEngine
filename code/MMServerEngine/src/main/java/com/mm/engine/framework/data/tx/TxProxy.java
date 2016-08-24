@@ -12,30 +12,22 @@ import java.lang.reflect.Method;
  *
  */
 @Aspect(
-        annotation = {Request.class,
-                NetEventListener.class,
-                EventListener.class,
-                Updatable.class
+        annotation = {Tx.class
         }
 )
 public class TxProxy extends AspectProxy {
     @Override
     public void before(Class<?> cls, Method method, Object[] params) {
         Tx tx = method.getAnnotation(Tx.class);
-        if(!tx.tx()){
-            ThreadLocalTxCache.setTXState(TxState.Absent);
-            return;
-        }
-        ThreadLocalTxCache.setTXState(TxState.In);
+        ThreadLocalTxCache.begin(tx.tx(),tx.lock(),tx.lockClass());
     }
 
     @Override
     public void after(Class<?> cls, Method method, Object[] params, Object result) {
-        if(!ThreadLocalTxCache.isInTx()){
-            return;
-        }
-        ThreadLocalTxCache.setTXState(TxState.Committing);
-        boolean success = ThreadLocalTxCache.commit();
+        boolean success = ThreadLocalTxCache.after();
+        //
+        if(success){ // 没有事务或事务提交成功
 
+        }
     }
 }

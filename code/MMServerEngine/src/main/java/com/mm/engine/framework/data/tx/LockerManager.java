@@ -33,7 +33,59 @@ public class LockerManager {
     static {
         cacheCenter= BeanHelper.getFrameBean(CacheCenter.class);
     }
+    ////---------------------------外部代用
+
+    public static boolean lockAndCheckKeys(LockerData... lockerDatas){
+        NetEventData eventData = new NetEventData(SysConstantDefine.LOCKKEYSANDCHECK);
+        eventData.setParam(lockerDatas);
+        NetEventData ret = NetEventManager.fireMainServerNetEventSyn(eventData); // 需要同步发送
+        Boolean result = (Boolean)ret.getParam();
+        if(result == null){
+            result = false;
+        }
+        return result;
+    }
+    public static void unlockKeys(String... keys){
+        NetEventData eventData = new NetEventData(SysConstantDefine.UNLOCKKEYS);
+        eventData.setParam(keys);
+        NetEventManager.fireMainServerNetEvent(eventData); // 异步发送解锁就可以
+    }
+    // TODO 如果确保每个服务在自己返回的时候，即使发生异常，也会把加的锁释放
+    public static boolean lockKeys(String... keys){
+        NetEventData eventData = new NetEventData(SysConstantDefine.LOCKKEYS);
+        eventData.setParam(keys);
+        NetEventData ret = NetEventManager.fireMainServerNetEventSyn(eventData); // 需要同步发送
+        Boolean result = (Boolean)ret.getParam();
+        if(result == null){
+            result = false;
+        }
+        return result;
+    }
+    //// ----------------------------------外部代用end
     @NetEventListener(netEvent = SysConstantDefine.LOCKKEYS)
+    public RetPacket receiveLockKeys(NetEventData eventData){
+        String[] keys = (String[])eventData.getParam();
+        boolean result = true;
+        String failKey = null;
+        for (String key : keys) {
+            if(!lock(key)){
+                result = false;
+                failKey = key;
+                break;
+            }
+        }
+        if(!result){ // 如果加锁失败,已经加锁的要解锁
+            for (String key : keys) {
+                unlock(key);
+                if(key.equals(failKey)){
+                    break;
+                }
+            }
+        }
+        RetPacket ret = new RetPacketImpl(eventData.getNetEvent(),result);
+        return ret;
+    }
+    @NetEventListener(netEvent = SysConstantDefine.LOCKKEYSANDCHECK)
     public RetPacket receiveLockRequest(NetEventData eventData){
         LockerData[] lockerDatas = (LockerData[])eventData.getParam();
         boolean result = true;
@@ -63,22 +115,6 @@ public class LockerManager {
             unlock(key);
         }
         return null;
-    }
-
-    public static boolean lockAndCheckKeys(LockerData... lockerDatas){
-        NetEventData eventData = new NetEventData(SysConstantDefine.LOCKKEYS);
-        eventData.setParam(lockerDatas);
-        NetEventData ret = NetEventManager.fireMainServerNetEventSyn(eventData); // 需要同步发送
-        Boolean result = (Boolean)ret.getParam();
-        if(result == null){
-            result = false;
-        }
-        return result;
-    }
-    public static void unlockKeys(String... keys){
-        NetEventData eventData = new NetEventData(SysConstantDefine.UNLOCKKEYS);
-        eventData.setParam(keys);
-        NetEventManager.fireMainServerNetEvent(eventData); // 异步发送解锁就可以
     }
     /**
      * 加锁并校验
@@ -116,7 +152,7 @@ public class LockerManager {
         int lockTime = 0;
         while(olderKey != null){ // 加锁失败,稍等再加
             if(lockTime++>maxTryLockTimes){
-                // 这个地方不能用异常,因为加锁失败,要清理之前加成功的锁
+                // 这个地方不能用异常,因为加锁失败,要清理之前加成功的锁:如果考虑用最终捕获异常来清理锁，也可以考虑，但还是不如这样
 //                ExceptionHelper.handle(ExceptionLevel.Warn,"锁超时,key = "+key,null);
                 log.warn("锁超时,key = "+key);
                 return false;

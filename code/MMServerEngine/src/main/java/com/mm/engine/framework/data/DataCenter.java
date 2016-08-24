@@ -5,15 +5,14 @@ import com.mm.engine.framework.data.cache.CacheEntity;
 import com.mm.engine.framework.data.cache.KeyParser;
 import com.mm.engine.framework.data.persistence.orm.DataSet;
 import com.mm.engine.framework.data.tx.AsyncManager;
+import com.mm.engine.framework.data.tx.LockerManager;
 import com.mm.engine.framework.data.tx.ThreadLocalTxCache;
+import com.mm.engine.framework.exception.ExceptionHelper;
 import com.mm.engine.framework.server.SysConstantDefine;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by a on 2016/8/10.
@@ -119,9 +118,45 @@ public class DataCenter {
         CacheEntity entity = (CacheEntity)cacheCenter.get(listKey);
         List<T> objectList = null;
         if(entity == null){
+            // TODO 加锁listKey
+            if(!LockerManager.lockKeys(listKey)){
+//                ExceptionHelper.handle();
+            }
+            // TODO 这里从异步数据获取满足条件(listKey)的数据，并在查询数据库之后放进对应的list中
+            List<AsyncManager.AsyncData> asyncDataList = AsyncManager.getAsyncDataBelongListKey(listKey);
             objectList = DataSet.selectListWithCondition(entityClass,condition,params);
-            if(objectList != null){ // 0个也缓存
-                // TODO 这里需要用异步数据更新list
+            if(objectList != null || (asyncDataList != null && asyncDataList.size()>0)){ // 0个也缓存
+                if(objectList == null){
+                    objectList = new ArrayList<>();
+                }
+                if(asyncDataList != null && asyncDataList.size()>0){
+                    // 放入objcetList
+                    Set<String> deleteObjecKeys = null;
+                    for(AsyncManager.AsyncData asyncData : asyncDataList){
+                        if(asyncData.getOperType() == OperType.Insert){
+                            objectList.add((T)asyncData.getObject());
+                        }else if(asyncData.getOperType() == OperType.Delete){
+                            if(deleteObjecKeys == null){
+                                deleteObjecKeys = new HashSet<>();
+                            }
+                            deleteObjecKeys.add(asyncData.getKey());
+                        }
+                    }
+                    if(deleteObjecKeys != null){
+                        int count = deleteObjecKeys.size();
+                        if(count > 0){
+                            int delCount = 0;
+                            for(Iterator<T> iter = objectList.iterator();iter.hasNext();){ // 遍历一遍即可删除
+                                if(deleteObjecKeys.contains(KeyParser.parseKey(iter.next()))){
+                                    iter.remove();
+                                    if(++delCount>=count){
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 // 缓存两步,一步缓存keys,一步缓存内容
                 List<String> keys = new ArrayList<>();
                 Map<String,CacheEntity> cacheEntityMap = new HashMap<>();
@@ -137,6 +172,8 @@ public class DataCenter {
                 if(cacheEntityMap.size() > 0) {
                     cacheCenter.putList(cacheEntityMap);
                 }
+                // TODO 解锁listKey
+                LockerManager.unlockKeys(listKey);
             }
         }
         if(objectList == null && entity != null){ // 从缓存中取出了对应的keys,需要从缓存中取出指
@@ -176,7 +213,7 @@ public class DataCenter {
         CacheEntity cacheEntity = new CacheEntity(object);
         cacheCenter.update(key,cacheEntity);
         // 异步
-        AsyncManager.insert(object);
+        AsyncManager.insert(key,object);
         return true;
     }
     /**
@@ -204,7 +241,7 @@ public class DataCenter {
         cacheEntity.setState(CacheEntity.CacheEntityState.Normal);
         cacheCenter.update(key,cacheEntity); // 没有cas,也就可以没有失败
         // 异步
-        AsyncManager.update(object);
+        AsyncManager.update(key,object);
 
         return true;
     }
@@ -225,7 +262,7 @@ public class DataCenter {
         cacheEntity.setState(CacheEntity.CacheEntityState.Delete);
         cacheCenter.update(key,cacheEntity); // 这里用update
         // 异步
-        AsyncManager.delete(object);
+        AsyncManager.delete(key,object);
         return true;
     }
     /**

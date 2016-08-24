@@ -27,7 +27,12 @@ public class ThreadLocalTxCache {
             return new HashMap<String, PrepareCachedData>();
         }
     };
-    // 这个默认不赋值,这样在事务开始的时候,如果需要锁再赋值,不赋值就代表不需要锁
+    /**
+     * 三种可能：
+     * 1 null：不需要加锁
+     * 2 size == 0：所有更新的对象都需要加锁
+     * 3 size > 0：里面存在的兑现更需要加锁
+     */
     private static final ThreadLocal<Set<Class<?>>> lockClasses = new ThreadLocal<Set<Class<?>>>();
 
     private static ThreadLocal<TxState> txStates = new ThreadLocal<TxState>(){
@@ -38,7 +43,13 @@ public class ThreadLocalTxCache {
 
     public static boolean isLockClass(Class<?> cls){
         Set<Class<?>> lockClassSet = lockClasses.get();
-        return lockClassSet != null && lockClassSet.contains(cls);
+        if(lockClassSet == null){
+            return false;
+        }
+        if(lockClassSet.size() == 0){
+            return true;
+        }
+        return lockClassSet.contains(cls);
     }
 
     public static boolean isInTx(){
@@ -47,6 +58,29 @@ public class ThreadLocalTxCache {
     public static void setTXState(TxState txState){
         txStates.set(txState);
     }
+    public static void begin(boolean isTx, boolean isLock, Class<?>[] lockClass){
+        if(!isTx){
+            return;
+        }
+        setTXState(TxState.In);
+        if(!isLock){
+            return;
+        }
+        Set<Class<?>> classSet = new HashSet<Class<?>>();
+        lockClasses.set(classSet);
+        if(lockClass!=null && lockClass.length >0 ){
+            for(Class<?> cls : lockClass){
+                classSet.add(cls);
+            }
+        }
+    }
+    public static boolean after(){
+        if(!ThreadLocalTxCache.isInTx()){
+            return true;
+        }
+        setTXState(TxState.Committing);
+        return commit();
+    }
 
     /**
      * 事务提交
@@ -54,8 +88,6 @@ public class ThreadLocalTxCache {
      * 将对象的key和对应的casUnique都提交给main服,其进行加锁和验证,
      */
     public static boolean commit(){
-        setTXState(TxState.Committing);
-
         Map<String, PrepareCachedData> map = cacheDatas.get();
         if(map == null){
             return true;
@@ -63,11 +95,11 @@ public class ThreadLocalTxCache {
         // -- 加锁校验
         Set<Class<?>> lockClass = lockClasses.get();
         List<LockerManager.LockerData> lockerDataList = null;
-        if(lockClass != null && lockClass.size()>0){ // 说明要加锁
+        if(lockClass != null){ // 说明要加锁
             // 提取要加锁的对象
             for (Map.Entry<String, PrepareCachedData> entry:map.entrySet()){
                 PrepareCachedData data = entry.getValue();
-                if(data.getOperType() != OperType.Select && lockClass.contains(data.getData().getClass())){
+                if(data.getOperType() != OperType.Select && isLockClass(data.getData().getClass())){
                     LockerManager.LockerData lockerData = new LockerManager.LockerData();
                     lockerData.setKey(data.getKey());
                     lockerData.setOperType(data.getOperType());

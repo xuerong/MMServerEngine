@@ -97,4 +97,18 @@ public class NetEventManager{
 //        mainServer.
         return null;
     }
+    /**
+     * 向异步服务器发送事件
+     * 异步
+     */
+    public static void fireAsyncServerNetEvent(NetEventData netEvent){
+//        mainServer.
+    }
+    /**
+     * 向异步服务器发送事件
+     */
+    public static NetEventData fireAsyncServerNetEventSyn(NetEventData netEvent){
+//        mainServer.
+        return null;
+    }
 }

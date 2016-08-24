@@ -193,6 +193,20 @@ public class DataSet {
         Object[] params = {ObjectUtil.getFieldValue(entityObject, pkName)};
         return update(entityClass, fieldMap, condition, params);
     }
+    /**
+     * 更新一个实体（根据给定的条件）
+     */
+    public static boolean update(Object entityObject,String condition, Object... params){
+        if (entityObject == null) {
+            throw new IllegalArgumentException();
+        }
+        Class<?> entityClass = entityObject.getClass();
+        Map<String, Object> fieldMap = ObjectUtil.getFieldMap(entityObject);
+        return update(entityClass, fieldMap, condition, params);
+    }
+    public static boolean update(Object entityObject, EntityHelper.ConditionItem conditionItem){
+        return update(entityObject,conditionItem.getCondition(),conditionItem.getParams());
+    }
 
     /**
      * 删除相关数据
@@ -221,5 +235,11 @@ public class DataSet {
         String condition = pkName + " = ?";
         Object[] params = {ObjectUtil.getFieldValue(entityObject, pkName)};
         return delete(entityClass, condition, params);
+    }
+    /**
+     * 删除一个实体（根据给定的条件）
+     */
+    public static boolean delete(Object entityObject, EntityHelper.ConditionItem conditionItem) {
+        return delete(entityObject.getClass(), conditionItem.getCondition(), conditionItem.getParams());
     }
 }

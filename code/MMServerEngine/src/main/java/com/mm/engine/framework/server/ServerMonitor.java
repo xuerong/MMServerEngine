@@ -17,7 +17,7 @@ public class ServerMonitor {
 
     @Updatable(isAsynchronous = true,cycle = 6000)
     public void monitorUpdate(int interval){
-        log.info("monitorUpdate:"+interval);
+//        log.info("monitorUpdate:"+interval);
         String state = EventManager.getMonitorData();
         if(!state.equals("ok")){
             log.error(state);
