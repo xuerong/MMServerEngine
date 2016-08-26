@@ -38,6 +38,7 @@ public final class SessionManager {
      * session的存活时间，后面考虑一下是否将其改为由SessionClient决定
      *
      * 或者：session有自身的存活时间，而SessionClient自身可以有自己的存活时间，通过是否过期可以让自身的session销毁！！
+     *
      * **/
     private static final int survivalTime;
     /**

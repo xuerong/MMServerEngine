@@ -3,16 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="cf7190cc-0055-40f4-af6a-f91e9d80373f" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/Session.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/Session.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntityKey.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntityKey.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenterImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenterImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntity.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/SessionManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/SessionManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/EhCacheHelper.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/EhCacheHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/data/entity/session/Session.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/data/entity/session/Session.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/websocket/EntranceEndpoint.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/websocket/EntranceEndpoint.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntityKey.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntityKey.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/SessionManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/SessionManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenterImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenterImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntityModify.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntityModify.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/Session.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/Session.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntity.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/data/entity/session/Session.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/data/entity/session/Session.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/websocket/EntranceEndpoint.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/websocket/EntranceEndpoint.java" />
     </list>
     <ignored path="MMServerEngine.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,121 +36,124 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="DataCenter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/DataCenter.java">
+      <file leaf-file-name="MemCachedHelper.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/MemCachedHelper.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="141" column="71" selection-start-line="141" selection-start-column="71" selection-end-line="141" selection-end-column="71" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="KeyParser.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/KeyParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.32196453">
-              <caret line="28" column="60" selection-start-line="28" selection-start-column="60" selection-end-line="28" selection-end-column="60" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AsyncManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/AsyncManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="377" column="11" selection-start-line="377" selection-start-column="11" selection-end-line="377" selection-end-column="11" />
+              <caret line="36" column="36" selection-start-line="36" selection-start-column="36" selection-end-line="36" selection-end-column="36" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3245#3246#0" expanded="true" />
-                <element signature="e#3300#3301#0" expanded="true" />
-                <element signature="e#3388#3389#0" expanded="true" />
-                <element signature="e#3443#3444#0" expanded="true" />
-                <element signature="e#3571#3572#0" expanded="true" />
-                <element signature="e#3626#3627#0" expanded="true" />
-                <element signature="e#12097#12108#0" expanded="true" />
-                <element signature="e#12268#12269#0" expanded="true" />
-                <element signature="e#12306#12307#0" expanded="true" />
-                <element signature="e#12345#12346#0" expanded="true" />
-                <element signature="e#12395#12396#0" expanded="true" />
-                <element signature="e#12783#15307#0" expanded="true" />
-                <element signature="e#15306#15307#0" expanded="true" />
-                <element signature="e#15471#15472#0" expanded="true" />
-                <element signature="e#15530#15531#0" expanded="true" />
-                <element signature="e#15668#17115#0" expanded="true" />
-                <element signature="e#17114#17115#0" expanded="true" />
+                <element signature="e#2366#2367#0" expanded="true" />
+                <element signature="e#2419#2420#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="List.java" pinned="false" current-in-tab="false">
-        <entry file="jar://F:/0322JDK8/src.zip!/java/util/List.java">
+      <file leaf-file-name="mmserver.properties" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/mmserver.properties">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="260" column="14" selection-start-line="260" selection-start-column="14" selection-end-line="260" selection-end-column="14" />
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ArrayList.java" pinned="false" current-in-tab="false">
-        <entry file="jar://F:/0322JDK8/src.zip!/java/util/ArrayList.java">
+      <file leaf-file-name="log4j.properties" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/log4j.properties">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="105" column="13" selection-start-line="105" selection-start-column="13" selection-end-line="105" selection-end-column="13" />
+              <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExecutorService.java" pinned="false" current-in-tab="false">
-        <entry file="jar://F:/0322JDK8/src.zip!/java/util/concurrent/ExecutorService.java">
+      <file leaf-file-name="ehcache.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/ehcache.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="155" column="9" selection-start-line="155" selection-start-column="9" selection-end-line="155" selection-end-column="9" />
+            <state vertical-scroll-proportion="49.03846">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/Server.java">
+      <file leaf-file-name="Readme.RM" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/Readme.RM">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="63" column="27" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EntityHelper.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/persistence/orm/EntityHelper.java">
+      <file leaf-file-name="MuchToConsiderate" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/MuchToConsiderate">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.022941971">
+              <caret line="1" column="18" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IRemoteCacheClient.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/IRemoteCacheClient.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="187" column="17" selection-start-line="187" selection-start-column="17" selection-end-line="187" selection-end-column="17" />
+              <caret line="18" column="19" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="XMemCached.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/XMemCached.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="250" column="13" selection-start-line="250" selection-start-column="13" selection-end-line="250" selection-end-column="13" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3468#3469#0" expanded="true" />
-                <element signature="e#3508#3509#0" expanded="true" />
-                <element signature="e#3562#3563#0" expanded="true" />
-                <element signature="e#3612#3613#0" expanded="true" />
-                <element signature="e#3651#3652#0" expanded="true" />
-                <element signature="e#3688#3689#0" expanded="true" />
-                <element signature="e#3738#3739#0" expanded="true" />
-                <element signature="e#3782#3783#0" expanded="true" />
-                <element signature="e#4352#4368#0" expanded="true" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#1582#1583#0" expanded="false" />
+                <element signature="e#1617#1618#0" expanded="false" />
+                <element signature="e#1679#1680#0" expanded="false" />
+                <element signature="e#1730#1731#0" expanded="false" />
+                <element signature="e#1793#1794#0" expanded="false" />
+                <element signature="e#1844#1845#0" expanded="false" />
+                <element signature="e#1889#1890#0" expanded="false" />
+                <element signature="e#1922#1923#0" expanded="false" />
+                <element signature="e#1970#1971#0" expanded="false" />
+                <element signature="e#2007#2008#0" expanded="false" />
+                <element signature="e#2057#2058#0" expanded="false" />
+                <element signature="e#2092#2093#0" expanded="false" />
+                <element signature="e#2140#2141#0" expanded="false" />
+                <element signature="e#2177#2178#0" expanded="false" />
+                <element signature="e#2225#2226#0" expanded="false" />
+                <element signature="e#2262#2263#0" expanded="false" />
+                <element signature="e#4019#4020#0" expanded="false" />
+                <element signature="e#4098#4099#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Method.java" pinned="false" current-in-tab="false">
-        <entry file="jar://F:/0322JDK8/src.zip!/java/lang/reflect/Method.java">
+      <file leaf-file-name="MemcachedClient.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/googlecode/xmemcached/xmemcached/2.0.0/xmemcached-2.0.0.jar!/net/rubyeye/xmemcached/MemcachedClient.class">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="482" column="18" selection-start-line="482" selection-start-column="18" selection-end-line="482" selection-end-column="18" />
+              <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="XMemcachedClient.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/googlecode/xmemcached/xmemcached/2.0.0/xmemcached-2.0.0.jar!/net/rubyeye/xmemcached/XMemcachedClient.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="80" column="13" selection-start-line="80" selection-start-column="13" selection-end-line="80" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -177,10 +180,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/MMServerEngine.iml" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/update/UpdateManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/NetFlowNotify.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/http/EntranceServlet.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/Entrance.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/TestService.java" />
@@ -191,14 +190,12 @@
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/NetFlowFire.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/http/HttpClient.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/netTest/HttpTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/Session.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/Player.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/persistence/orm/annotation/DBEntity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/dbentity/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/exception/ExceptionLevel.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/exception/ExceptionHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/MemCachedHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/EhCacheHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventDispatcher.java" />
@@ -207,7 +204,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenterImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/OperType.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/TxState.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/SessionManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/annotation/Tx.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/ThreadLocalTxCache.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/TxProxy.java" />
@@ -228,6 +224,13 @@
         <option value="$PROJECT_DIR$/src/test/java/test/service/TestInvoke.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/DataCenter.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/KeyParser.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/IRemoteCacheClient.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/SessionManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/Session.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/XMemCached.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/MemCachedHelper.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/MuchToConsiderate" />
       </list>
     </option>
   </component>
@@ -309,15 +312,59 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="MMServerEngine" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MMServerEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Maven: com.googlecode.xmemcached:xmemcached:2.0.0" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="xmemcached-2.0.0.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="xmemcached" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MMServerEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Maven: com.googlecode.xmemcached:xmemcached:2.0.0" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="xmemcached-2.0.0.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -1432,11 +1479,11 @@
       <recent name="com.mm.engine.framework.control.aop.annotation" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\mycode\git\MMServerEngine\code\MMServerEngine\src\main\java\com\mm\engine\framework\data\cache" />
       <recent name="F:\mycode\git\MMServerEngine\code\MMServerEngine\src\main\java\com\mm\engine\framework\entrance\client\http" />
       <recent name="E:\idea\mmengine\projects\MMServerEngine\src\main\java\com\mm\engine\framework\data\persistence" />
       <recent name="E:\idea\mmengine\projects\MMServerEngine\src\main\java\com\mm\engine\framework\data\persistence\ds" />
       <recent name="E:\idea\mmengine\projects\MMServerEngine\src\test\java\test\service" />
-      <recent name="E:\idea\mmengine\projects\MMServerEngine\src\main\java\com" />
     </key>
   </component>
   <component name="RunManager" selected="Application.TestInvoke">
@@ -2157,19 +2204,20 @@
       <workItem from="1471850740879" duration="1478000" />
       <workItem from="1471917501950" duration="24996000" />
       <workItem from="1472004608607" duration="19558000" />
+      <workItem from="1472107923601" duration="10221000" />
+      <workItem from="1472177371190" duration="2217000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="425406000" />
+    <option name="totallyTimeSpent" value="437844000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31601733" sideWeight="0.49583334" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34741288" sideWeight="0.2109375" order="7" side_tool="true" content_ui="tabs" />
@@ -2179,11 +2227,10 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17532468" sideWeight="0.7953125" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21695095" sideWeight="0.4925926" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14552239" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23720682" sideWeight="0.4925926" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15989584" sideWeight="0.5074074" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3495671" sideWeight="0.79791665" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16666667" sideWeight="0.79791665" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2192,6 +2239,8 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14552239" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31601733" sideWeight="0.49583334" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -2217,212 +2266,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/Session.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/persistence/orm/annotation/DBEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://F:/0322JDK8/src.zip!/java/util/Arrays.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3799" column="25" selection-start-line="3799" selection-start-column="25" selection-end-line="3799" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenterImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/SessionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/persistence/dao/SqlHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="42" column="30" selection-start-line="42" selection-start-column="30" selection-end-line="42" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#5108#5109#0" expanded="false" />
-            <element signature="e#5169#5170#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/Entity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://F:/0322JDK8/src.zip!/java/lang/String.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2409" column="31" selection-start-line="2409" selection-start-column="31" selection-end-line="2409" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#123975#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#4677#4678#0" expanded="false" />
-            <element signature="e#4717#4718#0" expanded="false" />
-            <element signature="e#5690#5691#0" expanded="false" />
-            <element signature="e#5753#5754#0" expanded="false" />
-            <element signature="e#12762#12763#0" expanded="false" />
-            <element signature="e#12814#12815#0" expanded="false" />
-            <element signature="e#18445#18446#0" expanded="false" />
-            <element signature="e#18498#18499#0" expanded="false" />
-            <element signature="e#20391#20392#0" expanded="false" />
-            <element signature="e#20435#20436#0" expanded="false" />
-            <element signature="e#21625#21626#0" expanded="false" />
-            <element signature="e#21705#21706#0" expanded="false" />
-            <element signature="e#22450#22451#0" expanded="false" />
-            <element signature="e#22485#22486#0" expanded="false" />
-            <element signature="e#22736#22737#0" expanded="false" />
-            <element signature="e#22776#22777#0" expanded="false" />
-            <element signature="e#29126#29127#0" expanded="false" />
-            <element signature="e#29197#29198#0" expanded="false" />
-            <element signature="e#36057#36058#0" expanded="false" />
-            <element signature="e#36123#36124#0" expanded="false" />
-            <element signature="e#38033#38034#0" expanded="false" />
-            <element signature="e#38087#38088#0" expanded="false" />
-            <element signature="e#47202#47203#0" expanded="false" />
-            <element signature="e#47266#47267#0" expanded="false" />
-            <element signature="e#55464#55465#0" expanded="false" />
-            <element signature="e#55508#55509#0" expanded="false" />
-            <element signature="e#56101#56102#0" expanded="false" />
-            <element signature="e#56178#56179#0" expanded="false" />
-            <element signature="e#58145#58146#0" expanded="false" />
-            <element signature="e#58182#58183#0" expanded="false" />
-            <element signature="e#62524#62525#0" expanded="false" />
-            <element signature="e#62580#62581#0" expanded="false" />
-            <element signature="e#66121#66122#0" expanded="false" />
-            <element signature="e#66159#66160#0" expanded="false" />
-            <element signature="e#70413#70414#0" expanded="false" />
-            <element signature="e#70466#70467#0" expanded="false" />
-            <element signature="e#77904#77905#0" expanded="false" />
-            <element signature="e#77963#77964#0" expanded="false" />
-            <element signature="e#82280#82281#0" expanded="false" />
-            <element signature="e#82331#82332#0" expanded="false" />
-            <element signature="e#82635#82636#0" expanded="false" />
-            <element signature="e#82684#82685#0" expanded="false" />
-            <element signature="e#94262#94263#0" expanded="false" />
-            <element signature="e#94300#94301#0" expanded="false" />
-            <element signature="e#104339#104340#0" expanded="false" />
-            <element signature="e#104394#104395#0" expanded="false" />
-            <element signature="e#110860#110861#0" expanded="false" />
-            <element signature="e#110915#110916#0" expanded="false" />
-            <element signature="e#113007#113008#0" expanded="false" />
-            <element signature="e#113034#113035#0" expanded="false" />
-            <element signature="e#117557#117558#0" expanded="false" />
-            <element signature="e#117619#117620#0" expanded="false" />
-            <element signature="e#118069#118070#0" expanded="false" />
-            <element signature="e#118108#118109#0" expanded="false" />
-            <element signature="e#119120#119121#0" expanded="false" />
-            <element signature="e#119174#119175#0" expanded="false" />
-            <element signature="e#119823#119824#0" expanded="false" />
-            <element signature="e#119877#119878#0" expanded="false" />
-            <element signature="e#120146#120147#0" expanded="false" />
-            <element signature="e#120185#120186#0" expanded="false" />
-            <element signature="e#120553#120554#0" expanded="false" />
-            <element signature="e#120596#120597#0" expanded="false" />
-            <element signature="e#121391#121392#0" expanded="false" />
-            <element signature="e#121433#121434#0" expanded="false" />
-            <element signature="e#121848#121849#0" expanded="false" />
-            <element signature="e#121887#121888#0" expanded="false" />
-            <element signature="e#122309#122310#0" expanded="false" />
-            <element signature="e#122349#122350#0" expanded="false" />
-            <element signature="e#122779#122780#0" expanded="false" />
-            <element signature="e#122820#122821#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/annotation/Updatable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="18" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/annotation/Tx.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/TxProxy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="30" selection-start-line="21" selection-start-column="30" selection-end-line="21" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/ThreadLocalTxCache.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="79" column="9" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
-          <folding>
-            <element signature="e#1203#1218#0" expanded="false" />
-            <element signature="e#1837#1838#0" expanded="false" />
-            <element signature="e#1874#1875#0" expanded="false" />
-            <element signature="e#2134#2144#0" expanded="false" />
-            <marker date="1471919534292" expanded="true" signature="49:78" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/exception/ExceptionLevel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/RetPacketImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://F:/0322JDK8/src.zip!/java/util/Set.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="127" column="16" selection-start-line="127" selection-start-column="16" selection-end-line="127" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2431,13 +2278,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="39" column="19" selection-start-line="39" selection-start-column="19" selection-end-line="39" selection-end-column="19" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/Readme.RM">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -2481,11 +2321,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#7643#7644#0" expanded="false" />
-            <element signature="e#7696#7697#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2493,9 +2328,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="22" column="31" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2527,27 +2359,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/log4j.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/ServerMonitor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="25" column="1" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7652474">
-          <caret line="111" column="17" selection-start-line="107" selection-start-column="4" selection-end-line="111" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2582,7 +2397,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2590,10 +2404,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="89" column="38" selection-start-line="89" selection-start-column="38" selection-end-line="89" selection-end-column="38" />
-          <folding>
-            <element signature="e#2471#2472#0" expanded="false" />
-            <element signature="e#2516#2517#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2601,12 +2411,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
-          <folding>
-            <element signature="e#169#170#0" expanded="false" />
-            <element signature="e#212#213#0" expanded="false" />
-            <element signature="e#262#263#0" expanded="false" />
-            <element signature="e#306#307#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2614,7 +2418,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2622,7 +2425,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2630,16 +2432,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
-          <folding>
-            <element signature="e#304#305#0" expanded="false" />
-            <element signature="e#327#328#0" expanded="false" />
-            <element signature="e#460#461#0" expanded="false" />
-            <element signature="e#494#495#0" expanded="false" />
-            <element signature="e#797#798#0" expanded="false" />
-            <element signature="e#834#835#0" expanded="false" />
-            <element signature="e#864#865#0" expanded="false" />
-            <element signature="e#894#895#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2661,10 +2453,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="303" column="19" selection-start-line="303" selection-start-column="19" selection-end-line="303" selection-end-column="19" />
-          <folding>
-            <element signature="e#9211#9212#0" expanded="true" />
-            <element signature="e#9245#9246#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2672,7 +2460,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="155" column="9" selection-start-line="155" selection-start-column="9" selection-end-line="155" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2680,7 +2467,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="63" column="27" selection-start-line="63" selection-start-column="27" selection-end-line="63" selection-end-column="27" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#614#615#0" expanded="false" />
+            <element signature="e#656#657#0" expanded="false" />
+            <element signature="e#687#688#0" expanded="false" />
+            <element signature="e#730#731#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2688,7 +2481,56 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="105" column="13" selection-start-line="105" selection-start-column="13" selection-end-line="105" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="e#0#54151#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#6252#6253#0" expanded="false" />
+            <element signature="e#6320#6321#0" expanded="false" />
+            <element signature="e#10189#10190#0" expanded="false" />
+            <element signature="e#10216#10217#0" expanded="false" />
+            <element signature="e#10398#10399#0" expanded="false" />
+            <element signature="e#10430#10431#0" expanded="false" />
+            <element signature="e#10907#10908#0" expanded="false" />
+            <element signature="e#10945#10946#0" expanded="false" />
+            <element signature="e#13541#13542#0" expanded="false" />
+            <element signature="e#13596#13597#0" expanded="false" />
+            <element signature="e#15414#15415#0" expanded="false" />
+            <element signature="e#15459#15460#0" expanded="false" />
+            <element signature="e#24549#24550#0" expanded="false" />
+            <element signature="e#24603#24604#0" expanded="false" />
+            <element signature="e#30347#30348#0" expanded="false" />
+            <element signature="e#30384#30385#0" expanded="false" />
+            <element signature="e#30684#30685#0" expanded="false" />
+            <element signature="e#30716#30717#0" expanded="false" />
+            <element signature="e#31041#31042#0" expanded="false" />
+            <element signature="e#31086#31087#0" expanded="false" />
+            <element signature="e#33262#33263#0" expanded="false" />
+            <element signature="e#33304#33305#0" expanded="false" />
+            <element signature="e#33338#33339#0" expanded="false" />
+            <element signature="e#33375#33376#0" expanded="false" />
+            <element signature="e#33413#33414#0" expanded="false" />
+            <element signature="e#33454#33455#0" expanded="false" />
+            <element signature="e#38943#38944#0" expanded="false" />
+            <element signature="e#38994#38995#0" expanded="false" />
+            <element signature="e#39436#39437#0" expanded="false" />
+            <element signature="e#39481#39482#0" expanded="false" />
+            <element signature="e#39886#39887#0" expanded="false" />
+            <element signature="e#39960#39961#0" expanded="false" />
+            <element signature="e#40600#40601#0" expanded="false" />
+            <element signature="e#40658#40659#0" expanded="false" />
+            <element signature="e#42227#42228#0" expanded="false" />
+            <element signature="e#42280#42281#0" expanded="false" />
+            <element signature="e#42326#42327#0" expanded="false" />
+            <element signature="e#42383#42384#0" expanded="false" />
+            <element signature="e#44775#44776#0" expanded="false" />
+            <element signature="e#44842#44843#0" expanded="false" />
+            <element signature="e#46390#46391#0" expanded="false" />
+            <element signature="e#46455#46456#0" expanded="false" />
+            <element signature="e#51499#51500#0" expanded="false" />
+            <element signature="e#51557#51558#0" expanded="false" />
+            <element signature="e#51597#51598#0" expanded="false" />
+            <element signature="e#51690#51691#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2696,7 +2538,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="260" column="14" selection-start-line="260" selection-start-column="14" selection-end-line="260" selection-end-column="14" />
-          <folding />
+          <folding>
+            <element signature="e#0#33182#0" expanded="false" />
+            <element signature="e#33104#33105#0" expanded="false" />
+            <element signature="e#33178#33179#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2705,24 +2551,22 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="377" column="11" selection-start-line="377" selection-start-column="11" selection-end-line="377" selection-end-column="11" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3245#3246#0" expanded="true" />
-            <element signature="e#3300#3301#0" expanded="true" />
-            <element signature="e#3388#3389#0" expanded="true" />
-            <element signature="e#3443#3444#0" expanded="true" />
-            <element signature="e#3571#3572#0" expanded="true" />
-            <element signature="e#3626#3627#0" expanded="true" />
-            <element signature="e#12097#12108#0" expanded="true" />
-            <element signature="e#12268#12269#0" expanded="true" />
-            <element signature="e#12306#12307#0" expanded="true" />
-            <element signature="e#12345#12346#0" expanded="true" />
-            <element signature="e#12395#12396#0" expanded="true" />
-            <element signature="e#12783#15307#0" expanded="true" />
-            <element signature="e#15306#15307#0" expanded="true" />
-            <element signature="e#15471#15472#0" expanded="true" />
-            <element signature="e#15530#15531#0" expanded="true" />
-            <element signature="e#15668#17115#0" expanded="true" />
-            <element signature="e#17114#17115#0" expanded="true" />
+            <element signature="e#10689#10690#0" expanded="false" />
+            <element signature="e#10723#10724#0" expanded="false" />
+            <element signature="e#10765#10766#0" expanded="false" />
+            <element signature="e#10803#10804#0" expanded="false" />
+            <element signature="e#10844#10845#0" expanded="false" />
+            <element signature="e#10883#10884#0" expanded="false" />
+            <element signature="e#10937#10938#0" expanded="false" />
+            <element signature="e#10985#10986#0" expanded="false" />
+            <element signature="e#11022#11023#0" expanded="false" />
+            <element signature="e#11059#11060#0" expanded="false" />
+            <element signature="e#11107#11108#0" expanded="false" />
+            <element signature="e#11151#11152#0" expanded="false" />
+            <element signature="e#11188#11189#0" expanded="false" />
+            <element signature="e#11228#11229#0" expanded="false" />
+            <element signature="e#11279#11280#0" expanded="false" />
+            <element signature="e#11329#11330#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2731,7 +2575,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="482" column="18" selection-start-line="482" selection-start-column="18" selection-end-line="482" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2739,13 +2582,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13123845">
           <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1049#1050#0" expanded="false" />
-            <element signature="e#1082#1083#0" expanded="false" />
-            <element signature="e#1108#1109#0" expanded="false" />
-            <element signature="e#1137#1138#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2754,32 +2590,197 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="187" column="17" selection-start-line="187" selection-start-column="17" selection-end-line="187" selection-end-column="17" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3468#3469#0" expanded="true" />
-            <element signature="e#3508#3509#0" expanded="true" />
-            <element signature="e#3562#3563#0" expanded="true" />
-            <element signature="e#3612#3613#0" expanded="true" />
-            <element signature="e#3651#3652#0" expanded="true" />
-            <element signature="e#3688#3689#0" expanded="true" />
-            <element signature="e#3738#3739#0" expanded="true" />
-            <element signature="e#3782#3783#0" expanded="true" />
-            <element signature="e#4352#4368#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#3468#3469#0" expanded="false" />
+            <element signature="e#3508#3509#0" expanded="false" />
+            <element signature="e#3562#3563#0" expanded="false" />
+            <element signature="e#3612#3613#0" expanded="false" />
+            <element signature="e#3651#3652#0" expanded="false" />
+            <element signature="e#3688#3689#0" expanded="false" />
+            <element signature="e#3738#3739#0" expanded="false" />
+            <element signature="e#3782#3783#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/KeyParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="53" column="54" selection-start-line="53" selection-start-column="54" selection-end-line="53" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.961538">
+          <caret line="89" column="30" selection-start-line="89" selection-start-column="30" selection-end-line="89" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/googlecode/xmemcached/xmemcached/2.0.0/xmemcached-2.0.0.jar!/net/rubyeye/xmemcached/transcoders/SerializingTranscoder.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-19.428572">
+          <caret line="49" column="11" selection-start-line="49" selection-start-column="11" selection-end-line="49" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/Session.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="56" selection-start-line="14" selection-start-column="56" selection-end-line="14" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/SessionManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="6" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/googlecode/xmemcached/xmemcached/2.0.0/xmemcached-2.0.0.jar!/net/rubyeye/xmemcached/GetsResponse.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/DataCenter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="141" column="71" selection-start-line="141" selection-start-column="71" selection-end-line="141" selection-end-column="71" />
+          <caret line="182" column="46" selection-start-line="182" selection-start-column="46" selection-end-line="182" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/KeyParser.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/EhCacheHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.32196453">
-          <caret line="28" column="60" selection-start-line="28" selection-start-column="60" selection-end-line="28" selection-end-column="60" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="60" selection-start-line="30" selection-start-column="60" selection-end-line="30" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenterImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="101" column="24" selection-start-line="101" selection-start-column="24" selection-end-line="101" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/googlecode/xmemcached/xmemcached/2.0.0/xmemcached-2.0.0.jar!/net/rubyeye/xmemcached/XMemcachedClient.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="80" column="13" selection-start-line="80" selection-start-column="13" selection-end-line="80" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/googlecode/xmemcached/xmemcached/2.0.0/xmemcached-2.0.0.jar!/net/rubyeye/xmemcached/MemcachedClient.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/XMemCached.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="250" column="13" selection-start-line="250" selection-start-column="13" selection-end-line="250" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1582#1583#0" expanded="false" />
+            <element signature="e#1617#1618#0" expanded="false" />
+            <element signature="e#1679#1680#0" expanded="false" />
+            <element signature="e#1730#1731#0" expanded="false" />
+            <element signature="e#1793#1794#0" expanded="false" />
+            <element signature="e#1844#1845#0" expanded="false" />
+            <element signature="e#1889#1890#0" expanded="false" />
+            <element signature="e#1922#1923#0" expanded="false" />
+            <element signature="e#1970#1971#0" expanded="false" />
+            <element signature="e#2007#2008#0" expanded="false" />
+            <element signature="e#2057#2058#0" expanded="false" />
+            <element signature="e#2092#2093#0" expanded="false" />
+            <element signature="e#2140#2141#0" expanded="false" />
+            <element signature="e#2177#2178#0" expanded="false" />
+            <element signature="e#2225#2226#0" expanded="false" />
+            <element signature="e#2262#2263#0" expanded="false" />
+            <element signature="e#4019#4020#0" expanded="false" />
+            <element signature="e#4098#4099#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/IRemoteCacheClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="19" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/MemCachedHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="36" selection-start-line="36" selection-start-column="36" selection-end-line="36" selection-end-column="36" />
+          <folding>
+            <element signature="e#2366#2367#0" expanded="true" />
+            <element signature="e#2419#2420#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/mmserver.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/log4j.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/ehcache.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="49.03846">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/Readme.RM">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/MuchToConsiderate">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.022941971">
+          <caret line="1" column="18" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
           <folding />
         </state>
       </provider>

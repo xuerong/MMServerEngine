@@ -11,6 +11,8 @@ import java.util.Date;
  * 如，访问种类，访问url，访问port，访问者ip等信息
  *
  * 每一个Request都包含一个Session，在Protocol解码中需要解出sessionId和opcode，由系统创建session
+ *
+ * TODO session放缓存的时候是不是需要把它作为CacheEntity的object，而不是继承自它
  */
 
 public final class Session extends CacheEntity{
