@@ -12,4 +12,6 @@ import java.util.Map;
 public interface NetPacket {
     public Map<String,Object> getHeaders();
     public byte[] getData();
+    public void put(String key,Object value);
+    public Object get(String key);
 }

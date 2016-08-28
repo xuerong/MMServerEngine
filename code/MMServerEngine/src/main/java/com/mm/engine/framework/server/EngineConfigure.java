@@ -7,6 +7,7 @@ import com.mm.engine.framework.entrance.code.net.http.HttpEncoder;
 import com.mm.engine.framework.data.persistence.dao.DataAccessor;
 import com.mm.engine.framework.data.persistence.ds.DataSourceFactory;
 import com.mm.engine.framework.entrance.http.EntranceJetty;
+import com.mm.engine.framework.entrance.socket.EntranceNetty;
 import com.mm.engine.framework.tool.helper.ConfigHelper;
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,6 +40,7 @@ public final class EngineConfigure {
         defaultRequestController="DefaultRequestController";
 
         entranceList.add(new EntranceJetty("first",8080));
+        entranceList.add(new EntranceNetty("netty",8000));
     }
     private Class<?> getBeanFromConfigure(String beanType){
         String classPath= ConfigHelper.getString(beanType);

@@ -77,7 +77,7 @@ public class XMemCached implements IRemoteCacheClient {
 	public void setTranscoder(Transcoder<Object> transcoder) {
 		this.transcoder = transcoder;
 	}
-
+	@Override
 	public void init() {
 		if (mcc != null)
 			return;

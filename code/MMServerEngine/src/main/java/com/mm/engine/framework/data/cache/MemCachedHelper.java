@@ -16,12 +16,13 @@ public class MemCachedHelper {
     private static final IRemoteCacheClient remoteCacheClient;
     static {
         XMemCached xMemCached = new XMemCached();
-        xMemCached.setServerlist("");
+        xMemCached.setServerlist("localhost:11211");
         xMemCached.setOpTimeout(5000);
         xMemCached.setReadBufSize(65535);
 //        xMemCached.setTranscoder();
 
         remoteCacheClient = xMemCached;
+        remoteCacheClient.init();
     }
 
     public static CacheEntity get(String key){

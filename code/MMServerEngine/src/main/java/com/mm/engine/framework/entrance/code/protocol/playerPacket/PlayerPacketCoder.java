@@ -20,7 +20,7 @@ public final class PlayerPacketCoder implements ProtocolDecode,ProtocolEncode{
     private static final Logger log = LoggerFactory.getLogger(PlayerPacketCoder.class);
 
     private static final String opcodeKey="opcode";
-    private static final String sessionKey="mmsession";
+
     @Override
     public Packet decode(NetPacket netPacket) {
         Map<String,Object> headers=netPacket.getHeaders();
@@ -37,7 +37,7 @@ public final class PlayerPacketCoder implements ProtocolDecode,ProtocolEncode{
         int opcode=Integer.parseInt(opcodeStr);
         // 获取sessionId
         String sessionId=null;
-        Object sessionIdObj = headers.get(sessionKey);
+        Object sessionIdObj = headers.get(Session.sessionKey);
         if(sessionIdObj!=null && sessionIdObj instanceof String){
             String sessionIdStr=(String)sessionIdObj;
             if(!StringUtils.isEmpty(sessionIdStr)){
@@ -52,7 +52,7 @@ public final class PlayerPacketCoder implements ProtocolDecode,ProtocolEncode{
         Map<String,Object> headers=new HashMap<>();
         headers.put(opcodeKey,""+packet.getOpcode());
         if(packet.keepSession()){
-            headers.put(sessionKey,session.getSessionId());
+            headers.put(Session.sessionKey,session.getSessionId());
         }
         Builder<?> builder=(Builder<?>)packet.getRetData();
         byte[] reData=builder.build().toByteArray();

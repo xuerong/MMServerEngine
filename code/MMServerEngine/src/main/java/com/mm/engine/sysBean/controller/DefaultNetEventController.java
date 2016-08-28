@@ -3,6 +3,7 @@ package com.mm.engine.sysBean.controller;
 import com.mm.engine.framework.control.netEvent.NetEventManager;
 import com.mm.engine.framework.entrance.code.protocol.Packet;
 import com.mm.engine.framework.entrance.code.protocol.RetPacket;
+import com.mm.engine.framework.entrance.code.protocol.netEventPacket.NetEventCoder;
 import com.mm.engine.framework.entrance.code.protocol.playerPacket.PlayerPacketCoder;
 import com.mm.engine.framework.control.netEvent.NetEventListenerHandler;
 import com.mm.engine.framework.control.netEvent.NetEventData;
@@ -15,8 +16,8 @@ import com.mm.engine.framework.entrance.EntranceController;
  */
 @Controller(
         name="DefaultNetEventController",
-        protocolEncode = PlayerPacketCoder.class,
-        protocolDecode = PlayerPacketCoder.class
+        protocolEncode = NetEventCoder.class,
+        protocolDecode = NetEventCoder.class
 )
 public class DefaultNetEventController implements EntranceController{
 
@@ -30,6 +31,7 @@ public class DefaultNetEventController implements EntranceController{
             return null;
         }
         NetEventData netEventData = new NetEventData(packet.getOpcode());
+        netEventData.setParam(packet.getValue());
         RetPacket rePacket = netEventHandler.handle(netEventData);
         return rePacket;
     }

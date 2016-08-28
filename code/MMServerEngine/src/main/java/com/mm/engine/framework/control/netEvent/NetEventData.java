@@ -1,9 +1,11 @@
 package com.mm.engine.framework.control.netEvent;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2015/12/30.
  */
-public class NetEventData {
+public class NetEventData implements Serializable{
     private int netEvent;
     private Object param;
 

@@ -16,6 +16,7 @@ import java.util.Date;
  */
 
 public final class Session extends CacheEntity{
+    public static final String sessionKey="mmsession";
     private NetType netType;
     private String url;
     // sessionid的组成包括两部分，一是前缀，用来记录和登陆相关的一些信息，二是cacheEntity的id

@@ -1,11 +1,9 @@
 package com.mm.engine.sysBean;
 
+import com.mm.engine.framework.control.annotation.*;
+import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.entrance.code.protocol.RetPacket;
 import com.mm.engine.framework.entrance.code.protocol.RetPacketImpl;
-import com.mm.engine.framework.control.annotation.EventListener;
-import com.mm.engine.framework.control.annotation.Request;
-import com.mm.engine.framework.control.annotation.Updatable;
-import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.event.EventManager;
 import com.mm.engine.framework.control.event.EventData;
 import com.mm.engine.framework.data.entity.session.Session;
@@ -67,6 +65,11 @@ public class TestService {
     @EventListener(event = 200)
     public void eventListener3(EventData eventData){
         System.out.println("eventListener2 eventData:"+eventData.getEvent());
+    }
+    @NetEventListener(netEvent = 222)
+    public RetPacket testNetEvent1(NetEventData netEventData){
+        System.out.println("netEventListener done:"+netEventData.getNetEvent());
+        return new RetPacketImpl(netEventData.getNetEvent(),null);
     }
     @Updatable(isAsynchronous = false)
     public void testUpdateSync1(int interval){

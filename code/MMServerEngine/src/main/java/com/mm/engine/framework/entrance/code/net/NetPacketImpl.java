@@ -17,12 +17,22 @@ public class NetPacketImpl implements NetPacket {
         this.headers=null;
         this.data=data;
     }
+    @Override
     public void put(String key,Object value){
         if(headers==null){
             headers=new HashMap<String,Object>();
         }
         headers.put(key,value);
     }
+
+    @Override
+    public Object get(String key) {
+        if(headers == null){
+            return null;
+        }
+        return headers.get(key);
+    }
+
     @Override
     public Map<String,Object> getHeaders() {
         return headers;

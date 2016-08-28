@@ -1,6 +1,7 @@
 package com.mm.engine.framework.control.netEvent;
 
 import com.mm.engine.framework.control.ServiceHelper;
+import com.mm.engine.framework.entrance.client.ServerClient;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -23,9 +24,6 @@ public class NetEventManager{
 
 
     private static final String SERVERSKEY = "servers";
-    private static final Map<String,ServerClient> serverClientMap = new HashMap<>();
-    // 这里可以考虑用多个服务器用作主服务器
-    private static final ServerClient mainServer;
 
     private static Map<Integer,NetEventListenerHandler> handlerMap=new HashMap<Integer,NetEventListenerHandler>();
 
@@ -38,10 +36,6 @@ public class NetEventManager{
                 }
             });
     static {
-        // 初始化所有服务器
-        String serversStr = Server.getEngineConfigure().getString(SERVERSKEY);
-        mainServer = new ServerClient();
-
 
         TIntObjectHashMap<Class<?>> netEventHandlerClassMap = ServiceHelper.getNetEventListenerHandlerClassMap();
         netEventHandlerClassMap.forEachEntry(new TIntObjectProcedure<Class<?>>(){

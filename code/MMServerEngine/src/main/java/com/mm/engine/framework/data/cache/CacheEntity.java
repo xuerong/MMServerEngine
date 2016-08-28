@@ -1,12 +1,14 @@
 package com.mm.engine.framework.data.cache;
 
+import java.io.Serializable;
+
 /**
  * Created by a on 2016/8/12.
  *
  * 对需要缓存的数据进行一下封装，然后缓存CacheEntity
  * 这里面可以记录一些特殊的点
  */
-public class CacheEntity {
+public class CacheEntity implements Serializable{
     private Object entity;
     private CacheEntityState state;
     private long casUnique;

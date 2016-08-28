@@ -7,6 +7,7 @@ import com.mm.engine.framework.entrance.code.protocol.ProtocolEncode;
 import com.mm.engine.framework.entrance.code.protocol.RetPacket;
 import com.mm.engine.framework.data.entity.session.Session;
 import com.mm.engine.framework.data.entity.session.SessionManager;
+import com.mm.engine.framework.server.SysConstantDefine;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -51,7 +52,7 @@ public final class ControllerDispatcher {
      * 返回netpacket
      * **/
     public static NetPacket handle(NetType netType,NetPacket netPacket ,String url,String ip) throws java.lang.Exception {
-        ControllerBean controllerBean = getControllerBean((String)netPacket.getHeaders().get("controller"));
+        ControllerBean controllerBean = getControllerBean((String)netPacket.get(SysConstantDefine.controller));
         // 获取controller，并根据controller获取相应的编解码器
         ProtocolDecode protocolDecode = controllerBean.getProtocolDecode();
         Packet packet = protocolDecode.decode(netPacket);

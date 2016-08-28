@@ -54,5 +54,6 @@
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:9.3.10.v20160621" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:9.3.10.v20160621" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.xmemcached:xmemcached:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-all:4.1.4.Final" level="project" />
   </component>
 </module>
