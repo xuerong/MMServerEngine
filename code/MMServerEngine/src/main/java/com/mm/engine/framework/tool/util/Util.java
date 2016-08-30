@@ -6,6 +6,8 @@ import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.util.Calendar;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2015/11/16.
@@ -78,6 +80,25 @@ public final class Util {
             }
         }
         return null;
+    }
+    public static boolean isIP(String addr)
+    {
+        if(addr.length() < 7 || addr.length() > 15 || "".equals(addr))
+        {
+            return false;
+        }
+        /**
+         * 判断IP格式和范围
+         */
+        String rexp = "([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";
+
+        Pattern pat = Pattern.compile(rexp);
+
+        Matcher mat = pat.matcher(addr);
+
+        boolean ipAddress = mat.find();
+
+        return ipAddress;
     }
 
     /** 获取服务器的utc时间的long值  单位ms**/

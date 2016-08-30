@@ -1,30 +1,49 @@
 package com.mm.engine.framework.entrance.client.socket;
 
-import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.entrance.client.AbServerClient;
-import com.mm.engine.framework.entrance.code.net.NetPacket;
-import com.mm.engine.framework.entrance.code.net.NetPacketImpl;
-import com.mm.engine.framework.entrance.code.net.netty.NettyDeCoder;
-import com.mm.engine.framework.entrance.code.net.netty.NettyEnCoder;
-import com.mm.engine.framework.entrance.code.protocol.RetPacket;
-import com.mm.engine.framework.server.SysConstantDefine;
+import com.mm.engine.framework.entrance.code.net.netty.DefaultNettyDecoder;
+import com.mm.engine.framework.entrance.code.net.netty.DefaultNettyEncoder;
+import com.mm.engine.framework.entrance.socket.SocketPacket;
+import com.mm.engine.framework.exception.MMException;
+import com.mm.engine.framework.server.ServerType;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
+import java.net.ConnectException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by apple on 16-8-28.
  */
 public class NettyServerClient extends AbServerClient {
-    private Channel channel;
+    private static final Logger log = LoggerFactory.getLogger(NettyServerClient.class);
 
+    private static final int reconnectionInterval = 10000;
+
+    private LinkedBlockingQueue<Integer> idOut = new LinkedBlockingQueue<Integer>(); // 可以用的id，id池
+    private Map<Integer,SocketPacket> packetMap = new ConcurrentHashMap<>(); // 正在用的id
+    private AtomicInteger idCreator = new AtomicInteger(0); // 如果池中没有可用的，从这里获取
+
+    private Channel channel;
+    private volatile boolean running;
+    public NettyServerClient(int serverType,String host,int port){
+        this.serverType = serverType;
+        this.host = host;
+        this.port = port;
+        running = false;
+    }
     @Override
-    public void start() {
+    public void start() throws Exception{
+        final CountDownLatch latch = new CountDownLatch(1);
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -38,19 +57,33 @@ public class NettyServerClient extends AbServerClient {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(
-                                    new NettyEnCoder(),
-                                    new NettyDeCoder(),
+                                    new DefaultNettyEncoder(),
+                                    new DefaultNettyDecoder(),
                                     new NettyClientHandler()
                             );
                         }
                     });
-
+                    ChannelFuture f = null;
                     // Start the client.
-                    ChannelFuture f = b.connect(host, port).sync(); // (5)
-
-                    // Wait until the connection is closed.
+                    f = b.connect(host, port); // (5)
+                    while(true) {
+                        try {
+                            f.sync();
+                            break;
+                        } catch (Exception e) {
+                            if (e instanceof ConnectException) {
+                                log.warn("connect "+ ServerType.getServerTypeName(serverType) +" fail ," +
+                                        "reconnect after "+reconnectionInterval/1000+" s");
+                                Thread.sleep(reconnectionInterval);
+                                continue;
+                            }
+                        }
+                    }
+                    channel = f.channel();
+                    latch.countDown();
                     f.channel().closeFuture().sync();
-                }catch (InterruptedException e){
+
+                }catch (Exception e){
                     e.printStackTrace();
                 }finally {
                     workerGroup.shutdownGracefully();
@@ -58,30 +91,29 @@ public class NettyServerClient extends AbServerClient {
             }
         };
         Thread thread = new Thread(runnable);
+        thread.setName("NettyServerClient");
         thread.start();
+        latch.await();
+
+        running = true;
     }
 
     @Override
-    public RetPacket send(Object msg, String controller) {
+    public Object send(Object msg) { // TODO 要不要考虑用多个包整合成一个包，来降低网络访问量
         try{
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutputStream out = new ObjectOutputStream(bos);
-            out.writeObject(msg);
-            out.flush();
-            out.close();
-            byte[] nb = bos.toByteArray();
-
-            NetPacket netPacket = new NetPacketImpl(nb);
-            netPacket.put(SysConstantDefine.controller,controller);
-            final ChannelFuture f = channel.writeAndFlush(netPacket); // (3)
-
-            f.addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture future) {
-//                    assert f == future;
-//                    ctx.close();
-                }
-            }); // (4)
+            SocketPacket socketPacket = new SocketPacket();
+            Integer id = idOut.poll();
+            if(id == null){
+                id = idCreator.incrementAndGet();
+            }
+            socketPacket.setId(id);
+            socketPacket.setData(msg);
+            CountDownLatch latch = new CountDownLatch(1);
+            socketPacket.setLatch(latch);
+            packetMap.put(id,socketPacket);
+            final ChannelFuture f = channel.writeAndFlush(socketPacket); // (3)
+            latch.await();
+            return socketPacket.getReData();
         }catch (Throwable e){
             e.printStackTrace();
         }
@@ -89,19 +121,25 @@ public class NettyServerClient extends AbServerClient {
     }
 
     @Override
-    public void sendWithoutReply(Object msg, String controller) {
-
+    public void sendWithoutReply(Object msg) {
+        try{
+            final ChannelFuture f = channel.writeAndFlush(msg); // (3)
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
     }
 
     class NettyClientHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) {
-            NetPacket netPacket = (NetPacket) msg; // (1)
-            try {
-                final ChannelFuture f = ctx.writeAndFlush(netPacket); // (3)
-//                ctx.close();
-            } finally {
-//                m.release();
+            if(msg instanceof SocketPacket){ // 说明是某一个需要返回的值
+                SocketPacket socketPacket = (SocketPacket)msg;
+                SocketPacket s = packetMap.remove(socketPacket.getId());
+                s.setReData(socketPacket.getData());
+                s.getLatch().countDown();
+                idOut.offer(s.getId());
+            }else {
+                throw new MMException("NettyServerClient receive data is not SocketPacket,throw away it");
             }
         }
 

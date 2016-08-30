@@ -2,7 +2,6 @@ package com.mm.engine.framework.entrance.websocket;
 
 import com.mm.engine.framework.entrance.code.net.NetPacket;
 import com.mm.engine.framework.entrance.code.net.NetPacketImpl;
-import com.mm.engine.framework.entrance.ControllerDispatcher;
 import com.mm.engine.framework.entrance.NetType;
 import com.mm.engine.framework.tool.util.Util;
 import org.apache.commons.lang3.ArrayUtils;
@@ -62,7 +61,7 @@ public class EntranceEndpoint {
                 // the socket object is hidden in WsSession,client IP is not exposed via JSR-356
                 // http://stackoverflow.com/questions/22880055/jsr-356-websockets-with-tomcat-how-to-limit-connections-within-single-ip-addre
                 String ip = Util.getIp(session);
-                ControllerDispatcher.handle(NetType.WebSocket,netPacket,url,ip);
+//                ControllerDispatcher.handle(NetType.WebSocket,netPacket,url,ip);
             }else{
                 if(session.getUserProperties().containsKey("messageBefore")) {
                     byte[] messageBefore = (byte[])session.getUserProperties().get("messageBefore");

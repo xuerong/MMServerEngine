@@ -1,7 +1,6 @@
 package com.mm.engine.framework.entrance.http;
 
 import com.mm.engine.framework.entrance.Entrance;
-import com.mm.engine.framework.entrance.NetFlowFire;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -28,13 +27,16 @@ public class EntranceJetty extends Entrance{
             @Override
             public void handle(String target, Request baseRequest,
                                HttpServletRequest request, HttpServletResponse response) throws IOException{
-                NetFlowFire.fireHttp(request,response,"EntranceJetty");
+
             }
         };
 
         server = new Server(this.port);
         server.setHandler(entranceHandler);
         server.start();
+    }
+    private void fire(){
+
     }
     @Override
     public void stop() throws Exception{

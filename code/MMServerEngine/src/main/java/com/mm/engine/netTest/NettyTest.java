@@ -1,6 +1,7 @@
 package com.mm.engine.netTest;
 
-import com.mm.engine.framework.entrance.client.socket.NettyClient;
+        import com.mm.engine.framework.entrance.client.socket.NettyServerClient;
+        import com.mm.engine.framework.server.ServerType;
 
 /**
  * Created by apple on 16-8-27.
@@ -8,7 +9,8 @@ import com.mm.engine.framework.entrance.client.socket.NettyClient;
 public class NettyTest {
 
     public static void main(String[] args) throws Throwable{
-        NettyClient nettyClient = new NettyClient();
-//        nettyClient.start();
+
+        NettyServerClient nettyServerClient = new NettyServerClient(ServerType.MAIN_SERVER,"localhost",8000);
+        nettyServerClient.start();
     }
 }

@@ -5,6 +5,7 @@ import com.mm.engine.framework.entrance.code.net.NetPacket;
 import com.mm.engine.framework.entrance.code.net.NetPacketImpl;
 import com.mm.engine.framework.entrance.code.protocol.*;
 import com.mm.engine.framework.data.entity.session.Session;
+import com.mm.engine.framework.server.SysConstantDefine;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +20,10 @@ import java.util.Map;
 public final class PlayerPacketCoder implements ProtocolDecode,ProtocolEncode{
     private static final Logger log = LoggerFactory.getLogger(PlayerPacketCoder.class);
 
-    private static final String opcodeKey="opcode";
-
     @Override
     public Packet decode(NetPacket netPacket) {
         Map<String,Object> headers=netPacket.getHeaders();
-        Object opcodeObj = headers.get(opcodeKey);
+        Object opcodeObj = headers.get(SysConstantDefine.opcodeKey);
         if(opcodeObj==null){
             log.warn("opcode is not exist when decode in : PlayerPacketCoder");
             return null;
@@ -50,7 +49,7 @@ public final class PlayerPacketCoder implements ProtocolDecode,ProtocolEncode{
     @Override
     public NetPacket encode(RetPacket packet,Session session) {
         Map<String,Object> headers=new HashMap<>();
-        headers.put(opcodeKey,""+packet.getOpcode());
+        headers.put(SysConstantDefine.opcodeKey,""+packet.getOpcode());
         if(packet.keepSession()){
             headers.put(Session.sessionKey,session.getSessionId());
         }

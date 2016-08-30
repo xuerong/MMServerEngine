@@ -7,8 +7,8 @@ import com.mm.engine.framework.entrance.code.protocol.RetPacket;
  * 本节点与其它节点的链接对象
  */
 public interface ServerClient {
-    public void start();
-    public RetPacket send(Object msg,String controller);
-    public void sendWithoutReply(Object msg,String controller);
+    public void start() throws Exception;
+    public Object send(Object msg);
+    public void sendWithoutReply(Object msg);
 
 }

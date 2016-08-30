@@ -1,8 +1,5 @@
 package com.mm.engine.framework.entrance.code.net.http;
 
-import com.mm.engine.framework.entrance.code.net.NetDecode;
-import com.mm.engine.framework.entrance.code.net.NetPacket;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -16,6 +13,6 @@ import java.io.IOException;
  *
  * 用户data
  */
-public interface HttpDecoder extends NetDecode{
-    public NetPacket decode(HttpServletRequest request) throws IOException;
+public interface HttpDecoder{
+    public byte[] decode(HttpServletRequest request) throws IOException;
 }

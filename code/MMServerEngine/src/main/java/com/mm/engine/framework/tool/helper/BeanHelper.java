@@ -2,7 +2,6 @@ package com.mm.engine.framework.tool.helper;
 
 import com.mm.engine.framework.control.ServiceHelper;
 import com.mm.engine.framework.control.aop.AopHelper;
-import com.mm.engine.framework.entrance.ControllerHelper;
 import com.mm.engine.framework.server.EngineConfigure;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.sysBean.MyProxyTarget;
@@ -45,13 +44,6 @@ public final class BeanHelper {
             Map<Class<?>, Class<?>> serviceClassMap = ServiceHelper.getServiceClassList();
             for (Map.Entry<Class<?>, Class<?>> entry : serviceClassMap.entrySet()) {
                 serviceBeans.put(entry.getValue(), newInstance(entry.getKey(), entry.getValue()));
-            }
-            // controller
-            Map<String, ControllerHelper.EntranceControllerClass> requestEntranceClassMap = ControllerHelper.getEntranceControllerClassMap();
-            for (ControllerHelper.EntranceControllerClass cls : requestEntranceClassMap.values()) {
-                frameBeans.put(cls.getEntranceClass(), newInstance(cls.getEntranceClass()));
-                frameBeans.put(cls.getProtocolDecodeClass(), newInstance(cls.getProtocolDecodeClass()));
-                frameBeans.put(cls.getProtocolEncodeClass(), newInstance(cls.getProtocolEncodeClass()));
             }
             // aop
             frameBeans.put(MyProxyTarget.class, newInstance(MyProxyTarget.class));

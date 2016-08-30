@@ -23,6 +23,9 @@ public final class Server {
     public static void init(EngineConfigure configure){
         Server.configure=configure;
     }
+    public static void init(String serverTypeStr){
+        init(new EngineConfigure(serverTypeStr));
+    }
     public static void init(){
         init(new EngineConfigure());
     }
@@ -81,7 +84,8 @@ public final class Server {
      * @param args
      */
     public static void main(String[] args){
-        Server.init();
+        String serverTypeStr = args[0];
+        Server.init(serverTypeStr);
         Server.start();
     }
 }

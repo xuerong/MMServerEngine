@@ -1,15 +1,6 @@
 package com.mm.engine.framework.entrance.http;
 
-import com.mm.engine.framework.entrance.NetFlowFire;
-import com.mm.engine.framework.entrance.code.net.NetPacket;
-import com.mm.engine.framework.entrance.code.net.http.HttpDecoder;
-import com.mm.engine.framework.entrance.code.net.http.HttpEncoder;
-import com.mm.engine.framework.entrance.code.net.http.HttpPacket;
-import com.mm.engine.framework.entrance.ControllerDispatcher;
-import com.mm.engine.framework.entrance.NetType;
 import com.mm.engine.framework.server.Server;
-import com.mm.engine.framework.tool.helper.BeanHelper;
-import com.mm.engine.framework.tool.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2015/11/13.
@@ -41,7 +31,7 @@ public class EntranceServlet extends HttpServlet {
     }
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        NetFlowFire.fireHttp(request,response,"EntranceServlet");
+//        NetFlowFire.fireHttp(request,response,"EntranceServlet");
     }
     @Override
     public void destroy() {

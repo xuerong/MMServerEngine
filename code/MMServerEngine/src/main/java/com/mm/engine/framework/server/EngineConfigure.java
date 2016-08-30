@@ -7,7 +7,7 @@ import com.mm.engine.framework.entrance.code.net.http.HttpEncoder;
 import com.mm.engine.framework.data.persistence.dao.DataAccessor;
 import com.mm.engine.framework.data.persistence.ds.DataSourceFactory;
 import com.mm.engine.framework.entrance.http.EntranceJetty;
-import com.mm.engine.framework.entrance.socket.EntranceNetty;
+import com.mm.engine.framework.entrance.socket.NetEventNettyEntrance;
 import com.mm.engine.framework.tool.helper.ConfigHelper;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,11 +25,19 @@ public final class EngineConfigure {
     private int updateCycle=1000;
     private int sessionCycle = 1000;
     private int sessionSurvivalTime = 1000*60*10;
+    private int netEventPort = 8001;
 
     // 系统开启的网络入口
     private final List<Entrance> entranceList = new ArrayList<Entrance>();
-
     public EngineConfigure(){
+        this(null);
+    }
+    public EngineConfigure(String serverTypeStr){
+        if(serverTypeStr!=null){
+            ServerType.setServerType(serverTypeStr);
+        }else{
+            // 从配置文件中取server类型，如果没有，就是默认类型nodeServer
+        }
         // 初始化配置：从配置文件中读取
         configureBeans.put(HttpEncoder.class,getBeanFromConfigure("httpEncoder"));
         configureBeans.put(HttpDecoder.class,getBeanFromConfigure("httpDecoder"));
@@ -40,7 +48,7 @@ public final class EngineConfigure {
         defaultRequestController="DefaultRequestController";
 
         entranceList.add(new EntranceJetty("first",8080));
-        entranceList.add(new EntranceNetty("netty",8000));
+        entranceList.add(new NetEventNettyEntrance("NetEventNettyEntrance",8000));
     }
     private Class<?> getBeanFromConfigure(String beanType){
         String classPath= ConfigHelper.getString(beanType);
@@ -87,5 +95,11 @@ public final class EngineConfigure {
     }
     public boolean isAsyncServer(){ // 是否是异步服务器
         return true;
+    }
+    public int getNetEventPort(){
+        return netEventPort;
+    }
+    public String getMainServerNetEventAdd(){
+        return "localhost:8000";
     }
 }

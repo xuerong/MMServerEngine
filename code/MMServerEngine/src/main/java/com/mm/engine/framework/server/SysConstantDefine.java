@@ -6,6 +6,7 @@ package com.mm.engine.framework.server;
 public final class SysConstantDefine {
     // ------------------------------------一些key标记
     public static final String controller = "controller";
+    public static final String opcodeKey = "opcode";
     // -------------------------------------------NetEvent------------------------
     public static final int CACHEUPDATE = 1000; // 缓存更新
     public static final int LOCKKEYSANDCHECK = 1001; // 加锁并校验版本等
