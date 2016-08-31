@@ -67,9 +67,9 @@ public class TestService {
         System.out.println("eventListener2 eventData:"+eventData.getEvent());
     }
     @NetEventListener(netEvent = 222)
-    public RetPacket testNetEvent1(NetEventData netEventData){
+    public NetEventData testNetEvent1(NetEventData netEventData){
         System.out.println("netEventListener done:"+netEventData.getNetEvent());
-        return new RetPacketImpl(netEventData.getNetEvent(),null);
+        return new NetEventData(netEventData.getNetEvent(),null);
     }
     @Updatable(isAsynchronous = false)
     public void testUpdateSync1(int interval){

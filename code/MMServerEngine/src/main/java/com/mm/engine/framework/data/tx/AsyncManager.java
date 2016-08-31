@@ -149,7 +149,7 @@ public class AsyncManager {
     }
     /// 上面的四个函数，处理其他服务器发送过来的异步数据库请求
     @NetEventListener(netEvent = SysConstantDefine.ASYNCDATA)
-    public RetPacket receiveAsyncData(NetEventData eventData){
+    public NetEventData receiveAsyncData(NetEventData eventData){
         if(eventData.getParam() instanceof AsyncData){
             AsyncData asyncData = (AsyncData)eventData.getParam();
             doReceiveAsyncData(asyncData);
@@ -159,12 +159,12 @@ public class AsyncManager {
                 doReceiveAsyncData(asyncData);
             }
         }
-        return new RetPacketImpl(eventData.getNetEvent(),null);
+        return new NetEventData(eventData.getNetEvent(),null);
     }
 
     // 其他服务器发送来的，异步服务器有的对应list的对象和更新状态
     @NetEventListener(netEvent = SysConstantDefine.GETASYNCDATABELONGLISTKEY)
-    public RetPacket receiveRefreshDBList(NetEventData eventData){
+    public NetEventData receiveRefreshDBList(NetEventData eventData){
         String listKey = (String)eventData.getParam();
         // 查看并插入listKeys插入
         String classKey = KeyParser.getClassNameFromListKey(listKey);
@@ -188,7 +188,7 @@ public class AsyncManager {
                 }
             }
         }
-        return new RetPacketImpl(eventData.getNetEvent(),result);
+        return new NetEventData(eventData.getNetEvent(),result);
     }
     private void doReceiveAsyncData(AsyncData asyncData){
         if(asyncData.getOperType() == OperType.Insert || asyncData.getOperType() == OperType.Delete) {

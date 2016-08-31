@@ -312,7 +312,7 @@ public final class ServiceHelper {
                     throw new IllegalStateException("Method "+method.getName()+" Parameter Error");
                 }
                 // 检查返回值
-                if(method.getReturnType()!=RetPacket.class){
+                if(method.getReturnType()!=NetEventData.class){
                     throw new IllegalStateException("Method "+method.getName()+" ReturnType Error");
                 }
                 opMethods.put(op.netEvent(), method.getName());
@@ -325,9 +325,9 @@ public final class ServiceHelper {
             CtClass superCt = pool.get(NetEventListenerHandler.class.getName());  //需要实现RequestHandler接口
             ct.addInterface(superCt);
             //添加handler方法，在其中添上switch...case段
-            StringBuilder sb = new StringBuilder("public com.mm.engine.framework.entrance.code.protocol.RetPacket handle(" +
+            StringBuilder sb = new StringBuilder("public com.mm.engine.framework.control.netEvent.NetEventData handle(" +
                     "com.mm.engine.framework.control.netEvent.NetEventData netEventData) throws Exception{");
-            sb.append("com.mm.engine.framework.entrance.code.protocol.RetPacket rePacket=null;");
+            sb.append("com.mm.engine.framework.control.netEvent.NetEventData rePacket=null;");
             sb.append("int event = $1.getNetEvent();");//$1.getOpcode();");
             sb.append("switch (event) {");
             Iterator<Map.Entry<Integer,String>> ite = opMethods.entrySet().iterator();

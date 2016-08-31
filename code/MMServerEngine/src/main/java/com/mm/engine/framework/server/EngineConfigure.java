@@ -8,9 +8,12 @@ import com.mm.engine.framework.data.persistence.dao.DataAccessor;
 import com.mm.engine.framework.data.persistence.ds.DataSourceFactory;
 import com.mm.engine.framework.entrance.http.EntranceJetty;
 import com.mm.engine.framework.entrance.socket.NetEventNettyEntrance;
+import com.mm.engine.framework.exception.MMException;
 import com.mm.engine.framework.tool.helper.ConfigHelper;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,6 +102,7 @@ public final class EngineConfigure {
     public int getNetEventPort(){
         return netEventPort;
     }
+
     public String getMainServerNetEventAdd(){
         return "localhost:8000";
     }

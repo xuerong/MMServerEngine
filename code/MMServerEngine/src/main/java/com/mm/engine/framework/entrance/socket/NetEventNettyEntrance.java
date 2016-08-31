@@ -90,7 +90,7 @@ public class NetEventNettyEntrance extends Entrance {
             if(netEventData == null){
                 throw new MMException("NetEventNettyEntrance 收到包错误 ："+msg.getClass().getName());
             }
-            RetPacket retPacket = NetEventManager.handle(netEventData);
+            NetEventData retPacket = NetEventManager.handle(netEventData);
             if(id>0){ // 需要返回的
                 SocketPacket socketPacket = new SocketPacket();
                 socketPacket.setId(id);

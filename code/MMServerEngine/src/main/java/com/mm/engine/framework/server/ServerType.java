@@ -57,6 +57,10 @@ public final class ServerType {
         return "";
     }
 
+    public static int getServerType() {
+        return serverType;
+    }
+
     public static boolean isMainServer(){
         return (serverType&MAIN_SERVER)>0;
     }
@@ -64,6 +68,15 @@ public final class ServerType {
         return (serverType&NODE_SERVER)>0;
     }
     public static boolean isAsyncServer(){
+        return (serverType&ASYNC_SERVER)>0;
+    }
+    public static boolean isMainServer(int serverType){
+        return (serverType&MAIN_SERVER)>0;
+    }
+    public static boolean isNodeServer(int serverType){
+        return (serverType&NODE_SERVER)>0;
+    }
+    public static boolean isAsyncServer(int serverType){
         return (serverType&ASYNC_SERVER)>0;
     }
 }

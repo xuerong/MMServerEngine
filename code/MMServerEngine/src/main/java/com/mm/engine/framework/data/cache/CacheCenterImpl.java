@@ -122,10 +122,10 @@ public class CacheCenterImpl implements CacheCenter {
     private void broadcastUpdateCache(String key){
         NetEventData eventData = new NetEventData(SysConstantDefine.CACHEUPDATE);
         eventData.setParam(key);
-        NetEventManager.broadcastNetEvent(eventData);
+        NetEventManager.broadcastNetEvent(eventData,false);
     }
     @NetEventListener(netEvent = SysConstantDefine.CACHEUPDATE)
-    public RetPacket updateCacheListener(NetEventData eventData){
-        return new RetPacketImpl(eventData.getNetEvent(),eventData.getParam());
+    public NetEventData updateCacheListener(NetEventData eventData){
+        return new NetEventData(eventData.getNetEvent(),eventData.getParam());
     }
 }

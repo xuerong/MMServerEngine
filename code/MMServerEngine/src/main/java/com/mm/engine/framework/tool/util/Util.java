@@ -1,9 +1,13 @@
 package com.mm.engine.framework.tool.util;
 
+import com.mm.engine.framework.exception.MMException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.RemoteEndpoint;
 import java.lang.reflect.Field;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -80,6 +84,27 @@ public final class Util {
             }
         }
         return null;
+    }
+    public static boolean isLocalHost(String host){
+        if(host.equals("localhost") || host.equals("127.0.0.1")){
+            return true;
+        }
+        String localHost = getHostAddress();
+        if(host.equals(localHost)){
+            return true;
+        }
+        return false;
+    }
+    private static String hostAddress = null;
+    public static String getHostAddress(){
+        if(hostAddress == null){
+            try {
+                hostAddress = InetAddress.getLocalHost().getHostAddress();
+            }catch (UnknownHostException e){
+                throw new MMException(e);
+            }
+        }
+        return hostAddress;
     }
     public static boolean isIP(String addr)
     {

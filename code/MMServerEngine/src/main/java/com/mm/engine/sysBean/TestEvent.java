@@ -21,7 +21,7 @@ public class TestEvent {
         System.out.println("eventData2:"+eventData.getEvent());
     }
     @NetEventListener(netEvent = 100)
-    public RetPacket netEventListener(NetEventData netEventData){
+    public NetEventData netEventListener(NetEventData netEventData){
         return null;
     }
 }

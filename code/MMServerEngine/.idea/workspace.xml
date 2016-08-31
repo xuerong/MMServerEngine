@@ -2,126 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="cf7190cc-0055-40f4-af6a-f91e9d80373f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/netty/DefaultNettyDecoder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/netty/DefaultNettyEncoder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/NettyHelper.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/SocketPacket.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/ServerType.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/Controller.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/ControllerDispatcher.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/ControllerHelper.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/EntranceController.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/NetFlowFire.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/socket/NettyClient.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/NetDecode.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/NetEncode.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/netty/NettyDeCoder.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/netty/NettyEnCoder.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/EntranceNetty.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/controller/DefaultNetEventController.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/controller/DefaultRequestController.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/Controller.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/ControllerDispatcher$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/ControllerDispatcher$ControllerBean.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/ControllerDispatcher.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/ControllerHelper$EntranceControllerClass.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/ControllerHelper.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/EntranceController.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/NetFlowFire.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/code/net/NetDecode.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/code/net/NetEncode.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/sysBean/controller/DefaultNetEventController.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/sysBean/controller/DefaultRequestController.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/AbstractMessage$1.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/AbstractMessage$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/AbstractMessage$Builder.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/AbstractMessage$Builder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/AbstractMessage.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/AbstractMessage.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/ByteString$1.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/ByteString$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/ByteString$CodedBuilder.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/ByteString$CodedBuilder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/ByteString$Output.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/ByteString$Output.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/ByteString.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/ByteString.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$1.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$Descriptor.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$Descriptor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$DescriptorPool.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$DescriptorPool.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$DescriptorValidationException.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$DescriptorValidationException.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$EnumDescriptor.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$EnumDescriptor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$EnumValueDescriptor.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$EnumValueDescriptor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$FieldDescriptor.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$FieldDescriptor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$FileDescriptor.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$FileDescriptor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$MethodDescriptor.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$MethodDescriptor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$ServiceDescriptor.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors$ServiceDescriptor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/Descriptors.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/DynamicMessage$1.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/DynamicMessage$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/DynamicMessage$Builder.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/DynamicMessage$Builder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/DynamicMessage.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/DynamicMessage.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/ExtensionRegistry$1.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/ExtensionRegistry$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/ExtensionRegistry$ExtensionInfo.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/ExtensionRegistry$ExtensionInfo.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/ExtensionRegistry.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/ExtensionRegistry.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/FieldSet$1.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/FieldSet$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/FieldSet.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/FieldSet.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessage$1.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessage$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessage$ExtendableMessage$ExtensionWriter.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessage$ExtendableMessage$ExtensionWriter.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessage$ExtendableMessage.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessage$ExtendableMessage.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessage$GeneratedExtension.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessage$GeneratedExtension.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessage.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessage.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$1.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$ExtendableBuilder.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$ExtendableBuilder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$ExtendableMessage$ExtensionWriter.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$ExtendableMessage$ExtensionWriter.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$ExtendableMessage.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$ExtendableMessage.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$ExtensionDescriptor.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$ExtensionDescriptor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$GeneratedExtension.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite$GeneratedExtension.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/GeneratedMessageLite.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/TextFormat$1.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/TextFormat$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/TextFormat$TextGenerator.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/TextFormat$TextGenerator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/TextFormat$Tokenizer.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/TextFormat$Tokenizer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/TextFormat.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/TextFormat.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/UnknownFieldSet$1.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/UnknownFieldSet$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/UnknownFieldSet$Builder.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/UnknownFieldSet$Builder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/UnknownFieldSet$Field$Builder.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/UnknownFieldSet$Field$Builder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/UnknownFieldSet$Field.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/UnknownFieldSet$Field.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/google/protobuf/UnknownFieldSet.class" afterPath="$PROJECT_DIR$/target/classes/com/google/protobuf/UnknownFieldSet.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/data/cache/KeyParser.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/data/cache/KeyParser.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/Entrance.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/Entrance.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/code/net/http/HttpCoderImpl.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/code/net/http/HttpCoderImpl.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/code/net/http/HttpDecoder.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/code/net/http/HttpDecoder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/code/net/http/HttpEncoder.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/code/net/http/HttpEncoder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/code/protocol/playerPacket/PlayerPacketCoder.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/code/protocol/playerPacket/PlayerPacketCoder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/http/EntranceJetty$1.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/http/EntranceJetty$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/http/EntranceJetty.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/http/EntranceJetty.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/http/EntranceServlet.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/http/EntranceServlet.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/websocket/EntranceEndpoint.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/entrance/websocket/EntranceEndpoint.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/server/EngineConfigure.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/server/EngineConfigure.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/server/Server.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/server/Server.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/tool/helper/BeanHelper.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/tool/helper/BeanHelper.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/tool/util/Util.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/framework/tool/util/Util.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/mm/engine/sysBean/dbentity/DBTest.class" afterPath="$PROJECT_DIR$/target/classes/com/mm/engine/sysBean/dbentity/DBTest.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/test-classes/test/TestBeanGenerator.class" afterPath="$PROJECT_DIR$/target/test-classes/test/TestBeanGenerator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/ServerInfo.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/netEventPacket/NetEventCoder.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MMServerEngine.iml" afterPath="$PROJECT_DIR$/MMServerEngine.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/ServiceHelper.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/ServiceHelper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventData.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventListenerHandler.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventListenerHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/Entrance.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/Entrance.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/AbServerClient.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/AbServerClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/ServerClient.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/ServerClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/socket/NettyServerClient.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/socket/NettyServerClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/http/HttpCoderImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/http/HttpCoderImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/http/HttpDecoder.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/http/HttpDecoder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/http/HttpEncoder.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/http/HttpEncoder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/playerPacket/PlayerPacketCoder.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/playerPacket/PlayerPacketCoder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/http/EntranceJetty.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/http/EntranceJetty.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/http/EntranceServlet.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/http/EntranceServlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/websocket/EntranceEndpoint.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/websocket/EntranceEndpoint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/exception/ExceptionAbs.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/exception/ExceptionAbs.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenterImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenterImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/AsyncManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/AsyncManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/LockerManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/LockerManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/NetEventNettyEntrance.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/NetEventNettyEntrance.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/EngineConfigure.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/EngineConfigure.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/Server.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/Server.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/ServerType.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/ServerType.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/SysConstantDefine.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/SysConstantDefine.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/tool/helper/BeanHelper.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/tool/helper/BeanHelper.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/tool/util/Util.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/tool/util/Util.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/netTest/NettyTest.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/netTest/NettyTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/dbentity/DBTest.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/dbentity/DBTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/TestEvent.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/TestEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/TestService.java" afterPath="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/TestService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/MuchToConsiderate" afterPath="$PROJECT_DIR$/src/main/resources/MuchToConsiderate" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/test/service/TestInvoke.java" afterPath="$PROJECT_DIR$/src/test/java/test/service/TestInvoke.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/MuchToConsiderate" afterPath="$PROJECT_DIR$/target/classes/MuchToConsiderate" />
     </list>
     <ignored path="MMServerEngine.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -149,35 +47,41 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/socket/NettyServerClient.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="44" column="16" selection-start-line="44" selection-start-column="16" selection-end-line="44" selection-end-column="16" />
+              <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1269#1278#0" expanded="true" />
-                <element signature="e#1862#3889#0" expanded="true" />
-                <element signature="e#2295#2772#0" expanded="true" />
-                <element signature="e#2771#2772#0" expanded="true" />
-                <element signature="e#3888#3889#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NetPacket.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/NetPacket.java">
+      <file leaf-file-name="NetEventManager.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.9050279">
+              <caret line="292" column="49" selection-start-line="292" selection-start-column="49" selection-end-line="292" selection-end-column="49" />
+              <folding>
+                <element signature="e#1728#1934#0" expanded="true" />
+                <element signature="e#1933#1934#0" expanded="true" />
+                <element signature="e#2518#2785#0" expanded="true" />
+                <element signature="e#2784#2785#0" expanded="true" />
+                <element signature="e#8090#8643#0" expanded="true" />
+                <element signature="e#8642#8643#0" expanded="true" />
+                <element signature="e#9195#9637#0" expanded="true" />
+                <element signature="e#9636#9637#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AbServerClient.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/AbServerClient.java">
+      <file leaf-file-name="Runnable.java" pinned="false" current-in-tab="false">
+        <entry file="jar://F:/0322JDK8/src.zip!/java/lang/Runnable.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="55" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
-              <folding />
+              <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
+              <folding>
+                <element signature="e#0#2044#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -186,70 +90,53 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/ServerClient.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="43" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+              <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NetEventManager.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6754658">
-              <caret line="71" column="33" selection-start-line="71" selection-start-column="22" selection-end-line="71" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DefaultNettyDecoder.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/netty/DefaultNettyDecoder.java">
+      <file leaf-file-name="Util.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/tool/util/Util.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="17" column="7" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+              <caret line="95" column="21" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Integer.java" pinned="false" current-in-tab="false">
-        <entry file="jar://F:/0322JDK8/src.zip!/java/lang/Integer.java">
+      <file leaf-file-name="EngineConfigure.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/EngineConfigure.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="51" column="19" selection-start-line="51" selection-start-column="19" selection-end-line="51" selection-end-column="19" />
+              <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NetEventNettyEntrance.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/NetEventNettyEntrance.java">
+      <file leaf-file-name="ServerType.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/ServerType.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+              <caret line="61" column="5" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#1248#1249#0" expanded="true" />
+                <element signature="e#1300#1301#0" expanded="true" />
+                <element signature="e#1872#1873#0" expanded="true" />
+                <element signature="e#1905#1906#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SocketPacket.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/SocketPacket.java">
+      <file leaf-file-name="RetPacketImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/RetPacketImpl.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="13" column="35" selection-start-line="13" selection-start-column="35" selection-end-line="13" selection-end-column="35" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#658#659#0" expanded="true" />
-                <element signature="e#686#687#0" expanded="true" />
-                <element signature="e#736#737#0" expanded="true" />
-                <element signature="e#770#771#0" expanded="true" />
-                <element signature="e#803#804#0" expanded="true" />
-                <element signature="e#832#833#0" expanded="true" />
-                <element signature="e#876#877#0" expanded="true" />
-                <element signature="e#912#913#0" expanded="true" />
-              </folding>
+              <caret line="5" column="38" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -258,7 +145,17 @@
         <entry file="file://$PROJECT_DIR$/src/main/resources/MuchToConsiderate">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+              <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TestService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/test/service/TestService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -288,18 +185,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventDeCoder.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventEnCoder.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/netty/NetEventEnCoder.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/entity/session/Session.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/NetType.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/NetPacket.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/NetPacketImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/netty/NettyDeCoder.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/controller/DefaultNetEventController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/netEventPacket/NetEventCoder.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/netty/NettyEnCoder.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/TestService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/XMemCached.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/MemCachedHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheEntity.java" />
@@ -310,7 +199,6 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/http/HttpCoderImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/http/RequestJettyEntrance.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/SysConstantDefine.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/playerPacket/PlayerPacketCoder.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/http/HttpDecoder.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/netty/DefaultNettyEncoder.java" />
@@ -323,21 +211,30 @@
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/http/EntranceServlet.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/tool/helper/BeanHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/EntranceNetty.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/tool/util/Util.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/dbentity/DBTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/Server.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/exception/BaseException.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/ServiceHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/AbServerClient.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/netTest/NettyTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/ServerType.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/EngineConfigure.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/NettyHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/SocketPacket.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/ServerClient.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/socket/NettyServerClient.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/MuchToConsiderate" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/ServerInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/SysConstantDefine.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventListenerHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/ServiceHelper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventData.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/NetEventNettyEntrance.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenterImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/AsyncManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/LockerManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/TestEvent.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/TestService.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/MuchToConsiderate" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/EngineConfigure.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/ServerType.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/tool/util/Util.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventManager.java" />
       </list>
     </option>
@@ -565,8 +462,8 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1090,6 +987,10 @@
               <option name="myItemId" value="code" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="protocol" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -1478,6 +1379,48 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="control" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MMServerEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MMServerEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="control" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="update" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2268,14 +2211,14 @@
       </method>
     </configuration>
     <list size="8">
-      <item index="0" class="java.lang.String" itemvalue="Application.Server" />
-      <item index="1" class="java.lang.String" itemvalue="Application.AsyncManager" />
-      <item index="2" class="java.lang.String" itemvalue="Application.Test" />
-      <item index="3" class="java.lang.String" itemvalue="Application.TestInvoke" />
-      <item index="4" class="java.lang.String" itemvalue="Application.NettyTest" />
-      <item index="5" class="java.lang.String" itemvalue="Maven.uploadToLocalMaven" />
-      <item index="6" class="java.lang.String" itemvalue="Maven.maven-tomcat" />
-      <item index="7" class="java.lang.String" itemvalue="Tomcat Server.tomcat8" />
+      <item index="0" class="java.lang.String" itemvalue="Maven.uploadToLocalMaven" />
+      <item index="1" class="java.lang.String" itemvalue="Maven.maven-tomcat" />
+      <item index="2" class="java.lang.String" itemvalue="Tomcat Server.tomcat8" />
+      <item index="3" class="java.lang.String" itemvalue="Application.Server" />
+      <item index="4" class="java.lang.String" itemvalue="Application.AsyncManager" />
+      <item index="5" class="java.lang.String" itemvalue="Application.Test" />
+      <item index="6" class="java.lang.String" itemvalue="Application.TestInvoke" />
+      <item index="7" class="java.lang.String" itemvalue="Application.NettyTest" />
     </list>
     <recent_temporary>
       <list size="5">
@@ -2326,11 +2269,12 @@
       <workItem from="1472437942774" duration="1869000" />
       <workItem from="1472440202471" duration="15817000" />
       <workItem from="1472537395169" duration="15085000" />
+      <workItem from="1472610198556" duration="19891000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="523675000" />
+    <option name="totallyTimeSpent" value="543566000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -2338,10 +2282,9 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31467792" sideWeight="0.4875" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28933474" sideWeight="0.2203125" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21330518" sideWeight="0.24895833" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37909186" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19166666" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -2352,7 +2295,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18177083" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15989584" sideWeight="0.5074074" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.47624075" sideWeight="0.7729167" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21330518" sideWeight="0.75104165" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2362,6 +2305,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31467792" sideWeight="0.4875" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -2388,95 +2332,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/RetPacketImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="5" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/playerPacket/PlayerPacketCoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/RetPacket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/http/HttpCoderImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="65" column="22" selection-start-line="65" selection-start-column="22" selection-end-line="65" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/NetPacketImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/http/HttpEncoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="34" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/http/HttpDecoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="55" selection-start-line="0" selection-start-column="55" selection-end-line="0" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/websocket/EntranceEndpoint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="64" column="18" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/NetType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/Entrance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="22" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/tool/helper/BeanHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/io/netty/netty-all/4.1.4.Final/netty-all-4.1.4.Final.jar!/io/netty/channel/ChannelOption.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.464286">
-          <caret line="43" column="47" selection-start-line="43" selection-start-column="47" selection-end-line="43" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/io/netty/netty-all/4.1.4.Final/netty-all-4.1.4.Final.jar!/io/netty/channel/ChannelInboundHandlerAdapter.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.642857">
@@ -2510,25 +2365,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="42" column="18" selection-start-line="42" selection-start-column="18" selection-end-line="42" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/tool/util/Util.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="99" column="0" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://F:/0322JDK8/src.zip!/java/lang/Runnable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#2044#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2544,7 +2380,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="36" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2552,7 +2387,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="22" column="18" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2560,7 +2394,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.75">
           <caret line="82" column="25" selection-start-line="82" selection-start-column="25" selection-end-line="82" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2577,12 +2410,12 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
           <folding>
-            <element signature="e#614#615#0" expanded="true" />
-            <element signature="e#656#657#0" expanded="true" />
-            <element signature="e#707#708#0" expanded="true" />
-            <element signature="e#763#764#0" expanded="true" />
-            <element signature="e#794#795#0" expanded="true" />
-            <element signature="e#837#838#0" expanded="true" />
+            <element signature="e#614#615#0" expanded="false" />
+            <element signature="e#656#657#0" expanded="false" />
+            <element signature="e#707#708#0" expanded="false" />
+            <element signature="e#763#764#0" expanded="false" />
+            <element signature="e#794#795#0" expanded="false" />
+            <element signature="e#837#838#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2591,7 +2424,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2605,25 +2437,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/ServerType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="42" column="52" selection-start-line="42" selection-start-column="52" selection-end-line="42" selection-end-column="52" />
-          <folding>
-            <element signature="e#1248#1249#0" expanded="false" />
-            <element signature="e#1300#1301#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/EngineConfigure.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="55" column="35" selection-start-line="55" selection-start-column="35" selection-end-line="55" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/NettyHelper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2632,51 +2445,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/ServiceHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="344" column="32" selection-start-line="344" selection-start-column="32" selection-end-line="344" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/http/PlayerRequestJettyEntrance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventListenerHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="20" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/netty/DefaultNettyEncoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/io/netty/netty-all/4.1.4.Final/netty-all-4.1.4.Final.jar!/io/netty/channel/ChannelFuture.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.107142">
           <caret line="20" column="40" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2684,9 +2456,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#368#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2694,7 +2463,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.642857">
           <caret line="10" column="74" selection-start-line="10" selection-start-column="74" selection-end-line="10" selection-end-column="74" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2702,10 +2470,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.642857">
           <caret line="10" column="62" selection-start-line="10" selection-start-column="62" selection-end-line="10" selection-end-column="62" />
-          <folding>
-            <element signature="e#540#742#0" expanded="true" />
-            <element signature="e#741#742#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2713,14 +2477,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7919255">
           <caret line="45" column="33" selection-start-line="45" selection-start-column="33" selection-end-line="45" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/AsyncManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49068323">
-          <caret line="299" column="0" selection-start-line="299" selection-start-column="0" selection-end-line="299" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -2749,10 +2505,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/ServerClient.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/SysConstantDefine.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="43" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+          <caret line="17" column="71" selection-start-line="17" selection-start-column="71" selection-end-line="17" selection-end-column="71" />
           <folding />
         </state>
       </provider>
@@ -2765,12 +2521,216 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/SocketPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="35" selection-start-line="13" selection-start-column="35" selection-end-line="13" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/ServerInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+          <folding>
+            <element signature="e#267#268#0" expanded="false" />
+            <element signature="e#294#295#0" expanded="false" />
+            <element signature="e#334#335#0" expanded="false" />
+            <element signature="e#366#367#0" expanded="false" />
+            <element signature="e#394#395#0" expanded="false" />
+            <element signature="e#421#422#0" expanded="false" />
+            <element signature="e#458#459#0" expanded="false" />
+            <element signature="e#490#491#0" expanded="false" />
+            <element signature="e#518#519#0" expanded="false" />
+            <element signature="e#545#546#0" expanded="false" />
+            <element signature="e#582#583#0" expanded="false" />
+            <element signature="e#614#615#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/RetPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/net/netty/DefaultNettyEncoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="25" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="25" />
+          <folding>
+            <element signature="e#679#680#0" expanded="false" />
+            <element signature="e#713#714#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/http/PlayerRequestJettyEntrance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="96" column="12" selection-start-line="96" selection-start-column="12" selection-end-line="96" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/NetEventNettyEntrance.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+          <caret line="92" column="30" selection-start-line="92" selection-start-column="30" selection-end-line="92" selection-end-column="30" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/ProtocolEncode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="28" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/playerPacket/PlayerPacketCoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="53" column="33" selection-start-line="53" selection-start-column="32" selection-end-line="53" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventListenerHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/request/RequestHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/cache/CacheCenterImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="128" column="31" selection-start-line="128" selection-start-column="31" selection-end-line="128" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/AsyncManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="190" column="31" selection-start-line="190" selection-start-column="31" selection-end-line="190" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/data/tx/LockerManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="111" column="23" selection-start-line="111" selection-start-column="23" selection-end-line="111" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/TestEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+          <folding>
+            <element signature="e#908#909#0" expanded="false" />
+            <element signature="e#935#936#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/sysBean/TestService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="71" column="31" selection-start-line="71" selection-start-column="31" selection-end-line="71" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/ServiceHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="202" column="43" selection-start-line="202" selection-start-column="43" selection-end-line="202" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/code/protocol/RetPacketImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="38" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/test/service/TestService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/MuchToConsiderate">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="29" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/EngineConfigure.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/server/ServerType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="61" column="5" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
+          <folding>
+            <element signature="e#1248#1249#0" expanded="true" />
+            <element signature="e#1300#1301#0" expanded="true" />
+            <element signature="e#1872#1873#0" expanded="true" />
+            <element signature="e#1905#1906#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://F:/0322JDK8/src.zip!/java/lang/Runnable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#2044#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2778,49 +2738,43 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/socket/NettyServerClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="44" column="16" selection-start-line="44" selection-start-column="16" selection-end-line="44" selection-end-column="16" />
+          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1269#1278#0" expanded="true" />
-            <element signature="e#1862#3889#0" expanded="true" />
-            <element signature="e#2295#2772#0" expanded="true" />
-            <element signature="e#2771#2772#0" expanded="true" />
-            <element signature="e#3888#3889#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/MuchToConsiderate">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/client/ServerClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+          <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/entrance/socket/SocketPacket.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/tool/util/Util.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="35" selection-start-line="13" selection-start-column="35" selection-end-line="13" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#658#659#0" expanded="true" />
-            <element signature="e#686#687#0" expanded="true" />
-            <element signature="e#736#737#0" expanded="true" />
-            <element signature="e#770#771#0" expanded="true" />
-            <element signature="e#803#804#0" expanded="true" />
-            <element signature="e#832#833#0" expanded="true" />
-            <element signature="e#876#877#0" expanded="true" />
-            <element signature="e#912#913#0" expanded="true" />
-          </folding>
+          <caret line="95" column="21" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/mm/engine/framework/control/netEvent/NetEventManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6754658">
-          <caret line="71" column="33" selection-start-line="71" selection-start-column="22" selection-end-line="71" selection-end-column="33" />
-          <folding />
+        <state vertical-scroll-proportion="0.9050279">
+          <caret line="292" column="49" selection-start-line="292" selection-start-column="49" selection-end-line="292" selection-end-column="49" />
+          <folding>
+            <element signature="e#1728#1934#0" expanded="true" />
+            <element signature="e#1933#1934#0" expanded="true" />
+            <element signature="e#2518#2785#0" expanded="true" />
+            <element signature="e#2784#2785#0" expanded="true" />
+            <element signature="e#8090#8643#0" expanded="true" />
+            <element signature="e#8642#8643#0" expanded="true" />
+            <element signature="e#9195#9637#0" expanded="true" />
+            <element signature="e#9636#9637#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

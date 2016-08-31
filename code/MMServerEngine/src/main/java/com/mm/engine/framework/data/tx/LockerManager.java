@@ -63,7 +63,7 @@ public class LockerManager {
     }
     //// ----------------------------------外部代用end
     @NetEventListener(netEvent = SysConstantDefine.LOCKKEYS)
-    public RetPacket receiveLockKeys(NetEventData eventData){
+    public NetEventData receiveLockKeys(NetEventData eventData){
         String[] keys = (String[])eventData.getParam();
         boolean result = true;
         String failKey = null;
@@ -82,11 +82,11 @@ public class LockerManager {
                 }
             }
         }
-        RetPacket ret = new RetPacketImpl(eventData.getNetEvent(),result);
+        NetEventData ret = new NetEventData(eventData.getNetEvent(),result);
         return ret;
     }
     @NetEventListener(netEvent = SysConstantDefine.LOCKKEYSANDCHECK)
-    public RetPacket receiveLockRequest(NetEventData eventData){
+    public NetEventData receiveLockRequest(NetEventData eventData){
         LockerData[] lockerDatas = (LockerData[])eventData.getParam();
         boolean result = true;
         String failKey = null;
@@ -105,11 +105,11 @@ public class LockerManager {
                 }
             }
         }
-        RetPacket ret = new RetPacketImpl(eventData.getNetEvent(),result);
+        NetEventData ret = new NetEventData(eventData.getNetEvent(),result);
         return ret;
     }
     @NetEventListener(netEvent = SysConstantDefine.UNLOCKKEYS)
-    public RetPacket receiveUnLockRequest(NetEventData eventData){
+    public NetEventData receiveUnLockRequest(NetEventData eventData){
         String[] keys = (String[])eventData.getParam();
         for(String key : keys){
             unlock(key);
