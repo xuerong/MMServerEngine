@@ -17,8 +17,11 @@ import java.util.Map;
 /**
  * Created by Administrator on 2015/11/19.
  */
-@Service
+@Service(init = "init")
 public class TestService {
+    public void init(){
+        System.out.println("TestService init");
+    }
     @Request(opcode = 20002)
     public RetPacket handlerLogin(Object clientData, Session session){
         PBMessage.SCLoginRet.Builder builder= PBMessage.SCLoginRet.newBuilder();

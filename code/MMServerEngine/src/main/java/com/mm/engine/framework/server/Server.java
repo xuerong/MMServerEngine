@@ -1,12 +1,17 @@
 package com.mm.engine.framework.server;
 
+import com.mm.engine.framework.control.ServiceHelper;
 import com.mm.engine.framework.control.update.UpdateManager;
 import com.mm.engine.framework.data.tx.AsyncManager;
 import com.mm.engine.framework.entrance.Entrance;
+import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2015/11/16.
@@ -31,6 +36,23 @@ public final class Server {
     }
 
     public static void start(){
+        // Service的初始化
+        Map<Class<?>, Object> serviceBeanMap = BeanHelper.getServiceBeans();
+        Map<Class<?>, Method> initMethodMap = ServiceHelper.getInitMethodMap();
+
+        for(Map.Entry<Class<?>, Object> entry : serviceBeanMap.entrySet()){
+            Method method = initMethodMap.get(entry.getKey());
+            if(method != null){
+                try {
+                    method.invoke(entry.getValue());
+                } catch (IllegalAccessException|InvocationTargetException e) {
+                    e.printStackTrace();
+                }finally { // 报异常，这里是停服务器还是继续？
+                    continue;
+                }
+            }
+        }
+        // 更新器的启动
         UpdateManager.start();
         // 启动所有入口
         List<Entrance> entranceList = configure.getEntranceList();
@@ -38,7 +60,8 @@ public final class Server {
             try {
                 entrance.start();
             }catch (Exception e){
-                log.error("entrance start fail , entrance name = "+entrance.getName()+e.getCause());
+//                e.printStackTrace();
+                log.error("entrance start fail , entrance name = "+entrance.getName()+","+e.getMessage());
                 try{
                     entrance.stop();
                 }catch (Exception e2){
@@ -66,6 +89,21 @@ public final class Server {
         if(Server.getEngineConfigure().isAsyncServer()){
             AsyncManager.stop();
             log.info("异步服务器关闭完成!");
+        }
+        // 关闭所有的Service
+        Map<Class<?>, Object> serviceBeanMap = BeanHelper.getServiceBeans();
+        Map<Class<?>, Method> destroyMethodMap = ServiceHelper.getDestroyMethodMap();
+        for(Map.Entry<Class<?>, Object> entry : serviceBeanMap.entrySet()){
+            Method method = destroyMethodMap.get(entry.getKey());
+            if(method != null){
+                try {
+                    method.invoke(entry.getValue());
+                } catch (IllegalAccessException|InvocationTargetException e) {
+                    e.printStackTrace();
+                }finally { // 报异常，这里是停服务器还是继续？
+                    continue;
+                }
+            }
         }
 
         log.info("服务器关闭完成!");

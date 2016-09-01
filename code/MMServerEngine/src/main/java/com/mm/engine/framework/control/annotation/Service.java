@@ -16,5 +16,15 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Service {
+    /**
+     * 初始化方法
+     * @return
+     */
+    String init() default "";
 
+    /**
+     * 销毁方法
+     * @return
+     */
+    String destroy() default "";
 }

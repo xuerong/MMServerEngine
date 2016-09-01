@@ -43,6 +43,10 @@ public final class ServiceHelper {
      * */
     private static Map<Class<?>,Class<?>> serviceClassMap=new HashMap<>();
 
+    // 各个service的初始化方法和销毁方法
+    private static Map<Class<?>,Method> initMethodMap = new HashMap<>();
+    private static Map<Class<?>,Method> destroyMethodMap = new HashMap<>();
+
     static{
         try {
             //j2ee下需要设置:且后面跟的类视乎没有什么关系，有待研究
@@ -54,7 +58,9 @@ public final class ServiceHelper {
             Map<Class<?>,List<Method>> updatableMap=new HashMap<>();
             List<Class<?>> serviceClasses= ClassHelper.getClassListByAnnotation(Service.class);
             for(Class<?> serviceClass : serviceClasses){
-
+                Service service = serviceClass.getAnnotation(Service.class);
+                String init = service.init();
+                String destroy = service.destroy();
                 Method[] methods=serviceClass.getMethods();
                 for (Method method : methods){
                     // 判断是否存在Request
@@ -69,6 +75,13 @@ public final class ServiceHelper {
                     }
                     if(method.isAnnotationPresent(Updatable.class)){
                         addMethodToMap(updatableMap,serviceClass,method);
+                    }
+                    // 判断是否是初始化方法和销毁方法
+                    if(method.getName().equals(init)){
+                        initMethodMap.put(serviceClass,method);
+                    }
+                    if(method.getName().equals(destroy)){
+                        destroyMethodMap.put(serviceClass,method);
                     }
                 }
             }
@@ -119,7 +132,7 @@ public final class ServiceHelper {
                 // request
                 if(opcodeList!=null){
                     for(short opcode : opcodeList){
-                        requestHandlerClassMap.put(opcode,newServiceClass);
+                        requestHandlerClassMap.put(opcode,serviceClass);
                     }
                 }
                 // event
@@ -128,10 +141,10 @@ public final class ServiceHelper {
                     for(short event : eventList){
                         if(eventListenerHandlerClassMap.containsKey(event)){
                             Set<Class<?>> classes=eventListenerHandlerClassMap.get(event);
-                            classes.add(newServiceClass);
+                            classes.add(serviceClass);
                         }else{
                             Set<Class<?>> classes=new HashSet<>();
-                            classes.add(newServiceClass);
+                            classes.add(serviceClass);
                             eventListenerHandlerClassMap.put(event,classes);
                         }
                     }
@@ -140,12 +153,12 @@ public final class ServiceHelper {
                 if(netEventList!=null){
                     // 一个netevent可能对应多个类
                     for(int netEvent : netEventList){
-                        netEventListenerHandlerClassMap.put(netEvent,newServiceClass);
+                        netEventListenerHandlerClassMap.put(netEvent,serviceClass);
                     }
                 }
                 // update
                 if(updatableMap.containsKey(serviceClass)){
-                    updatableClassMap.put(newServiceClass,updatableMap.get(serviceClass));
+                    updatableClassMap.put(serviceClass,updatableMap.get(serviceClass));
                 }
             }
         }catch (Exception e){
@@ -171,6 +184,13 @@ public final class ServiceHelper {
 
     public static Map<Class<?>,Class<?>> getServiceClassList(){
         return serviceClassMap;
+    }
+    public static Map<Class<?>, Method> getInitMethodMap() {
+        return initMethodMap;
+    }
+
+    public static Map<Class<?>, Method> getDestroyMethodMap() {
+        return destroyMethodMap;
     }
     //
     private static void addMethodToMap(Map<Class<?>,List<Method>> map,Class<?> cls,Method method){

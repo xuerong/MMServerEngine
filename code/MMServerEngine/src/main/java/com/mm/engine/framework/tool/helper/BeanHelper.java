@@ -22,7 +22,12 @@ public final class BeanHelper {
     private final static Map<Class<?>,Object> frameBeans=new HashMap<Class<?>,Object>();
     private final static Map<Class<?>,Object> engineBeans=new HashMap<Class<?>,Object>();
     private final static Map<Class<?>,Object> userBeans=new HashMap<Class<?>,Object>();
+
     private final static Map<Class<?>,Object> serviceBeans=new HashMap<Class<?>,Object>();
+
+    public static Map<Class<?>, Object> getServiceBeans() {
+        return serviceBeans;
+    }
 
     /**
      *
@@ -43,7 +48,7 @@ public final class BeanHelper {
             // service
             Map<Class<?>, Class<?>> serviceClassMap = ServiceHelper.getServiceClassList();
             for (Map.Entry<Class<?>, Class<?>> entry : serviceClassMap.entrySet()) {
-                serviceBeans.put(entry.getValue(), newInstance(entry.getKey(), entry.getValue()));
+                serviceBeans.put(entry.getKey(), newInstance(entry.getKey(), entry.getValue()));
             }
             // aop
             frameBeans.put(MyProxyTarget.class, newInstance(MyProxyTarget.class));
