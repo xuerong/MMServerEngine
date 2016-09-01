@@ -4,3 +4,7 @@
 // 由于要把所有的service添加start和stop,这样,把各种manager也变成service也好
 // 程序运行的时候修改文件自动加载
 // job
+// 网络出现问题的包的处理
+// 查看所有抛出的异常有没有正确处理
+// asyncDBServer与mainServer相同
+// 除了ServiceHelper,ClassHelper,BeanHelper,EntityHelper，等以外，其它的Manager等都可以变成非静态的，都做成Service，然后调用start方法

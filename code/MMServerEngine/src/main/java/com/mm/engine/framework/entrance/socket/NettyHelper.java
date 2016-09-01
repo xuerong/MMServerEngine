@@ -5,6 +5,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.ByteToMessageDecoder;
+import io.netty.handler.codec.MessageToByteEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,13 +19,13 @@ public class NettyHelper {
     private static final Logger log = LoggerFactory.getLogger(NettyHelper.class);
     public static synchronized Channel createAndStart(
             final int port,
-            final ChannelHandler encoder,
-            final ChannelHandler decoder,
-            final ChannelHandler handler,
+            final Class<?> encoderClass,
+            final Class<?> decoderClass,
+            final Class<?> handlerClass,
             String entranceName
     ) throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
-        NettyThread nettyThread = new NettyThread(port,encoder,decoder,handler,entranceName,latch);
+        NettyThread nettyThread = new NettyThread(port,encoderClass,decoderClass,handlerClass,entranceName,latch);
         nettyThread.start();
         latch.await(); // 等待netty启动再放出它
         return nettyThread.getChannel();
@@ -32,9 +34,9 @@ public class NettyHelper {
         private Channel channel = null;
 
         final int port;
-        final ChannelHandler encoder;
-        final ChannelHandler decoder;
-        final ChannelHandler handler;
+        final Class<?> encoderClass;
+        final Class<?> decoderClass;
+        final Class<?> handlerClass;
         final String entranceName;
         final CountDownLatch latch;
 
@@ -43,15 +45,15 @@ public class NettyHelper {
         }
 
         public NettyThread(final int port,
-                           final ChannelHandler encoder,
-                           final ChannelHandler decoder,
-                           final ChannelHandler handler,
+                           final Class<?> encoderClass,
+                           final  Class<?> decoderClass,
+                           final Class<?> handlerClass,
                            String entranceName,
                            CountDownLatch latch){
             this.port = port;
-            this.encoder = encoder;
-            this.decoder = decoder;
-            this.handler = handler;
+            this.encoderClass = encoderClass;
+            this.decoderClass = decoderClass;
+            this.handlerClass = handlerClass;
             this.entranceName = entranceName;
             this.latch = latch;
         }
@@ -67,9 +69,9 @@ public class NettyHelper {
                             @Override
                             public void initChannel(SocketChannel ch) throws Exception {
                                 ch.pipeline().addLast(
-                                        decoder, // 解码器
-                                        encoder, // 编码器
-                                        handler //处理器
+                                        (ChannelHandler) decoderClass.newInstance(), // 解码器
+                                        (ChannelHandler) encoderClass.newInstance(), // 编码器
+                                        (ChannelHandler) handlerClass.newInstance() //处理器
                                 );
                             }
                         })
@@ -81,7 +83,6 @@ public class NettyHelper {
                 f.sync();
                 channel = f.channel();
                 latch.countDown();
-                log.info(entranceName+" netty start end");
                 // Wait until the server socket is closed.
                 // In this example, this does not happen, but you can do that to gracefully
                 // shut down your server.

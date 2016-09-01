@@ -9,6 +9,9 @@ import com.mm.engine.framework.entrance.code.net.netty.DefaultNettyEncoder;
 import com.mm.engine.framework.entrance.code.protocol.RetPacket;
 import com.mm.engine.framework.exception.MMException;
 import io.netty.channel.*;
+import io.netty.handler.codec.MessageToByteEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
@@ -17,6 +20,7 @@ import java.io.ObjectOutputStream;
  * Created by a on 2016/8/29.
  */
 public class NetEventNettyEntrance extends Entrance {
+    private static final Logger log = LoggerFactory.getLogger(NetEventNettyEntrance.class);
     Channel channel = null;
 
     public NetEventNettyEntrance(String name, int port){
@@ -26,7 +30,8 @@ public class NetEventNettyEntrance extends Entrance {
     @Override
     public void start() throws Exception {
         channel = NettyHelper.createAndStart(
-                port,new DefaultNettyEncoder(),new DefaultNettyDecoder(),new DiscardServerHandler(),name);
+                port,DefaultNettyEncoder.class,DefaultNettyDecoder.class,DiscardServerHandler.class,name);
+        log.info("bind port :"+port);
         // 向mainServer取得连接
         NetEventManager.notifyConnMainServer();
     }
@@ -68,7 +73,7 @@ public class NetEventNettyEntrance extends Entrance {
 //        }
     }
 
-    public class DiscardServerHandler extends ChannelInboundHandlerAdapter { // (1)
+    public static class DiscardServerHandler extends ChannelInboundHandlerAdapter { // (1)
         @Override
         public void channelActive(final ChannelHandlerContext ctx) { // (1)
 

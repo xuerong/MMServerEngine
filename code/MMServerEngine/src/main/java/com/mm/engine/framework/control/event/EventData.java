@@ -5,6 +5,7 @@ package com.mm.engine.framework.control.event;
  */
 public class EventData {
     private short event;
+    private Object data;
 
     public EventData(short event){
         this.event=event;
@@ -15,5 +16,17 @@ public class EventData {
 
     public short getEvent(){
         return event;
+    }
+
+    public void setEvent(short event) {
+        this.event = event;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 }

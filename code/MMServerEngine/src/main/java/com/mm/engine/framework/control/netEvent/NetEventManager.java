@@ -1,8 +1,10 @@
 package com.mm.engine.framework.control.netEvent;
 
 import com.mm.engine.framework.control.ServiceHelper;
+import com.mm.engine.framework.control.annotation.EventListener;
 import com.mm.engine.framework.control.annotation.NetEventListener;
 import com.mm.engine.framework.control.annotation.Service;
+import com.mm.engine.framework.control.event.EventData;
 import com.mm.engine.framework.entrance.client.ServerClient;
 import com.mm.engine.framework.entrance.client.socket.NettyServerClient;
 import com.mm.engine.framework.entrance.code.protocol.RetPacket;
@@ -42,8 +44,8 @@ public class NetEventManager{
 
     private static final String SERVERSKEY = "servers";
 
-    private static Map<Integer,NetEventListenerHandler> handlerMap=new HashMap<Integer,NetEventListenerHandler>();
-
+//    private static Map<Integer,NetEventListenerHandler> handlerMap=new HashMap<Integer,NetEventListenerHandler>();
+private static Map<Integer,NetEventListenerHandler> handlerMap=null;
     private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(
             10,100,3000, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<Runnable>(),
             new RejectedExecutionHandler(){
@@ -63,19 +65,19 @@ public class NetEventManager{
 
     static {
 
-        TIntObjectHashMap<Class<?>> netEventHandlerClassMap = ServiceHelper.getNetEventListenerHandlerClassMap();
-        netEventHandlerClassMap.forEachEntry(new TIntObjectProcedure<Class<?>>(){
-            @Override
-            public boolean execute(int i, Class<?> aClass) {
-                handlerMap.put(i, (NetEventListenerHandler)BeanHelper.getServiceBean(aClass));
-                return true;
-            }
-        });
+//        TIntObjectHashMap<Class<?>> netEventHandlerClassMap = ServiceHelper.getNetEventListenerHandlerClassMap();
+//        netEventHandlerClassMap.forEachEntry(new TIntObjectProcedure<Class<?>>(){
+//            @Override
+//            public boolean execute(int i, Class<?> aClass) {
+//                handlerMap.put(i, (NetEventListenerHandler)BeanHelper.getServiceBean(aClass));
+//                return true;
+//            }
+//        });
     }
 
     public static void notifyConnMainServer(){
         if(ServerType.isMainServer()){
-            log.info("本服务器即为mainServer");
+            log.info("不需要连接mainServer,本服务器即为mainServer");
             return ;
         }
         String mainServerAdd = Server.getEngineConfigure().getMainServerNetEventAdd();
@@ -102,26 +104,7 @@ public class NetEventManager{
         serverClientMap.put(host+":"+port,nettyServerClient);
         mainServerClient = nettyServerClient;
         // 告诉mainServer 自己是谁，并且从mainServer哪里获取其它服务器，并连接之
-        NetEventData netEventData = new NetEventData(SysConstantDefine.TellMainServerSelfInfo);
-        ServerInfo serverInfo = new ServerInfo();
-        serverInfo.setHost(Util.getHostAddress());
-        serverInfo.setPort(localPort);
-        serverInfo.setType(ServerType.getServerType());
-        netEventData.setParam(serverInfo);
-
-        NetEventData ret = fireMainServerNetEventSyn(netEventData); //通知主服务器，并获取其它服务器列表
-
-        Map<String,ServerInfo> retServers = (Map)ret.getParam();
-        String localAdd = serverInfo.getHost()+":"+localPort;
-        for (Map.Entry<String, ServerInfo> entry: retServers.entrySet()){
-            serverInfo = entry.getValue();
-            if(entry.getKey().equals(localAdd)){ // 把自己过滤出来
-                continue;
-            }
-            // 创建NettyServerClient，并连接
-            connectServer(serverInfo);
-            servers.put(entry.getKey(),entry.getValue());
-        }
+        tellMainServer();
     }
     // 主服务器：别人请求添加，并请求返回其它服务器信息，并告诉其他服务器它的存在
     @NetEventListener(netEvent = SysConstantDefine.TellMainServerSelfInfo)
@@ -143,7 +126,7 @@ public class NetEventManager{
             NetEventData ret = new NetEventData(eventData.getNetEvent(),servers);
             return ret;
         }
-        throw new MMException("该服务器已经注册完成");
+        throw new MMException("该服务器已经注册完成，是否是断线重连？");
     }
     // 其它服务器：主服务器推出其它服务器的存在：建立与其它服务器的连接
     @NetEventListener(netEvent = SysConstantDefine.TellServersNewInfo)
@@ -159,7 +142,54 @@ public class NetEventManager{
             connectServer(serverInfo);
             return null;
         }
-        throw new MMException("该服务器已经注册完成");
+        throw new MMException("该服务器已经注册完成，是否是断线重连？");
+    }
+    // nettyServerClient断线通知:如果是mainServer，则重连，否则，从client记录去掉它，它连上mainServer自然会重新通知
+    @EventListener(event = SysConstantDefine.Event_NettyServerClient)
+    public void nettyServerClientDisconnect(EventData eventData){
+        NettyServerClient client = (NettyServerClient)eventData.getData();
+        if(mainServerClient == client){ //如果是mainServer,则重连
+            try{
+                client.start();
+            }catch (Throwable e){
+                throw new MMException(e);
+            }
+            tellMainServer();
+        }else { //
+            String add = client.getHost()+":"+client.getPort();
+            servers.remove(add);
+            serverClientMap.remove(add);
+            if(asyncServerClient == client){
+                asyncServerClient = null;
+            }
+        }
+    }
+    private static void tellMainServer(){
+        // 告诉mainServer 自己是谁，并且从mainServer哪里获取其它服务器，并连接之
+        NetEventData netEventData = new NetEventData(SysConstantDefine.TellMainServerSelfInfo);
+        ServerInfo serverInfo = new ServerInfo();
+        serverInfo.setHost(Util.getHostAddress());
+        serverInfo.setPort(Server.getEngineConfigure().getNetEventPort());
+        serverInfo.setType(ServerType.getServerType());
+        netEventData.setParam(serverInfo);
+
+        NetEventData ret = fireMainServerNetEventSyn(netEventData); //通知主服务器，并获取其它服务器列表
+
+        Map<String,ServerInfo> retServers = (Map)ret.getParam();
+        String localAdd = serverInfo.getHost()+":"+Server.getEngineConfigure().getNetEventPort();
+        for (Map.Entry<String, ServerInfo> entry: retServers.entrySet()){
+            serverInfo = entry.getValue();
+            if(entry.getKey().equals(localAdd)){ // 把自己过滤出来
+                continue;
+            }
+            // 创建NettyServerClient，并连接
+            ServerInfo old = servers.putIfAbsent(entry.getKey(),entry.getValue());
+            if(old == null){
+                connectServer(serverInfo);
+            }else{
+                log.warn("mainServer reStart?");
+            }
+        }
     }
     private static void connectServer(ServerInfo serverInfo){
         // 创建NettyServerClient，并连接
@@ -180,6 +210,22 @@ public class NetEventManager{
     }
     // 一个系统的一种NetEvent只有一个监听器(因为很多事件需要返回数据)，可以通过内部事件分发
     public static NetEventData handle(NetEventData netEventData){
+        if(handlerMap == null){ //TODO 这个要变成start时候初始化，
+            synchronized (NetEventManager.class) {
+                if(handlerMap == null) {
+                    final Map<Integer,NetEventListenerHandler> _handlerMap = new HashMap<>();
+                    TIntObjectHashMap<Class<?>> netEventHandlerClassMap = ServiceHelper.getNetEventListenerHandlerClassMap();
+                    netEventHandlerClassMap.forEachEntry(new TIntObjectProcedure<Class<?>>() {
+                        @Override
+                        public boolean execute(int i, Class<?> aClass) {
+                            _handlerMap.put(i, (NetEventListenerHandler) BeanHelper.getServiceBean(aClass));
+                            return true;
+                        }
+                    });
+                    handlerMap = _handlerMap;
+                }
+            }
+        }
         NetEventListenerHandler handler = handlerMap.get(netEventData.getNetEvent());
         if(handler == null){
             throw new MMException("netEventHandle is not exist , netEvent="+netEventData.getNetEvent());

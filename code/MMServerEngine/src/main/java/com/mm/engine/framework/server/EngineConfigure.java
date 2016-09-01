@@ -36,6 +36,9 @@ public final class EngineConfigure {
         this(null);
     }
     public EngineConfigure(String serverTypeStr){
+        this(serverTypeStr,8000);
+    }
+    public EngineConfigure(String serverTypeStr,int netEventPort){
         if(serverTypeStr!=null){
             ServerType.setServerType(serverTypeStr);
         }else{
@@ -51,7 +54,9 @@ public final class EngineConfigure {
         defaultRequestController="DefaultRequestController";
 
         entranceList.add(new EntranceJetty("first",8080));
-        entranceList.add(new NetEventNettyEntrance("NetEventNettyEntrance",8000));
+
+        this.netEventPort = netEventPort;
+        entranceList.add(new NetEventNettyEntrance("NetEventNettyEntrance",netEventPort));
     }
     private Class<?> getBeanFromConfigure(String beanType){
         String classPath= ConfigHelper.getString(beanType);
