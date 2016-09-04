@@ -46,7 +46,7 @@ public final class BeanHelper {
                 }
             }
             // service
-            Map<Class<?>, Class<?>> serviceClassMap = ServiceHelper.getServiceClassList();
+            Map<Class<?>, Class<?>> serviceClassMap = ServiceHelper.getServiceClassMap();
             for (Map.Entry<Class<?>, Class<?>> entry : serviceClassMap.entrySet()) {
                 serviceBeans.put(entry.getKey(), newInstance(entry.getKey(), entry.getValue()));
             }

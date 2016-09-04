@@ -182,7 +182,7 @@ public final class ServiceHelper {
         return updatableClassMap;
     }
 
-    public static Map<Class<?>,Class<?>> getServiceClassList(){
+    public static Map<Class<?>,Class<?>> getServiceClassMap(){
         return serviceClassMap;
     }
     public static Map<Class<?>, Method> getInitMethodMap() {
