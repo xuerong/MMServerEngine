@@ -383,7 +383,7 @@ public final class ServiceHelper {
                     throw new IllegalStateException("Method "+method.getName()+" Parameter Error");
                 }
                 // 检查注解
-                if(op.isAsynchronous() && op.cycle()==-1){
+                if(op.isAsynchronous() && op.cycle()==-1 && op.cronExpression().length()==0){
                     throw new IllegalStateException("Method "+method.getName()+" annotation Error,cycle can't be default while update is asynchronous");
                 }
             }

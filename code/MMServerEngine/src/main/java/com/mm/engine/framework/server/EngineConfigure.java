@@ -1,5 +1,6 @@
 package com.mm.engine.framework.server;
 
+import com.mm.engine.framework.control.job.JobStorage;
 import com.mm.engine.framework.data.cache.CacheCenter;
 import com.mm.engine.framework.entrance.Entrance;
 import com.mm.engine.framework.entrance.code.net.http.HttpDecoder;
@@ -50,6 +51,7 @@ public final class EngineConfigure {
         configureBeans.put(DataSourceFactory.class,getBeanFromConfigure("dataSourceFactory"));
         configureBeans.put(DataAccessor.class,getBeanFromConfigure("dataAccessor"));
         configureBeans.put(CacheCenter.class,getBeanFromConfigure("cacheCenter"));
+        configureBeans.put(JobStorage.class,getBeanFromConfigure("jobStorage"));
 
         defaultRequestController="DefaultRequestController";
 

@@ -2,14 +2,17 @@ package com.mm.engine.framework.control.update;
 
 import com.mm.engine.framework.control.ServiceHelper;
 import com.mm.engine.framework.control.annotation.Updatable;
+import com.mm.engine.framework.control.update.cronExpression.CronExpression;
+import com.mm.engine.framework.exception.MMException;
 import com.mm.engine.framework.server.Server;
+import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.tool.helper.BeanHelper;
-import org.omg.CORBA.OBJ_ADAPTER;
-import org.omg.CORBA.SystemException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -50,7 +53,8 @@ public class UpdateManager {
             for(Method method : methodList){
                 method.setAccessible(true);// 取消 Java 语言访问检查
                 Updatable updatable=method.getAnnotation(Updatable.class);// 前面ServiceHelper已经进行了校验此处不用重复校验
-                UpdatableBean updatableBean=new UpdatableBean(service,method,updatable.isAsynchronous(),updatable.cycle());
+                UpdatableBean updatableBean=new UpdatableBean(service,method,updatable.isAsynchronous(),updatable.cycle(),
+                        updatable.runEveryServer(),updatable.cronExpression());
                 if(updatable.isAsynchronous()){
                     asyncUpdatableList.add(updatableBean);
                 }else {
@@ -81,18 +85,42 @@ public class UpdateManager {
             public void run() {
                 //lastUpdateTime.
                 for(UpdatableBean updatableBean : syncUpdatableList){
+                    if(!updatableBean.runEveryServer && !ServerType.isMainServer()){ // TODO 后面改成分发给nodeServer
+                        continue;
+                    }
                     updatableBean.execute();
                 }
             }
         },syncUpdateInterval,syncUpdateInterval,TimeUnit.MILLISECONDS);
         // 启动异步更新器
         for(final UpdatableBean updatableBean : asyncUpdatableList){
-            asyncExecutor.scheduleAtFixedRate(new Runnable() {
-                @Override
-                public void run() {
-                    updatableBean.execute();
-                }
-            },updatableBean.getInterval(),updatableBean.getInterval(),TimeUnit.MILLISECONDS);
+            if(!updatableBean.runEveryServer && !ServerType.isMainServer()){
+                continue;
+            }
+            if(updatableBean.getCronExpression()==null) { // 纯周期运行
+                asyncExecutor.scheduleAtFixedRate(new Runnable() {
+                    @Override
+                    public void run() {
+                        updatableBean.execute();
+                    }
+                }, updatableBean.getInterval(), updatableBean.getInterval(), TimeUnit.MILLISECONDS);
+            }else{ // 通过cronExpression来生成运行时间点的周期运行
+                // cronExpression
+                Date now = new Date();
+                Date time = updatableBean.getCronExpression().getNextValidTimeAfter(now);
+                long delay = time.getTime() - now.getTime();
+                asyncExecutor.schedule(new Runnable() {
+                    @Override
+                    public void run() {
+                        updatableBean.execute();
+                        // ----
+                        Date now = new Date();
+                        Date time = updatableBean.cronExpression.getNextValidTimeAfter(now);
+                        long delay = time.getTime() - now.getTime();
+                        asyncExecutor.schedule(this,delay,TimeUnit.MILLISECONDS);
+                    }
+                },delay,TimeUnit.MILLISECONDS);
+            }
         }
     }
 
@@ -100,15 +128,27 @@ public class UpdateManager {
         private boolean isAsynchronous;
         private int interval;
         private long lastUpdateTime;
+        private boolean runEveryServer;
 
         private Object service;
         private Method method;
 
-        private UpdatableBean(Object service,Method method,boolean isAsynchronous,int interval){
+        private CronExpression cronExpression;
+
+        private UpdatableBean(Object service,Method method,boolean isAsynchronous,int interval,
+                              boolean runEveryServer,String cronExpression){
             this.service=service;
             this.method=method;
             this.isAsynchronous=isAsynchronous;
             this.interval=interval;
+            this.runEveryServer = runEveryServer;
+            if(cronExpression != null && cronExpression.length()>0) {
+                try {
+                    this.cronExpression = new CronExpression(cronExpression);
+                } catch (ParseException e) {
+                    throw new MMException(e);
+                }
+            }
         }
         // 这里必须捕获异常，防止阻塞其它更新器
         private void execute(){
@@ -141,6 +181,14 @@ public class UpdateManager {
 
         public long getLastUpdateTime() {
             return lastUpdateTime;
+        }
+
+        public boolean isRunEveryServer() {
+            return runEveryServer;
+        }
+
+        public CronExpression getCronExpression() {
+            return cronExpression;
         }
     }
 }

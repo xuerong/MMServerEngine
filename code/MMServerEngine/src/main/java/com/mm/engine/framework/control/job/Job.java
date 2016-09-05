@@ -1,22 +1,22 @@
 package com.mm.engine.framework.control.job;
 
+import com.mm.engine.framework.data.persistence.orm.annotation.DBEntity;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by apple on 16-9-4.
- * job分为两种:
- * 一种是重复执行:用cronExpression表示,可以用注解
- * 一种是指执行一次:用时间段表示
+ * job“为多久之后执行一个事情”
+ * 对于周期性的执行事情，在updatable中处理
  *
  */
-public class Job {
+public class Job{
     private String id;
-
     //
-    private Date startTime; // 第一次执行时间,
-    private String cronExpression; // 执行时间表达式,如果存在,会多次执行
+    private Date startDate; // 执行时间,之所以不用delay，是因为如重启服务器的时候要加载job，
 
-    private boolean db; // 是否持久化
+    private boolean db; // 是否持久化，跟随系统启动而启动的一般不需要db，
 
     private String method;
     private Class serviceClass;
@@ -30,20 +30,12 @@ public class Job {
         this.id = id;
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getCronExpression() {
-        return cronExpression;
-    }
-
-    public void setCronExpression(String cronExpression) {
-        this.cronExpression = cronExpression;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public boolean isDb() {

@@ -20,7 +20,7 @@ import java.util.Map;
 @Service(init = "init")
 public class TestService {
     public void init(){
-        System.out.println("TestService init");
+//        System.out.println("TestService init");
     }
     @Request(opcode = 20002)
     public RetPacket handlerLogin(Object clientData, Session session){
@@ -77,5 +77,9 @@ public class TestService {
     @Updatable(isAsynchronous = false)
     public void testUpdateSync1(int interval){
 //        System.out.println("testUpdateSync1"+interval);
+    }
+    @Updatable(isAsynchronous = true,cronExpression = "1/10 * * * * ? *")
+    public void testUpdateSync2(int interval){
+//        System.out.println("testUpdateSync2:"+interval);
     }
 }
