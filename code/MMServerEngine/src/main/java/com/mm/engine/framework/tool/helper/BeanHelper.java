@@ -1,7 +1,9 @@
 package com.mm.engine.framework.tool.helper;
 
 import com.mm.engine.framework.control.ServiceHelper;
+import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.aop.AopHelper;
+import com.mm.engine.framework.exception.MMException;
 import com.mm.engine.framework.server.EngineConfigure;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.sysBean.MyProxyTarget;
@@ -36,19 +38,28 @@ public final class BeanHelper {
     private static Map<Class<?>, Class<?>> configureBeans;
     static{
         try {
+            // service
+            Map<Class<?>, Class<?>> serviceClassMap = ServiceHelper.getServiceClassMap();
+            for (Map.Entry<Class<?>, Class<?>> entry : serviceClassMap.entrySet()) {
+                serviceBeans.put(entry.getKey(), newInstance(entry.getKey(), entry.getValue()));
+            }
             // 框架Bean
             EngineConfigure configure = Server.getEngineConfigure();
             configureBeans = configure.getConfigureBeans();
             for (Map.Entry<Class<?>, Class<?>> entry : configureBeans.entrySet()) {
                 // 由于在实例化一个的时候，可能用到另外一个，就在get的时候实例化了
+                // 首先看是否是service，如果是，从service中获取，否则，创建
                 if(!frameBeans.containsKey(entry.getKey())) {
-                    frameBeans.put(entry.getKey(), newInstance(entry.getValue()));
+                    if(entry.getValue().getAnnotation(Service.class)!=null){
+                        Object object = serviceBeans.get(entry.getValue());// 注意：这里是value
+                        if(object == null){
+                            throw new MMException("service frameBean fail:"+entry.getValue());
+                        }
+                        frameBeans.put(entry.getKey(), object);
+                    }else{
+                        frameBeans.put(entry.getKey(), newInstance(entry.getValue()));
+                    }
                 }
-            }
-            // service
-            Map<Class<?>, Class<?>> serviceClassMap = ServiceHelper.getServiceClassMap();
-            for (Map.Entry<Class<?>, Class<?>> entry : serviceClassMap.entrySet()) {
-                serviceBeans.put(entry.getKey(), newInstance(entry.getKey(), entry.getValue()));
             }
             // aop
             frameBeans.put(MyProxyTarget.class, newInstance(MyProxyTarget.class));
@@ -73,25 +84,29 @@ public final class BeanHelper {
      * 由于在实例化一个的时候，可能用到另外一个，就在这里实例化了
      * **/
     public static <T> T getFrameBean(Class<T> cls){
-        if(!frameBeans.containsKey(cls)){
-            if(configureBeans.containsKey(cls)){
-                frameBeans.put(cls, newInstance(configureBeans.get(cls)));
-            }else {
+        Object t = frameBeans.get(cls);
+        if(t == null){
+            Class<?> c = configureBeans.get(cls);
+            if(c != null){
+                t = newInstance(c);
+                frameBeans.put(cls, t);
+            }else{
                 log.error("con't get frame bean by class" + cls);
-                throw new RuntimeException("con't get frame bean by class" + cls);
-            }
+            throw new RuntimeException("con't get frame bean by class" + cls);
         }
-        return (T)frameBeans.get(cls);
+        }
+        return (T)t;
     }
     /**
      * 获取ServiceBean
      * **/
-    public static <T> T getServiceBean(Class<?> cls){
-        if(!serviceBeans.containsKey(cls)){
+    public static <T> T getServiceBean(Class<T> cls){
+        Object t = serviceBeans.get(cls);
+        if(t == null){
             log.error("con't get service bean by class"+cls);
             throw new RuntimeException("con't get service bean by class"+cls);
         }
-        return (T)serviceBeans.get(cls);
+        return (T)t;
     }
     /**
      * 测试aop功能

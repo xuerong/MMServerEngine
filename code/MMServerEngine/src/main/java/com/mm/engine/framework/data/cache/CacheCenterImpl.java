@@ -3,10 +3,9 @@ package com.mm.engine.framework.data.cache;
 import com.mm.engine.framework.control.annotation.NetEventListener;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.netEvent.NetEventData;
-import com.mm.engine.framework.control.netEvent.NetEventManager;
-import com.mm.engine.framework.entrance.code.protocol.RetPacket;
-import com.mm.engine.framework.entrance.code.protocol.RetPacketImpl;
+import com.mm.engine.framework.control.netEvent.NetEventService;
 import com.mm.engine.framework.server.SysConstantDefine;
+import com.mm.engine.framework.tool.helper.BeanHelper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.Map;
  * 1 别人更新了远程，需要通知自己flush本地
  *
  */
-@Service
+@Service(init = "init")
 public class CacheCenterImpl implements CacheCenter {
     /**
      * 添加新数据时，先发送远程缓存，再更新本地，确保远程的一定比本地的新
@@ -35,6 +34,10 @@ public class CacheCenterImpl implements CacheCenter {
      * 在这一层要对缓存中出现的失败进行基本的处理，如打印日志
      *
      * */
+    private NetEventService netEventService;
+    public void init(){
+        netEventService = BeanHelper.getServiceBean(NetEventService.class);
+    }
     @Override
     public CacheEntity putIfAbsent(String key,CacheEntity entity) {
         CacheEntity older = MemCachedHelper.putIfAbsent(key,entity);
@@ -122,8 +125,9 @@ public class CacheCenterImpl implements CacheCenter {
     private void broadcastUpdateCache(String key){
         NetEventData eventData = new NetEventData(SysConstantDefine.CACHEUPDATE);
         eventData.setParam(key);
-        NetEventManager.broadcastNetEvent(eventData,false);
+        netEventService.broadcastNetEvent(eventData,false);
     }
+    // TODO 这里还没有处理
     @NetEventListener(netEvent = SysConstantDefine.CACHEUPDATE)
     public NetEventData updateCacheListener(NetEventData eventData){
         return new NetEventData(eventData.getNetEvent(),eventData.getParam());

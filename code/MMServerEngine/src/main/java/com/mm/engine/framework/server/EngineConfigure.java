@@ -65,6 +65,7 @@ public final class EngineConfigure {
         if(StringUtils.isEmpty(classPath)){
             throw new RuntimeException("class bean set is Invalid ,value is "+classPath);
         }
+
         Class<?> result;
         try {
             result=Class.forName(classPath);

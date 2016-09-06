@@ -1,20 +1,16 @@
 package com.mm.engine.framework.entrance.socket;
 
 import com.mm.engine.framework.control.netEvent.NetEventData;
-import com.mm.engine.framework.control.netEvent.NetEventManager;
+import com.mm.engine.framework.control.netEvent.NetEventService;
 import com.mm.engine.framework.entrance.Entrance;
 
 import com.mm.engine.framework.entrance.code.net.netty.DefaultNettyDecoder;
 import com.mm.engine.framework.entrance.code.net.netty.DefaultNettyEncoder;
-import com.mm.engine.framework.entrance.code.protocol.RetPacket;
 import com.mm.engine.framework.exception.MMException;
+import com.mm.engine.framework.tool.helper.BeanHelper;
 import io.netty.channel.*;
-import io.netty.handler.codec.MessageToByteEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
 
 /**
  * Created by a on 2016/8/29.
@@ -22,7 +18,7 @@ import java.io.ObjectOutputStream;
 public class NetEventNettyEntrance extends Entrance {
     private static final Logger log = LoggerFactory.getLogger(NetEventNettyEntrance.class);
     Channel channel = null;
-
+    NetEventService netEventService;
     public NetEventNettyEntrance(String name, int port){
         super(name,port);
     }
@@ -33,47 +29,11 @@ public class NetEventNettyEntrance extends Entrance {
                 port,DefaultNettyEncoder.class,DefaultNettyDecoder.class,DiscardServerHandler.class,name);
         log.info("bind port :"+port);
         // 向mainServer取得连接
-        NetEventManager.notifyConnMainServer();
+        netEventService = BeanHelper.getServiceBean(NetEventService.class);
+        netEventService.notifyConnMainServer();
     }
 
-    private void fire(ChannelHandlerContext ctx, Object msg,String entranceName){
-//        NetPacket netPacket = (NetPacket) msg; // 由于上层用编解码器处理了,所以这里获取和发送都是NetPacket即可
-//        try {
-//            if (netPacket == null) {
-//                // net解码错误
-//                System.out.println("net解码错误");
-//            }
-//            Channel channel = ctx.channel();
-//            String sessionId = channel.attr(sessionKey).get();
-//            if(sessionId!=null) {
-//                netPacket.put(Session.sessionKey, sessionId);
-//            }
-//            SocketAddress remoteAddress = channel.remoteAddress();
-//            String ip = "ipip";
-//            String url = "url";
-//            if(remoteAddress instanceof InetSocketAddress){
-//                InetSocketAddress inetSocketAddress = (InetSocketAddress)remoteAddress;
-//                ip = inetSocketAddress.getAddress().getHostAddress();
-//                url = inetSocketAddress.getHostName();
-//            }
-//            String controller = (String)netPacket.get(SysConstantDefine.controller);
-//            System.out.println("ip:"+ip+",url:"+url+",controller:"+controller);
-//            NetPacket reNetPacket=ControllerDispatcher.handle(NetType.Netty,
-//                    netPacket,url, ip);
-//            channel.attr(sessionKey).set(reNetPacket.get(Session.sessionKey).toString());
-//
-//            ctx.write(reNetPacket); // (1)
-//            ctx.flush(); // (2)
-//        } catch (Throwable e){
-//            e.printStackTrace();
-//            throw new RuntimeException(entranceName+" Exception");
-//        }finally {
-////                msg.
-////                ReferenceCountUtil.release(msg);
-//        }
-    }
-
-    public static class DiscardServerHandler extends ChannelInboundHandlerAdapter { // (1)
+    public class DiscardServerHandler extends ChannelInboundHandlerAdapter { // (1)
         @Override
         public void channelActive(final ChannelHandlerContext ctx) { // (1)
 
@@ -95,7 +55,7 @@ public class NetEventNettyEntrance extends Entrance {
             if(netEventData == null){
                 throw new MMException("NetEventNettyEntrance 收到包错误 ："+msg.getClass().getName());
             }
-            NetEventData retPacket = NetEventManager.handle(netEventData);
+            NetEventData retPacket = netEventService.handle(netEventData);
             if(id>0){ // 需要返回的
                 SocketPacket socketPacket = new SocketPacket();
                 socketPacket.setId(id);

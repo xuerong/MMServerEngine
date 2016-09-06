@@ -1,12 +1,13 @@
 package com.mm.engine.sysBean;
 
 import com.mm.engine.framework.control.annotation.*;
+import com.mm.engine.framework.control.event.EventService;
 import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.entrance.code.protocol.RetPacket;
 import com.mm.engine.framework.entrance.code.protocol.RetPacketImpl;
-import com.mm.engine.framework.control.event.EventManager;
 import com.mm.engine.framework.control.event.EventData;
 import com.mm.engine.framework.data.entity.session.Session;
+import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.mm.engine.framework.tool.util.Util;
 import com.protocol.OpCode;
 import com.protocol.PBMessage;
@@ -19,8 +20,10 @@ import java.util.Map;
  */
 @Service(init = "init")
 public class TestService {
+    private EventService eventService;
     public void init(){
 //        System.out.println("TestService init");
+        eventService = BeanHelper.getServiceBean(EventService.class);
     }
     @Request(opcode = 20002)
     public RetPacket handlerLogin(Object clientData, Session session){
@@ -54,7 +57,7 @@ public class TestService {
     public RetPacket handlerLogout(Object clientData,Session session) throws Exception{
         session.setExpired();
         PBMessage.SCLoginRet.Builder builder= PBMessage.SCLoginRet.newBuilder();
-        EventManager.fireEvent(new EventData((short)100));
+        eventService.fireEvent(new EventData((short)100));
         return new RetPacketImpl(OpCode.SCLogoutRet, builder);
     }
     @EventListener(event = 100)

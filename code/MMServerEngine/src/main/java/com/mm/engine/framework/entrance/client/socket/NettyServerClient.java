@@ -1,7 +1,7 @@
 package com.mm.engine.framework.entrance.client.socket;
 
 import com.mm.engine.framework.control.event.EventData;
-import com.mm.engine.framework.control.event.EventManager;
+import com.mm.engine.framework.control.event.EventService;
 import com.mm.engine.framework.entrance.client.AbServerClient;
 import com.mm.engine.framework.entrance.code.net.netty.DefaultNettyDecoder;
 import com.mm.engine.framework.entrance.code.net.netty.DefaultNettyEncoder;
@@ -9,6 +9,7 @@ import com.mm.engine.framework.entrance.socket.SocketPacket;
 import com.mm.engine.framework.exception.MMException;
 import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.server.SysConstantDefine;
+import com.mm.engine.framework.tool.helper.BeanHelper;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -38,7 +39,13 @@ public class NettyServerClient extends AbServerClient {
 
     private Channel channel;
     private volatile boolean running;
+
+    private EventService eventService;
+
     public NettyServerClient(int serverType,String host,int port){
+
+        eventService = BeanHelper.getServiceBean(EventService.class);
+
         this.serverType = serverType;
         this.host = host;
         this.port = port;
@@ -89,7 +96,7 @@ public class NettyServerClient extends AbServerClient {
             log.info("disconnect server:"+"("+(host+":"+port) +")");
             EventData eventData = new EventData(SysConstantDefine.Event_NettyServerClient);
             eventData.setData(NettyServerClient.this);
-            EventManager.fireEvent(eventData);
+            eventService.fireEvent(eventData);
         }catch (Exception e){
             e.printStackTrace();
         }finally {

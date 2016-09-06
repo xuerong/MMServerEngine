@@ -1,8 +1,6 @@
 package com.mm.engine.framework.server;
 
 import com.mm.engine.framework.control.ServiceHelper;
-import com.mm.engine.framework.control.update.UpdateManager;
-import com.mm.engine.framework.data.tx.AsyncManager;
 import com.mm.engine.framework.entrance.Entrance;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
@@ -52,8 +50,6 @@ public final class Server {
                 }
             }
         }
-        // 更新器的启动
-        UpdateManager.start();
         // 启动所有入口
         List<Entrance> entranceList = configure.getEntranceList();
         for (Entrance entrance :entranceList) {
@@ -74,8 +70,6 @@ public final class Server {
     }
 
     public static void stop(){
-        // 关闭更新器
-        UpdateManager.stop();
         // 关闭入口
         List<Entrance> entranceList = configure.getEntranceList();
         for (Entrance entrance :entranceList) {
@@ -84,11 +78,6 @@ public final class Server {
             }catch (Exception e2){
                 log.error("entrance stop fail , entrance name = "+entrance.getName()+":"+e2.getStackTrace());
             }
-        }
-        // 异步服务器关闭
-        if(Server.getEngineConfigure().isAsyncServer()){
-            AsyncManager.stop();
-            log.info("异步服务器关闭完成!");
         }
         // 关闭所有的Service
         Map<Class<?>, Object> serviceBeanMap = BeanHelper.getServiceBeans();

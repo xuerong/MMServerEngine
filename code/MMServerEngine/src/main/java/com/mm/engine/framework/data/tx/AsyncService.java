@@ -1,16 +1,15 @@
 package com.mm.engine.framework.data.tx;
 
 import com.mm.engine.framework.control.annotation.NetEventListener;
+import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.netEvent.NetEventData;
-import com.mm.engine.framework.control.netEvent.NetEventManager;
+import com.mm.engine.framework.control.netEvent.NetEventService;
 import com.mm.engine.framework.data.OperType;
 import com.mm.engine.framework.data.cache.CacheCenter;
 import com.mm.engine.framework.data.cache.CacheEntity;
 import com.mm.engine.framework.data.cache.KeyParser;
 import com.mm.engine.framework.data.persistence.orm.DataSet;
 import com.mm.engine.framework.data.persistence.orm.EntityHelper;
-import com.mm.engine.framework.entrance.code.protocol.RetPacket;
-import com.mm.engine.framework.entrance.code.protocol.RetPacketImpl;
 import com.mm.engine.framework.exception.ExceptionHelper;
 import com.mm.engine.framework.exception.ExceptionLevel;
 import com.mm.engine.framework.exception.MMException;
@@ -29,30 +28,42 @@ import java.util.concurrent.*;
  * 更新数据库检测用一个线程，然后分配给其它线程去处理
  * 注意：原来同一个服务线程传过来的更新需求，要在同一个更新线程中按顺序处理
  */
-public class AsyncManager {
-    private static final Logger log = LoggerFactory.getLogger(AsyncManager.class);
+@Service(init = "init",destroy = "destroy")
+public class AsyncService {
+    private static final Logger log = LoggerFactory.getLogger(AsyncService.class);
     // 异步更新队列
 //    private static LinkedBlockingQueue<AsyncData> asyncDataQueue = new LinkedBlockingQueue<AsyncData>();
     // 另一个队列，key为对象的类的名字,只存储增加和删除，根据异步对象的类型进行存储，在REFRESHDBLIST中起作用：
     // 1防止漏掉数据：插入数据库之后才删它，而asyncDataQueue在插入数据库之前就会被删掉了，2提高查询效率
-    private static Map<String,List<AsyncData>> asyncDataMap = new ConcurrentHashMap<>();
-    private static final int threadCount = Runtime.getRuntime().availableProcessors()+1;
-    private static Random threadRand = new Random();
-    private static ThreadLocal<Integer> threadNum = new ThreadLocal<>();
-    private static Map<Integer,Worker> workerMap = new HashMap<>();
+    private Map<String,List<AsyncData>> asyncDataMap = new ConcurrentHashMap<>();
+    private final int threadCount = Runtime.getRuntime().availableProcessors()+1;
+    private Random threadRand = new Random();
+    private ThreadLocal<Integer> threadNum = new ThreadLocal<>();
+    private Map<Integer,Worker> workerMap = new HashMap<>();
     // listKeys
     // key为对象的类的名字，值为其对应的listKeys
-    private static Map<String,Set<String>> listKeysMap = new ConcurrentHashMap<>();
+    private Map<String,Set<String>> listKeysMap = new ConcurrentHashMap<>();
     //
-    private static final CacheCenter cacheCenter;
-    static {
+    private CacheCenter cacheCenter;
+    private NetEventService netEventService;
+    private LockerService lockerService;
+
+    public void init(){
+        netEventService = BeanHelper.getServiceBean(NetEventService.class);
         cacheCenter= BeanHelper.getFrameBean(CacheCenter.class);
+        lockerService = BeanHelper.getServiceBean(LockerService.class);
         // 判断本服务器是否是异步服务器，如果是，则启动异步更新线程
         if(Server.getEngineConfigure().isAsyncServer()){
             startAsyncService();
         }
     }
-    private static void startAsyncService(){
+
+    public void destroy(){
+        stop();
+        log.info("异步服务器关闭完成!");
+    }
+
+    private void startAsyncService(){
         for(int i=0;i<threadCount;i++){
             Worker worker = new Worker(i);
             workerMap.put(i,worker);
@@ -64,7 +75,7 @@ public class AsyncManager {
      * 服务器停止之前别忘了调用该方法
      * 由于要等待各个线程处理完成，所以可能要等待一段时间
      */
-    public static void stop(){
+    public void stop(){
         if(!Server.getEngineConfigure().isAsyncServer()){
             return;
         }
@@ -83,23 +94,23 @@ public class AsyncManager {
      * 插入一个对象，
      *
      */
-    public static void insert(String key,Object entity){
+    public void insert(String key,Object entity){
         doAsyncData(key,entity,OperType.Insert);
     }
     /**
      * 更新一个对象，
      */
-    public static void update(String key,Object entity){
+    public void update(String key,Object entity){
         doAsyncData(key,entity,OperType.Update);
     }
     /**
      * 删除一个实体
      * 由于要异步删除，缓存中设置删除标志位,所以，在缓存中是update
      */
-    public static void delete(String key,Object entity){
+    public void delete(String key,Object entity){
         doAsyncData(key,entity,OperType.Delete);
     }
-    private static void doAsyncData(String key,Object object,OperType operType){
+    private void doAsyncData(String key,Object object,OperType operType){
         AsyncData asyncData = new AsyncData();
         asyncData.setOperType(operType);
         asyncData.setKey(key);
@@ -114,14 +125,15 @@ public class AsyncManager {
 
         NetEventData eventData = new NetEventData(SysConstantDefine.ASYNCDATA);
         eventData.setParam(asyncData);
-        NetEventData ret = NetEventManager.fireAsyncServerNetEventSyn(eventData); // 需要同步发送
+        NetEventData ret = netEventService.fireAsyncServerNetEventSyn(eventData); // 需要同步发送
         List<AsyncData> result = (List<AsyncData>)ret.getParam();
     }
 
     /**
      * 事务可以考虑用这个，这样，一个事务只需要一次网络访问
+     * TODO 现在为什么还没有用？
      */
-    public static void asyncData(List<AsyncData> asyncDataList){
+    public void asyncData(List<AsyncData> asyncDataList){
         Integer t = threadNum.get();
         if(t == null){
             t = threadRand.nextInt(threadCount);
@@ -132,7 +144,7 @@ public class AsyncManager {
         }
         NetEventData eventData = new NetEventData(SysConstantDefine.ASYNCDATA);
         eventData.setParam(asyncDataList);
-        NetEventData ret = NetEventManager.fireAsyncServerNetEventSyn(eventData); // 需要同步发送
+        NetEventData ret = netEventService.fireAsyncServerNetEventSyn(eventData); // 需要同步发送
         List<AsyncData> result = (List<AsyncData>)ret.getParam();
     }
     /**
@@ -140,10 +152,10 @@ public class AsyncManager {
      * 当从数据库中获取list之后，需要从异步服务器中获取满足该list且还没有更新到数据库中的对象，主要是插入和删除的
      * 同时将对应的listKey记录到异步服务器中，以便新数据插入时更新对应的list
      */
-    public static List<AsyncData> getAsyncDataBelongListKey(String listKey){
+    public List<AsyncData> getAsyncDataBelongListKey(String listKey){
         NetEventData eventData = new NetEventData(SysConstantDefine.GETASYNCDATABELONGLISTKEY);
         eventData.setParam(listKey);
-        NetEventData ret = NetEventManager.fireAsyncServerNetEventSyn(eventData); // 需要同步发送
+        NetEventData ret = netEventService.fireAsyncServerNetEventSyn(eventData); // 需要同步发送
         List<AsyncData> result = (List<AsyncData>)ret.getParam();
         return result;
     }
@@ -210,7 +222,7 @@ public class AsyncManager {
                 for (Iterator<String> iter = listKeys.iterator(); iter.hasNext(); ) {
                     String listKey = iter.next();
                     if (KeyParser.isObjectBelongToList(asyncData.getObject(), listKey)) {
-                        if (!LockerManager.lockKeys(listKey)) { // 要不要做成一起加锁， 解锁，增加效率？
+                        if (!lockerService.lockKeys(listKey)) { // 要不要做成一起加锁， 解锁，增加效率？
                             ExceptionHelper.handle(ExceptionLevel.Warn, "加锁失败,listKey = " + listKey, null);
                         }
                         // 从缓存中取数据
@@ -218,7 +230,7 @@ public class AsyncManager {
                         if (cacheEntity == null) {
                             // 缓存中没有，删除掉这个listKey
                             iter.remove();
-                            LockerManager.unlockKeys(listKey);
+                            lockerService.unlockKeys(listKey);
                             continue;
                         }
                         List<String> keyList = (List<String>) cacheEntity.getEntity();
@@ -229,7 +241,7 @@ public class AsyncManager {
                             keyList.remove(asyncData.getKey());
                         }
                         cacheCenter.update(listKey,cacheEntity); // 由于加了锁之后获取的，所以不用担心版本问题，第一次放入缓存的地方也加了锁
-                        LockerManager.unlockKeys(listKey);
+                        lockerService.unlockKeys(listKey);
                     }
                 }
             }
@@ -291,7 +303,7 @@ public class AsyncManager {
                     toString();
         }
     }
-    public static class Worker{
+    public class Worker{
         private static final int MAXSWALLOWSTOPEXCEPTIONTIMES = 10; // 停止时最大吞掉异常的次数
         private static final int MAXWAITTIMES = 100; // 停止时最多等待次数
         private static final int WAITINTERVAL = 200; // 停止时每次等待时间

@@ -20,8 +20,8 @@ import java.util.concurrent.*;
  * 1、事件线程有最大值，超过最大值，事件要排队
  * 2、事件队列有最大值，超过最大值，抛出服务器异常：可在某个比较大的值抛出警告
  */
-public final class EventManager {
-    private static final Logger log = LoggerFactory.getLogger(EventManager.class);
+public final class EventManagerCopy {
+    private static final Logger log = LoggerFactory.getLogger(EventManagerCopy.class);
     private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(
             10,100,3000, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<Runnable>(),
             new RejectedExecutionHandler(){

@@ -27,8 +27,8 @@ import java.util.List;
  * 在系统启动的时候，找到所有的Service并用对应的Handler封装，
  * 然后传递给对应的管理器,分别为：
  * Request-RequestHandler-RequestDispatcher
- * EventListener-EventListenerHandler-EventManager
- * NetEventListener-NetEventListenerHandler-NetEventManager
+ * EventListener-EventListenerHandler-EventService
+ * NetEventListener-NetEventListenerHandler-NetEventService
  * Updatable-
  */
 public final class ServiceHelper {

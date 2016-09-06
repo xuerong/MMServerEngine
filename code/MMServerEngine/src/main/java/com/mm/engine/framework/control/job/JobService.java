@@ -1,11 +1,9 @@
 package com.mm.engine.framework.control.job;
 
-import com.google.code.yanf4j.util.ConcurrentHashSet;
 import com.mm.engine.framework.control.annotation.NetEventListener;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.netEvent.NetEventData;
-import com.mm.engine.framework.control.netEvent.NetEventManager;
-import com.mm.engine.framework.entrance.client.ServerClient;
+import com.mm.engine.framework.control.netEvent.NetEventService;
 import com.mm.engine.framework.exception.MMException;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.ServerType;
@@ -18,11 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.*;
 
 /**
@@ -45,23 +40,29 @@ import java.util.concurrent.*;
  * 2 db的job获取之后如何分发？主要是服务器启动有顺序性，况且原来创建该job的服务器未必会启动
  */
 @Service(init = "init")
-public class JobManager {
-    private static final Logger log = LoggerFactory.getLogger(JobManager.class);
+public class JobService {
+    private static final Logger log = LoggerFactory.getLogger(JobService.class);
     // 执行job的调度器,这个线程数不用处理器的个数,因为有些job会有数据库操作
-    private static ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(100);
-    private static ConcurrentHashMap<String,JobExecutor> jobExecutorMap = new ConcurrentHashMap<>();
+    private ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(100);
+    private ConcurrentHashMap<String,JobExecutor> jobExecutorMap = new ConcurrentHashMap<>();
     // 这里面存储的是所有的job的key,用来确保不能有重复的key,这个只在mainServer上面有效
-    private static ConcurrentHashMap<String,String> jobIds = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String,String> jobIds = new ConcurrentHashMap<>();
 
-    private static JobStorage jobStorage;
-    public static void startJob(Job job){
+    private JobStorage jobStorage;
+
+    private NetEventService netEventService;
+
+    public void startJob(Job job){
         startJob(job,true);
     }
 
-    public static void deleteJob(String id){
+    public void deleteJob(String id){
         deleteJob(id,false);
     }
     public void init(){
+
+        netEventService = BeanHelper.getServiceBean(NetEventService.class);
+
         if(ServerType.isMainServer()){ // TODO 后面可以改成分发给其它服务器，或者直接设置个job服务器，用于执行一些job
             // job是否放入数据库呢？我偏向于不放在数据库，原因如下：
             JobStorage jobStorage = BeanHelper.getFrameBean(JobStorage.class);
@@ -90,7 +91,7 @@ public class JobManager {
                 return eventData;
             }
             if(!data.serverAdd.equals(oldAdd)){// 需要删除实际的job
-                NetEventManager.fireServerNetEvent(oldAdd,new NetEventData(SysConstantDefine.removeJobOnServer,data.id));
+                netEventService.fireServerNetEvent(oldAdd,new NetEventData(SysConstantDefine.removeJobOnServer,data.id));
             }
         }
         throw new MMException("netEvent error : "+eventData.getNetEvent());
@@ -107,7 +108,7 @@ public class JobManager {
         data.setParam(Boolean.TRUE);
         return data;
     }
-    private static void startJob(Job job,boolean isDb){
+    private void startJob(Job job,boolean isDb){
         JobExecutor jobExecutor = createJobExecutor(job);
         synchronized (jobExecutor) {
             // 本地验证唯一性
@@ -120,7 +121,7 @@ public class JobManager {
             data.id = job.getId();
             data.type = 1;
             data.serverAdd = Util.getHostAddress() + ":" + Server.getEngineConfigure().getNetEventPort();
-            NetEventData result = NetEventManager.fireMainServerNetEventSyn(
+            NetEventData result = netEventService.fireMainServerNetEventSyn(
                     new NetEventData(SysConstantDefine.checkJobId, data));
             if (!(boolean) (result.getParam())) { // 添加失败
                 // 在本地删除
@@ -137,13 +138,13 @@ public class JobManager {
             jobExecutor.future = future;
         }
     }
-    private static void deleteJob(String id,boolean jobFinish){
+    private void deleteJob(String id,boolean jobFinish){
         JobNetEventData data = new JobNetEventData();
         data.id = id;
         data.type = 2; // 移除
         data.serverAdd = Util.getHostAddress()+":"+ Server.getEngineConfigure().getNetEventPort();
         // 清楚同步id
-        NetEventManager.fireMainServerNetEvent(
+        netEventService.fireMainServerNetEvent(
                 new NetEventData(SysConstantDefine.checkJobId,data));
         // 清除自身的保存
         JobExecutor jobExecutor = jobExecutorMap.remove(id);
@@ -158,7 +159,7 @@ public class JobManager {
             }
         }
     }
-    private static JobExecutor createJobExecutor(Job job){
+    private JobExecutor createJobExecutor(Job job){
         JobExecutor jobExecutor = new JobExecutor();
         jobExecutor.id = job.getId();
         if(jobExecutor.id == null || jobExecutor.id.length() == 0){
@@ -217,7 +218,7 @@ public class JobManager {
         return jobExecutor;
     }
 
-    public static class JobNetEventData implements Serializable{
+    public class JobNetEventData implements Serializable{
         private int type; // 1 添加,2 移除
 
         private String id;
@@ -227,7 +228,7 @@ public class JobManager {
         private String serverAdd; // server的地址
     }
 
-    public static class JobExecutor implements Runnable{
+    public class JobExecutor implements Runnable{
         private String id;
         //
         private long delay; // 第一次执行时间,

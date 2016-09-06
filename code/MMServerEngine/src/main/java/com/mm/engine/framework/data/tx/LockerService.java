@@ -3,12 +3,10 @@ package com.mm.engine.framework.data.tx;
 import com.mm.engine.framework.control.annotation.NetEventListener;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.netEvent.NetEventData;
-import com.mm.engine.framework.control.netEvent.NetEventManager;
+import com.mm.engine.framework.control.netEvent.NetEventService;
 import com.mm.engine.framework.data.OperType;
 import com.mm.engine.framework.data.cache.CacheCenter;
 import com.mm.engine.framework.data.cache.CacheEntity;
-import com.mm.engine.framework.entrance.code.protocol.RetPacket;
-import com.mm.engine.framework.entrance.code.protocol.RetPacketImpl;
 import com.mm.engine.framework.exception.ExceptionHelper;
 import com.mm.engine.framework.exception.ExceptionLevel;
 import com.mm.engine.framework.server.SysConstantDefine;
@@ -16,6 +14,7 @@ import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -23,38 +22,41 @@ import java.util.concurrent.ConcurrentHashMap;
  * 事务提交时的锁控制,运行在一个服务器中(main服务器)
  * 主要是对要提交的对象进行加锁并进行版本校验
  */
-@Service
-public class LockerManager {
-    private static final Logger log = LoggerFactory.getLogger(LockerManager.class);
+@Service(init = "init")
+public class LockerService {
+    private static final Logger log = LoggerFactory.getLogger(LockerService.class);
     private static final int maxTryLockTimes = 20;
 
-    private static ConcurrentHashMap<String,String> lockers = new ConcurrentHashMap<>();
-    private static final CacheCenter cacheCenter;
-    static {
+    private ConcurrentHashMap<String,String> lockers = new ConcurrentHashMap<>();
+    private CacheCenter cacheCenter;
+
+    private NetEventService netEventService;
+
+    public void init(){
+        netEventService = BeanHelper.getServiceBean(NetEventService.class);
         cacheCenter= BeanHelper.getFrameBean(CacheCenter.class);
     }
     ////---------------------------外部代用
-
-    public static boolean lockAndCheckKeys(LockerData... lockerDatas){
+    public boolean lockAndCheckKeys(LockerData... lockerDatas){
         NetEventData eventData = new NetEventData(SysConstantDefine.LOCKKEYSANDCHECK);
         eventData.setParam(lockerDatas);
-        NetEventData ret = NetEventManager.fireMainServerNetEventSyn(eventData); // 需要同步发送
+        NetEventData ret = netEventService.fireMainServerNetEventSyn(eventData); // 需要同步发送
         Boolean result = (Boolean)ret.getParam();
         if(result == null){
             result = false;
         }
         return result;
     }
-    public static void unlockKeys(String... keys){
+    public void unlockKeys(String... keys){
         NetEventData eventData = new NetEventData(SysConstantDefine.UNLOCKKEYS);
         eventData.setParam(keys);
-        NetEventManager.fireMainServerNetEvent(eventData); // 异步发送解锁就可以
+        netEventService.fireMainServerNetEvent(eventData); // 异步发送解锁就可以
     }
     // TODO 如果确保每个服务在自己返回的时候，即使发生异常，也会把加的锁释放
-    public static boolean lockKeys(String... keys){
+    public boolean lockKeys(String... keys){
         NetEventData eventData = new NetEventData(SysConstantDefine.LOCKKEYS);
         eventData.setParam(keys);
-        NetEventData ret = NetEventManager.fireMainServerNetEventSyn(eventData); // 需要同步发送
+        NetEventData ret = netEventService.fireMainServerNetEventSyn(eventData); // 需要同步发送
         Boolean result = (Boolean)ret.getParam();
         if(result == null){
             result = false;
@@ -126,7 +128,7 @@ public class LockerManager {
      * @param operType
      * @param casUnique
      */
-    private static boolean lockAndCheck(String key, OperType operType, long casUnique){
+    private boolean lockAndCheck(String key, OperType operType, long casUnique){
         if(!lock(key)){
             return false;
         }
@@ -146,7 +148,7 @@ public class LockerManager {
         }
         return true;
     }
-    private static boolean lock(String key){
+    private boolean lock(String key){
         // 加锁
         String olderKey = lockers.putIfAbsent(key,key);
         int lockTime = 0;
@@ -167,11 +169,11 @@ public class LockerManager {
         }
         return true;
     }
-    private static void unlock(String key){
+    private void unlock(String key){
         lockers.remove(key);
     }
 
-    public static class LockerData{
+    public static class LockerData implements Serializable{
         private String key;
         private OperType operType;
         private long casUnique;

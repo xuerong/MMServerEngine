@@ -1,16 +1,14 @@
 package com.mm.engine.framework.data;
 
+import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.data.cache.CacheCenter;
 import com.mm.engine.framework.data.cache.CacheEntity;
 import com.mm.engine.framework.data.cache.KeyParser;
 import com.mm.engine.framework.data.persistence.orm.DataSet;
-import com.mm.engine.framework.data.tx.AsyncManager;
-import com.mm.engine.framework.data.tx.LockerManager;
-import com.mm.engine.framework.data.tx.ThreadLocalTxCache;
-import com.mm.engine.framework.exception.ExceptionHelper;
-import com.mm.engine.framework.server.SysConstantDefine;
+import com.mm.engine.framework.data.tx.AsyncService;
+import com.mm.engine.framework.data.tx.LockerService;
+import com.mm.engine.framework.data.tx.TxCacheService;
 import com.mm.engine.framework.tool.helper.BeanHelper;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 
 import java.util.*;
 
@@ -32,7 +30,7 @@ import java.util.*;
  * 这里面的数据可以考虑不用返回(flush)而是出现错误抛出异常
  *
  * // 数据模块考虑
- * DataCenter
+ * DataService
  * ThreadLocalCache
  * CacheCenter
  * DataSet
@@ -43,15 +41,25 @@ import java.util.*;
  * 1、getList的缓存作一个标记,insert的时候查询标记来修改对应的缓存list(解决insert和和缓存list之间的问题)
  * 2、---数据库中getList,从异步中加载相应的多出的对象,放进缓存(解决异步insert和getList之间的为题)
  */
-public class DataCenter {
-    private static final CacheCenter cacheCenter;
+@Service(init = "init")
+public class DataService {
+    private CacheCenter cacheCenter;
+    private AsyncService asyncService;
+    private LockerService lockerService;
+    private TxCacheService txCacheService;
     // 这里缓存一下查询结果,是保存一下查询的casUnique,这个只有在InTx且加锁的时候才使用
     // 当加锁之后,进行版本验证用
-    private static final ThreadLocal<Map<String,CacheEntity>> cacheEntitys = new ThreadLocal<Map<String,CacheEntity>>();
-    static {
+    private final ThreadLocal<Map<String,CacheEntity>> cacheEntitys = new ThreadLocal<Map<String,CacheEntity>>();
+
+
+    public void init(){
         cacheCenter= BeanHelper.getFrameBean(CacheCenter.class);
+        asyncService = BeanHelper.getServiceBean(AsyncService.class);
+        lockerService = BeanHelper.getServiceBean(LockerService.class);
+        txCacheService = BeanHelper.getServiceBean(TxCacheService.class);
     }
-    public static CacheEntity getCacheEntity(String key){
+
+    public CacheEntity getCacheEntity(String key){
         Map<String,CacheEntity> map = cacheEntitys.get();
         if(map != null){
             return map.get(key);
@@ -63,12 +71,12 @@ public class DataCenter {
      *
      * 这里需要保存一下获取数据的版本，其实就是保存一下CacheEntity的引用，这样可以在update的时候cas用
      */
-    public static <T> T selectObject(Class<T> entityClass, String condition, Object... params){
+    public <T> T selectObject(Class<T> entityClass, String condition, Object... params){
         // 如果在事务中，先从事务缓存中get，如果事务缓存中没有，则从数据中取，并放入事务,根据情况确定是否返回
         String key = KeyParser.parseKeyForObject(entityClass,condition,params);
         Object object = null;
-        if(ThreadLocalTxCache.isInTx()){
-            ThreadLocalTxCache.PrepareCachedData prepareCachedData = ThreadLocalTxCache.get(key);
+        if(txCacheService.isInTx()){
+            TxCacheService.PrepareCachedData prepareCachedData = txCacheService.get(key);
             if(prepareCachedData != null){
                 if(prepareCachedData.getOperType() != OperType.Delete){
                     return (T)prepareCachedData.getData();
@@ -92,11 +100,11 @@ public class DataCenter {
             }
         }
         if(entity!= null && entity.getState() == CacheEntity.CacheEntityState.Normal) {
-            if(ThreadLocalTxCache.isInTx()){
+            if(txCacheService.isInTx()){
                 // 放入事务缓存，这里可以考虑不放入，下面的selectList也就可以不放入
-                ThreadLocalTxCache.putWhileSelect(key,entity.getEntity());
+                txCacheService.putWhileSelect(key,entity.getEntity());
                 // 如果这个对象要求加锁,那么就要记录下来它的casUnique
-                if(ThreadLocalTxCache.isLockClass(entity.getEntity().getClass())){
+                if(txCacheService.isLockClass(entity.getEntity().getClass())){
                     Map<String,CacheEntity> map = cacheEntitys.get();
                     if(map == null){
                         map = new HashMap<>();
@@ -113,17 +121,17 @@ public class DataCenter {
      * 查询一个列表
      * 这里先不做事务的缓存,我觉得还是有必要加的，不过要先想好怎么加，否则会影响效率(和缓存中一样,会有点鸡肋，要不上面的也不缓存)
      */
-    public static <T> List<T> selectList(Class<T> entityClass, String condition, Object... params) {
+    public <T> List<T> selectList(Class<T> entityClass, String condition, Object... params) {
         String listKey = KeyParser.parseKeyForList(entityClass,condition,params);
         CacheEntity entity = (CacheEntity)cacheCenter.get(listKey);
         List<T> objectList = null;
         if(entity == null){
             // TODO 加锁listKey
-            if(!LockerManager.lockKeys(listKey)){
+            if(!lockerService.lockKeys(listKey)){
 //                ExceptionHelper.handle();
             }
             // TODO 这里从异步数据获取满足条件(listKey)的数据，并在查询数据库之后放进对应的list中
-            List<AsyncManager.AsyncData> asyncDataList = AsyncManager.getAsyncDataBelongListKey(listKey);
+            List<AsyncService.AsyncData> asyncDataList = asyncService.getAsyncDataBelongListKey(listKey);
             objectList = DataSet.selectListWithCondition(entityClass,condition,params);
             if(objectList != null || (asyncDataList != null && asyncDataList.size()>0)){ // 0个也缓存
                 if(objectList == null){
@@ -133,7 +141,7 @@ public class DataCenter {
                     // 放入objcetList
                     Set<String> deleteObjecKeys = null;
                     Set<String> objectListKeys = null;
-                    for(AsyncManager.AsyncData asyncData : asyncDataList){
+                    for(AsyncService.AsyncData asyncData : asyncDataList){
                         if(asyncData.getOperType() == OperType.Insert){
                             // TODO 为了防止重复数据，这样去除效率有点低，能通过其它方法提高吗，尽管发生的概率比较小，下面删除能否利用上?
                             if(objectListKeys == null){
@@ -183,7 +191,7 @@ public class DataCenter {
                     cacheCenter.putList(cacheEntityMap);
                 }
                 // TODO 解锁listKey
-                LockerManager.unlockKeys(listKey);
+                lockerService.unlockKeys(listKey);
             }
         }
         if(objectList == null && entity != null){ // 从缓存中取出了对应的keys,需要从缓存中取出指
@@ -198,9 +206,9 @@ public class DataCenter {
                 }
             }
         }
-        if(ThreadLocalTxCache.isInTx() && objectList != null){
+        if(txCacheService.isInTx() && objectList != null){
             // 替换掉事务中新的值,增删改
-            ThreadLocalTxCache.replaceCacheObjectToList(listKey,objectList);
+            txCacheService.replaceCacheObjectToList(listKey,objectList);
         }
         if(objectList == null || objectList.size() == 0){
             return null;
@@ -210,11 +218,11 @@ public class DataCenter {
     /**
      * 插入一个对象，
      */
-    public static boolean insert(Object object){
+    public boolean insert(Object object){
         String key = KeyParser.parseKey(object);
         // 在事事务中仅插入事务
-        if(ThreadLocalTxCache.isInTx()){
-            ThreadLocalTxCache.insert(key,object);
+        if(txCacheService.isInTx()){
+            txCacheService.insert(key,object);
             return true;
         }
         // 不在事务中,先插入缓存,再插入异步服务器
@@ -223,7 +231,7 @@ public class DataCenter {
         CacheEntity cacheEntity = new CacheEntity(object);
         cacheCenter.update(key,cacheEntity);
         // 异步
-        AsyncManager.insert(key,object);
+        asyncService.insert(key,object);
         return true;
     }
     /**
@@ -231,11 +239,11 @@ public class DataCenter {
      * 分为两种情况:需要cas和不需要cas
      * 加锁更新的就用cas,否则就不用cas
      */
-    public static boolean update(Object object){
+    public boolean update(Object object){
         String key = KeyParser.parseKey(object);
         // 在事事务中仅更新事务
-        if(ThreadLocalTxCache.isInTx()){
-            ThreadLocalTxCache.update(key,object);
+        if(txCacheService.isInTx()){
+            txCacheService.update(key,object);
             return true;
         }
         // 不再事务中,先更新缓存,再放入异步数据库
@@ -251,7 +259,7 @@ public class DataCenter {
         cacheEntity.setState(CacheEntity.CacheEntityState.Normal);
         cacheCenter.update(key,cacheEntity); // 没有cas,也就可以没有失败
         // 异步
-        AsyncManager.update(key,object);
+        asyncService.update(key,object);
 
         return true;
     }
@@ -259,11 +267,11 @@ public class DataCenter {
      * 删除一个实体
      * 由于要异步删除，缓存中设置删除标志位,所以，在缓存中是update
      */
-    public static boolean delete(Object object){
+    public boolean delete(Object object){
         String key = KeyParser.parseKey(object);
         // 在事事务中仅在事务中删除事务
-        if(ThreadLocalTxCache.isInTx()){
-            ThreadLocalTxCache.delete(key,object);
+        if(txCacheService.isInTx()){
+            txCacheService.delete(key,object);
             return true;
         }
         // 不再事务中,先更新缓存,再放入异步数据库
@@ -272,7 +280,7 @@ public class DataCenter {
         cacheEntity.setState(CacheEntity.CacheEntityState.Delete);
         cacheCenter.update(key,cacheEntity); // 这里用update
         // 异步
-        AsyncManager.delete(key,object);
+        asyncService.delete(key,object);
         return true;
     }
     /**
@@ -280,7 +288,7 @@ public class DataCenter {
      *
      * 暂时先不用
      */
-//    public static <T> boolean delete(Class<T> entityClass, String condition, Object... params){
+//    public <T> boolean delete(Class<T> entityClass, String condition, Object... params){
 //        return false;
 //    }
 

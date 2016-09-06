@@ -1,6 +1,7 @@
 package com.mm.engine.framework.control.update;
 
 import com.mm.engine.framework.control.ServiceHelper;
+import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.annotation.Updatable;
 import com.mm.engine.framework.control.update.cronExpression.CronExpression;
 import com.mm.engine.framework.exception.MMException;
@@ -25,14 +26,16 @@ import java.util.concurrent.*;
  * 更新周期将被迫降低，出现这种情况，说明需要适当的减少更新内容耗时或增加更新周期
  * 2对于异步更新器，将提供线程池进行更新
  */
-public class UpdateManager {
-    private static List<UpdatableBean> asyncUpdatableList=new ArrayList<>();
-    private static List<UpdatableBean> syncUpdatableList=new ArrayList<>();
+@Service(init = "init",destroy = "destroy")
+public class UpdateService {
+    private static int syncUpdateInterval;
 
-    private static final int syncUpdateInterval;
+    private List<UpdatableBean> asyncUpdatableList=new ArrayList<>();
+    private List<UpdatableBean> syncUpdatableList=new ArrayList<>();
+
     // 线程数量可以是处理器数量*2+1：Runtime.getRuntime().availableProcessors()
     // 线程池这里最好也重写，给线程命名标记
-    private static ScheduledExecutorService asyncExecutor = new ScheduledThreadPoolExecutor(6, new RejectedExecutionHandler() {
+    private ScheduledExecutorService asyncExecutor = new ScheduledThreadPoolExecutor(6, new RejectedExecutionHandler() {
         @Override
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
             // 拒绝执行处理
@@ -43,9 +46,9 @@ public class UpdateManager {
             // 执行后处理，注意异常的处理
         }
     };
-    private static ScheduledExecutorService syncExecutor=Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService syncExecutor=Executors.newSingleThreadScheduledExecutor();
 
-    static {
+    public void init(){
         Map<Class<?>,List<Method>> updatableClassMap= ServiceHelper.getUpdatableClassMap();
         for(Map.Entry<Class<?>,List<Method>> entry : updatableClassMap.entrySet()){
             Object service= BeanHelper.getServiceBean(entry.getKey());
@@ -64,14 +67,19 @@ public class UpdateManager {
         }
         // 从配置文件取出同步更新时间间隔
         syncUpdateInterval= Server.getEngineConfigure().getUpdateCycle();
+        // 启动
+        start();
+    }
+    public void destroy(){
+        stop();
     }
 
-    public static void stop(){
+    public void stop(){
         syncExecutor.shutdown();
         asyncExecutor.shutdown();
     }
 
-    public static void start(){
+    public void start(){
         // 启动同步更新器
         for(UpdatableBean updatableBean : syncUpdatableList){
             updatableBean.lastUpdateTime=System.nanoTime();
@@ -124,7 +132,7 @@ public class UpdateManager {
         }
     }
 
-    private static class UpdatableBean{
+    private class UpdatableBean{
         private boolean isAsynchronous;
         private int interval;
         private long lastUpdateTime;

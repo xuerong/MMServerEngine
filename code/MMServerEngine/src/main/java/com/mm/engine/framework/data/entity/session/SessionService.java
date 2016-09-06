@@ -7,8 +7,6 @@ import com.mm.engine.framework.entrance.NetType;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.mm.engine.framework.tool.util.Util;
-import gnu.trove.procedure.TLongLongProcedure;
-import gnu.trove.procedure.TLongProcedure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,40 +19,41 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Administrator on 2015/11/16.
- * SessionManager：session的管理器，用来：
+ * SessionService：session的管理器，用来：
  * 获取session
  * 创建session
  * 定期更新session
  * 删除session
  * 保存session
  */
-@Service
-public final class SessionManager {
-    private static final Logger log = LoggerFactory.getLogger(SessionManager.class);
+@Service(init = "init")
+public class SessionService {
+    private static final Logger log = LoggerFactory.getLogger(SessionService.class);
 
-    private static final ConcurrentHashMap<String,Long> updateTime;
-    private static final int cycle;
+    private static ConcurrentHashMap<String,Long> updateTime;
+    private static int cycle;
     /**
      * session的存活时间，后面考虑一下是否将其改为由SessionClient决定
      *
      * 或者：session有自身的存活时间，而SessionClient自身可以有自己的存活时间，通过是否过期可以让自身的session销毁！！
      *
      * **/
-    private static final int survivalTime;
+    private static int survivalTime;
     /**
      * 最多移除数量
      * **/
-    private static final int maxOnceRemoveSessionCount = 300;
+    private static int maxOnceRemoveSessionCount = 300;
 
-    private static final CacheCenter cacheCenter;
-    static {
+    private static CacheCenter cacheCenter;
+
+    public void init(){
         cycle= Server.getEngineConfigure().getSessionCycle();
         survivalTime=Server.getEngineConfigure().getSessionSurvivalTime();
         cacheCenter= BeanHelper.getFrameBean(CacheCenter.class);
         updateTime=new ConcurrentHashMap<>();
     }
 
-    public static Session get(String sessionId){
+    public Session get(String sessionId){
         Session session = (Session) cacheCenter.get(sessionId);
         if(session!=null) {
             // 更新session时间
@@ -65,7 +64,7 @@ public final class SessionManager {
     }
 
     // 创建http的session
-    public static Session create(HttpServletRequest request){
+    public Session create(HttpServletRequest request){
         Session session=new Session(NetType.Http,request.getContextPath(), createSessionIdPrefix(), Util.getIp(request),new Date());
         updateTime.put(session.getSessionId(),session.getLastUpdateTime().getTime());
         Object older = cacheCenter.putIfAbsent(session.getSessionId(),session);
@@ -74,7 +73,7 @@ public final class SessionManager {
         }
         return session;
     }
-    public static Session create(NetType netType, String url,String ip){
+    public Session create(NetType netType, String url,String ip){
         Session session=new Session(netType,url, createSessionIdPrefix(), ip,new Date());
         updateTime.put(session.getSessionId(),session.getLastUpdateTime().getTime());
         Object older = cacheCenter.putIfAbsent(session.getSessionId(),session);
@@ -113,7 +112,7 @@ public final class SessionManager {
         cacheCenter.remove(session.getSessionId());
     }
 
-    private static String createSessionIdPrefix(){
+    private String createSessionIdPrefix(){
         return System.currentTimeMillis()+"";
     }
 }

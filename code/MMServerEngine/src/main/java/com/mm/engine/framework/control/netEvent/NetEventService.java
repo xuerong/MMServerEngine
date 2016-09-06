@@ -7,7 +7,6 @@ import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.event.EventData;
 import com.mm.engine.framework.entrance.client.ServerClient;
 import com.mm.engine.framework.entrance.client.socket.NettyServerClient;
-import com.mm.engine.framework.entrance.code.protocol.RetPacket;
 import com.mm.engine.framework.exception.MMException;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.ServerType;
@@ -19,10 +18,7 @@ import gnu.trove.procedure.TIntObjectProcedure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -39,15 +35,14 @@ import java.util.concurrent.*;
  * TODO 被忘了设定超时机制
  */
 @Service(init = "init")
-public class NetEventManager{
-    private static final Logger log = LoggerFactory.getLogger(NetEventManager.class);
+public class NetEventService {
+    private static final Logger log = LoggerFactory.getLogger(NetEventService.class);
 
 
     private static final String SERVERSKEY = "servers";
 
-//    private static Map<Integer,NetEventListenerHandler> handlerMap=new HashMap<Integer,NetEventListenerHandler>();
-private static Map<Integer,NetEventListenerHandler> handlerMap=null;
-    private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(
+    private Map<Integer,NetEventListenerHandler> handlerMap=null;
+    private final ThreadPoolExecutor executor = new ThreadPoolExecutor(
             10,100,3000, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<Runnable>(),
             new RejectedExecutionHandler(){
                 @Override
@@ -56,50 +51,31 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
                 }
             });
     // 所有已经添加的服务器
-    private static ConcurrentHashMap<String,ServerInfo> servers = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String,ServerInfo> servers = new ConcurrentHashMap<>();
     // 所有的serverClient 不包括自己 TODO 一个server可能既是这个server又是那个server
-    private static Map<String,ServerClient> serverClientMap = new ConcurrentHashMap<>();
+    private Map<String,ServerClient> serverClientMap = new ConcurrentHashMap<>();
     // mainServer 不包括自己
-    private static ServerClient asyncServerClient;
+    private ServerClient asyncServerClient;
     // mainServer client 不包括自己
-    private static ServerClient mainServerClient;
+    private ServerClient mainServerClient;
     //
-    private static String selfAdd;
-
-    static {
-
-//        TIntObjectHashMap<Class<?>> netEventHandlerClassMap = ServiceHelper.getNetEventListenerHandlerClassMap();
-//        netEventHandlerClassMap.forEachEntry(new TIntObjectProcedure<Class<?>>(){
-//            @Override
-//            public boolean execute(int i, Class<?> aClass) {
-//                handlerMap.put(i, (NetEventListenerHandler)BeanHelper.getServiceBean(aClass));
-//                return true;
-//            }
-//        });
-    }
+    private String selfAdd;
 
     public void init(){
-
-        if(handlerMap == null){ //TODO 这个要变成start时候初始化，
-            synchronized (NetEventManager.class) {
-                if(handlerMap == null) {
-                    final Map<Integer,NetEventListenerHandler> _handlerMap = new HashMap<>();
-                    TIntObjectHashMap<Class<?>> netEventHandlerClassMap = ServiceHelper.getNetEventListenerHandlerClassMap();
-                    netEventHandlerClassMap.forEachEntry(new TIntObjectProcedure<Class<?>>() {
-                        @Override
-                        public boolean execute(int i, Class<?> aClass) {
-                            _handlerMap.put(i, (NetEventListenerHandler) BeanHelper.getServiceBean(aClass));
-                            return true;
-                        }
-                    });
-                    handlerMap = _handlerMap;
-                }
+        handlerMap = new HashMap<>();
+        TIntObjectHashMap<Class<?>> netEventHandlerClassMap = ServiceHelper.getNetEventListenerHandlerClassMap();
+        netEventHandlerClassMap.forEachEntry(new TIntObjectProcedure<Class<?>>() {
+            @Override
+            public boolean execute(int i, Class<?> aClass) {
+                handlerMap.put(i, (NetEventListenerHandler) BeanHelper.getServiceBean(aClass));
+                return true;
             }
-        }
+        });
+
         selfAdd = Util.getHostAddress()+":"+Server.getEngineConfigure().getNetEventPort();
     }
 
-    public static void notifyConnMainServer(){
+    public void notifyConnMainServer(){
         if(ServerType.isMainServer()){
             log.info("不需要连接mainServer,本服务器即为mainServer");
             return ;
@@ -188,7 +164,7 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
             }
         }
     }
-    private static void tellMainServer(){
+    private void tellMainServer(){
         // 告诉mainServer 自己是谁，并且从mainServer哪里获取其它服务器，并连接之
         NetEventData netEventData = new NetEventData(SysConstantDefine.TellMainServerSelfInfo);
         ServerInfo serverInfo = new ServerInfo();
@@ -215,7 +191,7 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
             }
         }
     }
-    private static void connectServer(ServerInfo serverInfo){
+    private void connectServer(ServerInfo serverInfo){
         // 创建NettyServerClient，并连接
         NettyServerClient client = new NettyServerClient(serverInfo.getType(),serverInfo.getHost(),serverInfo.getPort());
         try{
@@ -233,7 +209,7 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
         serverClientMap.put(serverInfo.getHost()+":"+serverInfo.getPort(),client);
     }
     // 一个系统的一种NetEvent只有一个监听器(因为很多事件需要返回数据)，可以通过内部事件分发
-    public static NetEventData handle(NetEventData netEventData){
+    public NetEventData handle(NetEventData netEventData){
         if(handlerMap == null){ //TODO 这个要变成start时候初始化，
             throw new MMException("改造这些Manager");
         }
@@ -247,7 +223,7 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
     /**
      * 事件是异步的
      * **/
-    public static void broadcastNetEvent(final NetEventData netEvent, final boolean self){
+    public void broadcastNetEvent(final NetEventData netEvent, final boolean self){
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -271,7 +247,7 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
      * 别忘了截取一些出问题的事件
      * 显然，这里每个ServerClient并不需要同步等待，
      * */
-    public static Map<String,NetEventData> broadcastNetEventSyn(final NetEventData netEvent,boolean self){
+    public Map<String,NetEventData> broadcastNetEventSyn(final NetEventData netEvent,boolean self){
         try {
             final CountDownLatch latch = new CountDownLatch(serverClientMap.size());
             final Map<String,NetEventData> result = new ConcurrentHashMap<>();
@@ -306,7 +282,7 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
      * 向主服务器发送事件
      * 异步
      */
-    public static void fireMainServerNetEvent(NetEventData netEvent){
+    public void fireMainServerNetEvent(NetEventData netEvent){
         if(ServerType.isMainServer()){
             handle(netEvent);
             return;
@@ -320,7 +296,7 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
     /**
      * 向主服务器发送事件
      */
-    public static NetEventData fireMainServerNetEventSyn(NetEventData netEvent){
+    public NetEventData fireMainServerNetEventSyn(NetEventData netEvent){
         if(ServerType.isMainServer()){
             return handle(netEvent);
         }
@@ -333,7 +309,7 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
      * 向异步服务器发送事件
      * 异步
      */
-    public static void fireAsyncServerNetEvent(NetEventData netEvent){
+    public void fireAsyncServerNetEvent(NetEventData netEvent){
         if(ServerType.isAsyncServer()){
             handle(netEvent);
             return;
@@ -347,7 +323,7 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
     /**
      * 向异步服务器发送事件
      */
-    public static NetEventData fireAsyncServerNetEventSyn(NetEventData netEvent){
+    public NetEventData fireAsyncServerNetEventSyn(NetEventData netEvent){
         if(ServerType.isAsyncServer()){
             return handle(netEvent);
         }
@@ -360,7 +336,7 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
      * 向某个服务器发送事件
      * 异步
      */
-    public static void fireServerNetEvent(String add,NetEventData netEvent){
+    public void fireServerNetEvent(String add,NetEventData netEvent){
         if(add.equals(selfAdd)){
             handle(netEvent);
             return;
@@ -376,7 +352,7 @@ private static Map<Integer,NetEventListenerHandler> handlerMap=null;
      * 向某个服务器发送事件
      * 同步
      */
-    public static NetEventData fireServerNetEventSyn(String add,NetEventData netEvent){
+    public NetEventData fireServerNetEventSyn(String add,NetEventData netEvent){
         if(add.equals(selfAdd)){
             return handle(netEvent);
         }

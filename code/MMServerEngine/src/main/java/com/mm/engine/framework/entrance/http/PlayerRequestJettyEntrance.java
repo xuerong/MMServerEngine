@@ -4,7 +4,7 @@ import com.google.protobuf.AbstractMessage;
 import com.mm.engine.framework.control.request.RequestDispatcher;
 import com.mm.engine.framework.control.request.RequestHandler;
 import com.mm.engine.framework.data.entity.session.Session;
-import com.mm.engine.framework.data.entity.session.SessionManager;
+import com.mm.engine.framework.data.entity.session.SessionService;
 import com.mm.engine.framework.entrance.Entrance;
 import com.mm.engine.framework.entrance.NetType;
 import com.mm.engine.framework.entrance.code.net.http.HttpDecoder;
@@ -35,6 +35,7 @@ public class PlayerRequestJettyEntrance extends Entrance {
         super(name,port);
     }
 
+    private SessionService sessionService;
     @Override
     public void start() throws Exception {
         Handler entranceHandler = new AbstractHandler(){
@@ -44,6 +45,7 @@ public class PlayerRequestJettyEntrance extends Entrance {
                 fire(request,response,"EntranceJetty");
             }
         };
+        sessionService = BeanHelper.getServiceBean(SessionService.class);
 
         server = new Server(this.port);
         server.setHandler(entranceHandler);
@@ -79,13 +81,13 @@ public class PlayerRequestJettyEntrance extends Entrance {
             // 获取session
             Session session = null;
             if(!StringUtils.isEmpty(sessionId) ){
-                session = SessionManager.get(sessionId);
+                session = sessionService.get(sessionId);
                 if (session == null) {
                     log.warn("session " + sessionId + " is not exist,may expired,create new session");
                 }
             }
             if(session == null){
-                session = SessionManager.create(NetType.Http,request.getContextPath(), Util.getIp(request));
+                session = sessionService.create(NetType.Http,request.getContextPath(), Util.getIp(request));
             }
 
             RequestHandler requestHandler = RequestDispatcher.getHandler(opcode);
