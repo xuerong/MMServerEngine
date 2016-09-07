@@ -2,6 +2,8 @@ package com.mm.engine.framework.control.aop;
 
 import com.mm.engine.framework.control.aop.annotation.Aspect;
 import com.mm.engine.framework.control.aop.annotation.AspectMark;
+import com.mm.engine.framework.exception.Exception;
+import com.mm.engine.framework.tool.helper.ClassHelper;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -63,33 +65,39 @@ public abstract class AspectProxy implements Proxy{
         // 如果上述类切面识别没有成功，那么就是方法切面，需要通过annotation和mark识别
         executeMethod=new LinkedList<>();
         Method[] methods = targetClass.getMethods();
-
 nextMethod:
         for(Method method: methods){
-            //annotation既可能是方法，也可能是类，判断方法
-            if(annotationList!=null) {
-                Annotation[] annotations = method.getAnnotations();
-                for (Annotation annotation : annotations) {
+            doIt(method);
+        }
+    }
+    private boolean doIt(Method method){
+//        System.out.println(method.getName()+","+methodReal.getName());
+        //annotation既可能是方法，也可能是类，判断方法
+        if(annotationList!=null) {
+            Annotation[] annotations = method.getAnnotations();
+            for (Annotation annotation : annotations) {
 //                    System.out.println("test:annotationClass:" + annotationList.get(1) + ",annotation:" + annotation.annotationType());
-                    if (annotationList.contains(annotation.annotationType())) {
-                        executeMethod.add(method);
-                        continue nextMethod;
-                    }
+                if (annotationList.contains(annotation.annotationType())) {
+                    executeMethod.add(method);
+                    return true;
                 }
             }
-            // mask既可能是方法，也可能是类，判断方法
-            if(markList!=null){
-                if(method.isAnnotationPresent(AspectMark.class)){
-                    AspectMark aspectMask = method.getAnnotation(AspectMark.class);
-                    String[] marks = aspectMask.mark();
-                    for (String mark:marks) {
-                        if(markList.contains(mark)){
+        }
+        // mask既可能是方法，也可能是类，判断方法
+        if(markList!=null){
+            AspectMark aspectMark = AopUtil.methodAnnotationPresent(method);
+            if(aspectMark !=null){
+                String[] marks = aspectMark.mark();
+                for (String mark:marks) {
+                    if(markList.contains(mark)){
+                        if(!executeMethod.contains(method)) {
                             executeMethod.add(method);
-                            continue nextMethod;
                         }
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 }

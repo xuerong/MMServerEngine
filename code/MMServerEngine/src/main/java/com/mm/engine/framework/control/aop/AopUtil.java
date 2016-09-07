@@ -2,6 +2,7 @@ package com.mm.engine.framework.control.aop;
 
 import com.mm.engine.framework.control.aop.annotation.Aspect;
 import com.mm.engine.framework.control.aop.annotation.AspectMark;
+import com.mm.engine.framework.tool.helper.ClassHelper;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -120,15 +121,41 @@ public class AopUtil {
             Method[] methods = targetClass.getMethods();
             for (Method method : methods) {
                 //annotation既可能是方法，也可能是类，判断方法
-                if(method.isAnnotationPresent(AspectMark.class)){
-                    AspectMark aspectMask = method.getAnnotation(AspectMark.class);
-                    if(isExecuteByMark(markList,aspectMask)){
+                AspectMark aspectMark = methodAnnotationPresent(method);
+                if(aspectMark != null){
+                    if(isExecuteByMark(markList,aspectMark)){
                         return true;
                     }
                 }
             }
         }
         return false;
+    }
+    // 用这个判断一个方法是否属于一个AspectMark，或考虑其父类的对应方法是否属于AspectMark，并返回相应的AspectMark
+    public static AspectMark methodAnnotationPresent(Method method){
+        if(method.isAnnotationPresent(AspectMark.class)){
+            return method.getAnnotation(AspectMark.class);
+        }
+        // 其父类的方法
+        Class<?> cls = method.getDeclaringClass();;
+        while(true) {
+            cls = cls.getSuperclass();
+            if(cls == null){
+                return null;
+            }
+            if (!ClassHelper.containPacket(cls.getPackage().getName())) {
+                return null;
+            }
+            try {
+                Method cM = cls.getMethod(method.getName(), method.getParameterTypes());
+                if(cM.isAnnotationPresent(AspectMark.class)){
+                    return cM.getAnnotation(AspectMark.class);
+                }
+                continue;
+            }catch (NoSuchMethodException e){
+                continue;
+            }
+        }
     }
     private static boolean isExecuteByMark(List<String> markList,AspectMark aspectMask){
         String[] marks = aspectMask.mark();

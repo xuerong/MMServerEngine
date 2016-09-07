@@ -31,14 +31,6 @@ public class HttpCoderImpl implements HttpEncoder, HttpDecoder {
 
     @Override
     public byte[] decode(HttpServletRequest request) throws IOException {
-        //opcode
-//        String opcodeStr = request.getHeader("opcode");
-//        int opcode=-1;
-//        if(!StringUtils.isEmpty(opcodeStr) && StringUtils.isNumeric(opcodeStr)){
-//            opcode=Integer.parseInt(opcodeStr);
-//        }
-//        //session
-//        String session = request.getHeader("session");
         //data
         String ignoredata = request.getHeader("IGNORE_DATA");// 当是空包的时候，如，logout,unity发不出来，故设此参数
         byte[] buffer = null;
@@ -64,18 +56,5 @@ public class HttpCoderImpl implements HttpEncoder, HttpDecoder {
             buffer = new byte[0];
         }
         return buffer;
-//        Map<String,Object> headers=new HashMap<String,Object>();
-//        Enumeration<String> headersEnu = request.getHeaderNames();
-//        while (headersEnu.hasMoreElements()){
-//            String key=headersEnu.nextElement();
-//            headers.put(key,request.getHeader(key));
-//        }
-////        if(opcode!=-1) {
-////            headers.insert("opcode", opcode);
-////        }
-////        if(!StringUtils.isEmpty(session)){
-////            headers.insert("session",session);
-////        }
-//        return new NetPacketImpl(headers,buffer);
     }
 }

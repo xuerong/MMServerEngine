@@ -1,9 +1,7 @@
 package com.mm.engine.netTest;
 
-        import com.mm.engine.framework.entrance.client.socket.NettyServerClient;
-        import com.mm.engine.framework.server.EngineConfigure;
+        import com.mm.engine.framework.server.configure.EngineConfigure;
         import com.mm.engine.framework.server.Server;
-        import com.mm.engine.framework.server.ServerType;
 
 /**
  * Created by apple on 16-8-27.

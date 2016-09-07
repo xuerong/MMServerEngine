@@ -18,13 +18,20 @@ public class ClassHelper {
     /**
      * 获取基础包名
      */
-    private static final String basePackage = "com.mm.engine";
-    private static final String appPackage="com.summer";
+    public static final String basePackage = "com.mm.engine";
+    public static final String appPackage="com.summer";
 
     static {
         // 系统包
         // 用户定义的包
         // 要校验两个包是否重复
+    }
+
+    public static boolean containPacket(String packetName){
+        if(packetName.startsWith(basePackage) || packetName.startsWith(appPackage)){
+            return true;
+        }
+        return false;
     }
 
     /**

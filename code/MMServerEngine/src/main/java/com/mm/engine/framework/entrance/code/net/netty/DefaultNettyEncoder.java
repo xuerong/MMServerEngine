@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 
 /**
  * Created by a on 2016/8/29.
+ * Netty的编码器和http的解码器不同，它要求每个客户端拥有一个实例
  */
 public class DefaultNettyEncoder extends MessageToByteEncoder {
     @Override

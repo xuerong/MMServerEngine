@@ -17,6 +17,7 @@ public class EntranceJetty extends Entrance{
 
     private Server server;
 
+    public EntranceJetty(){}
     public EntranceJetty(String name,int port){
         super(name,port);
     }

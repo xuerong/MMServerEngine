@@ -65,7 +65,7 @@ public class JobService {
 
         if(ServerType.isMainServer()){ // TODO 后面可以改成分发给其它服务器，或者直接设置个job服务器，用于执行一些job
             // job是否放入数据库呢？我偏向于不放在数据库，原因如下：
-            JobStorage jobStorage = BeanHelper.getFrameBean(JobStorage.class);
+            jobStorage = BeanHelper.getFrameBean(JobStorage.class);
             if(jobStorage != null){
                 List<Job> jobList = jobStorage.getJobList();
                 if(jobList != null) {

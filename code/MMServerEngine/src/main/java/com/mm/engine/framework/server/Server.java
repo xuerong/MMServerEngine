@@ -2,12 +2,14 @@ package com.mm.engine.framework.server;
 
 import com.mm.engine.framework.control.ServiceHelper;
 import com.mm.engine.framework.entrance.Entrance;
+import com.mm.engine.framework.server.configure.EngineConfigure;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +53,8 @@ public final class Server {
             }
         }
         // 启动所有入口
-        List<Entrance> entranceList = configure.getEntranceList();
+//        List<Entrance> entranceList = configure.getEntranceList();
+        Collection<Entrance> entranceList = BeanHelper.getEntranceBeans().values();
         for (Entrance entrance :entranceList) {
             try {
                 entrance.start();
@@ -65,6 +68,9 @@ public final class Server {
                 }
             }
         }
+        // 等待启动条件完成
+        MonitorService monitorService = BeanHelper.getServiceBean(MonitorService.class);
+        monitorService.startWait();
         // 服务器启动完成
         log.info("服务器启动完成!");
     }
@@ -94,6 +100,9 @@ public final class Server {
                 }
             }
         }
+        // 等待关闭条件完成
+        MonitorService monitorService = BeanHelper.getServiceBean(MonitorService.class);
+        monitorService.stopWait();
 
         log.info("服务器关闭完成!");
     }

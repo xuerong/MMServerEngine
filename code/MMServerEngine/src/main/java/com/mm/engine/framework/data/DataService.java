@@ -3,6 +3,7 @@ package com.mm.engine.framework.data;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.data.cache.CacheCenter;
 import com.mm.engine.framework.data.cache.CacheEntity;
+import com.mm.engine.framework.data.cache.CacheService;
 import com.mm.engine.framework.data.cache.KeyParser;
 import com.mm.engine.framework.data.persistence.orm.DataSet;
 import com.mm.engine.framework.data.tx.AsyncService;
@@ -43,7 +44,7 @@ import java.util.*;
  */
 @Service(init = "init")
 public class DataService {
-    private CacheCenter cacheCenter;
+    private CacheService cacheService;
     private AsyncService asyncService;
     private LockerService lockerService;
     private TxCacheService txCacheService;
@@ -53,7 +54,7 @@ public class DataService {
 
 
     public void init(){
-        cacheCenter= BeanHelper.getFrameBean(CacheCenter.class);
+        cacheService= BeanHelper.getServiceBean(CacheService.class);
         asyncService = BeanHelper.getServiceBean(AsyncService.class);
         lockerService = BeanHelper.getServiceBean(LockerService.class);
         txCacheService = BeanHelper.getServiceBean(TxCacheService.class);
@@ -86,17 +87,17 @@ public class DataService {
             }
         }
         // 如果不在事务之中
-        CacheEntity entity = (CacheEntity)cacheCenter.get(key);
+        CacheEntity entity = (CacheEntity)cacheService.get(key);
         if(entity == null){
             object = DataSet.select(entityClass,condition,params);
             if(object != null){
                 entity = new CacheEntity(object);
-                cacheCenter.putIfAbsent(key,entity);
+                cacheService.putIfAbsent(key,entity);
             }else{
                 // 这里缓存有两种设计方案，一个是不缓存，一个是缓存一个无效值，防止总是通过查询为空来判断某一个条件，导致不断穿透到数据库
                 entity = new CacheEntity(object);
                 entity.setState(CacheEntity.CacheEntityState.HasNot);
-                cacheCenter.putIfAbsent(key,entity);
+                cacheService.putIfAbsent(key,entity);
             }
         }
         if(entity!= null && entity.getState() == CacheEntity.CacheEntityState.Normal) {
@@ -123,7 +124,7 @@ public class DataService {
      */
     public <T> List<T> selectList(Class<T> entityClass, String condition, Object... params) {
         String listKey = KeyParser.parseKeyForList(entityClass,condition,params);
-        CacheEntity entity = (CacheEntity)cacheCenter.get(listKey);
+        CacheEntity entity = (CacheEntity)cacheService.get(listKey);
         List<T> objectList = null;
         if(entity == null){
             // TODO 加锁listKey
@@ -185,10 +186,10 @@ public class DataService {
                 }
                 // 缓存keys
                 entity = new CacheEntity(keys);
-                cacheCenter.putIfAbsent(listKey,entity);
+                cacheService.putIfAbsent(listKey,entity);
                 // 缓存内容
                 if(cacheEntityMap.size() > 0) {
-                    cacheCenter.putList(cacheEntityMap);
+                    cacheService.putList(cacheEntityMap);
                 }
                 // TODO 解锁listKey
                 lockerService.unlockKeys(listKey);
@@ -198,7 +199,7 @@ public class DataService {
             List<String> keys = (List<String>) entity.getEntity();
             if(keys.size()>0) {
                 // TODO 取出多个值,如果有不存在的还要去数据库中取
-                List<CacheEntity> cacheEntitieList = cacheCenter.getList((String[]) keys.toArray());
+                List<CacheEntity> cacheEntitieList = cacheService.getList((String[]) keys.toArray());
                 // 这里是否需要筛选掉无效的?是不需要的,因为在其它线程置无效标志的时候,就将相应的列表删除完了
                 objectList = new ArrayList<T>();
                 for (CacheEntity cacheEntity : cacheEntitieList) {
@@ -229,7 +230,7 @@ public class DataService {
         // 这里要用update,因为delete用的是异步,缓存中存在其key,insert不考虑其版本
         // 不会出现同时插入一个object的现象,因为1不可能出现同样的id,2,要加锁
         CacheEntity cacheEntity = new CacheEntity(object);
-        cacheCenter.update(key,cacheEntity);
+        cacheService.update(key,cacheEntity);
         // 异步
         asyncService.insert(key,object);
         return true;
@@ -257,7 +258,7 @@ public class DataService {
         }
         cacheEntity.setEntity(object);
         cacheEntity.setState(CacheEntity.CacheEntityState.Normal);
-        cacheCenter.update(key,cacheEntity); // 没有cas,也就可以没有失败
+        cacheService.update(key,cacheEntity); // 没有cas,也就可以没有失败
         // 异步
         asyncService.update(key,object);
 
@@ -278,7 +279,7 @@ public class DataService {
         CacheEntity cacheEntity = new CacheEntity(object);
         cacheEntity.setEntity(object);
         cacheEntity.setState(CacheEntity.CacheEntityState.Delete);
-        cacheCenter.update(key,cacheEntity); // 这里用update
+        cacheService.update(key,cacheEntity); // 这里用update
         // 异步
         asyncService.delete(key,object);
         return true;

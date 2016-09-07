@@ -12,17 +12,18 @@ import java.lang.reflect.Method;
  */
 
 @Aspect(
-        annotation = {Request.class}
+        mark = {"aa"}
+//        annotation = {Request.class}
         //pkg = {"com.mm.engine.sysBean.controller"}
 )
 public class MyProxy extends AspectProxy {
     @Override
-    public void before(Class<?> cls, Method method, Object[] params) {
+    public void before(Object object,Class<?> cls, Method method, Object[] params) {
         System.out.println("before");
     }
 
     @Override
-    public void after(Class<?> cls, Method method, Object[] params, Object result) {
+    public void after(Object object,Class<?> cls, Method method, Object[] params, Object result) {
         System.out.println("after");
     }
 }

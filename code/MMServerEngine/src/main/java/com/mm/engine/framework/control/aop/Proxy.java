@@ -7,8 +7,8 @@ import java.lang.reflect.Method;
  * 如非特殊需要，自定义切面代理类请继承AspectProxy
  */
 public interface Proxy {
-    public void before(Class<?> cls, Method method, Object[] params);
-    public void after(Class<?> cls, Method method, Object[] params, Object result);
+    public void before(Object object,Class<?> cls, Method method, Object[] params);
+    public void after(Object object,Class<?> cls, Method method, Object[] params, Object result);
     public boolean executeMethod(Method method);
     public void setTargetClass(Class<?> targetClass);
 }

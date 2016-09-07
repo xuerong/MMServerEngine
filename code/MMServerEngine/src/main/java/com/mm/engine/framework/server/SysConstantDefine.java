@@ -24,4 +24,7 @@ public final class SysConstantDefine {
     public static final String utf_8 = "UTF-8";
     // --------------------------------------------------------------------------------------------------------event
     public static final int Event_NettyServerClient = 1201;
+    public static final int Event_EntranceStart = 1202; // 入口启动完成
+    // ----------------------------------------------------------------------------------------monitorService conditions
+    public static final String NetEventServiceStart = "NetEventServiceStart";
 }

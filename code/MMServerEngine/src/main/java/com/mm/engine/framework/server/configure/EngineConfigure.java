@@ -1,4 +1,4 @@
-package com.mm.engine.framework.server;
+package com.mm.engine.framework.server.configure;
 
 import com.mm.engine.framework.control.job.JobStorage;
 import com.mm.engine.framework.data.cache.CacheCenter;
@@ -9,12 +9,10 @@ import com.mm.engine.framework.data.persistence.dao.DataAccessor;
 import com.mm.engine.framework.data.persistence.ds.DataSourceFactory;
 import com.mm.engine.framework.entrance.http.EntranceJetty;
 import com.mm.engine.framework.entrance.socket.NetEventNettyEntrance;
-import com.mm.engine.framework.exception.MMException;
+import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.tool.helper.ConfigHelper;
 import org.apache.commons.lang3.StringUtils;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,13 +30,19 @@ public final class EngineConfigure {
     private int netEventPort = 8001;
 
     // 系统开启的网络入口
-    private final List<Entrance> entranceList = new ArrayList<Entrance>();
+    private final Map<String,EntranceConfigure> entranceClassMap = new HashMap<>();
+    private final List<Entrance> entranceList = new ArrayList<>();
+    //
     public EngineConfigure(){
         this(null);
     }
     public EngineConfigure(String serverTypeStr){
         this(serverTypeStr,8000);
     }
+
+    public EntranceConfigure netEventEntrance;
+
+
     public EngineConfigure(String serverTypeStr,int netEventPort){
         if(serverTypeStr!=null){
             ServerType.setServerType(serverTypeStr);
@@ -55,11 +59,30 @@ public final class EngineConfigure {
 
         defaultRequestController="DefaultRequestController";
 
-        entranceList.add(new EntranceJetty("first",8080));
+//        entranceList.add(new EntranceJetty("first",8080));
+//
+//        this.netEventPort = netEventPort;
+//        entranceList.add(new NetEventNettyEntrance("NetEventNettyEntrance",netEventPort));
 
-        this.netEventPort = netEventPort;
-        entranceList.add(new NetEventNettyEntrance("NetEventNettyEntrance",netEventPort));
+        //
+        EntranceConfigure configure = new EntranceConfigure();
+        configure.setPort(8080);
+        configure.setCls(EntranceJetty.class);
+        configure.setName("first");
+        entranceClassMap.put("first",configure);
+
+        configure = new EntranceConfigure();
+        configure.setPort(netEventPort);
+        configure.setCls(NetEventNettyEntrance.class);
+        configure.setName("NetEventNettyEntrance");
+        entranceClassMap.put("NetEventNettyEntrance",configure);
+        netEventEntrance = configure;
     }
+
+    public EntranceConfigure getNetEventEntrance() {
+        return netEventEntrance;
+    }
+
     private Class<?> getBeanFromConfigure(String beanType){
         String classPath= ConfigHelper.getString(beanType);
         if(StringUtils.isEmpty(classPath)){
@@ -104,6 +127,11 @@ public final class EngineConfigure {
     public List<Entrance> getEntranceList() {
         return entranceList;
     }
+
+    public Map<String, EntranceConfigure> getEntranceClassMap() {
+        return entranceClassMap;
+    }
+
     public boolean isAsyncServer(){ // 是否是异步服务器
         return true;
     }

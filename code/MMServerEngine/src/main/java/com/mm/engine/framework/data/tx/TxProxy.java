@@ -23,7 +23,7 @@ public class TxProxy extends AspectProxy {
 //        txCacheService = BeanHelper.getServiceBean(TxCacheService.class);
 //    }
     @Override
-    public void before(Class<?> cls, Method method, Object[] params) {
+    public void before(Object object,Class<?> cls, Method method, Object[] params) {
         Tx tx = method.getAnnotation(Tx.class);
         if(txCacheService == null){
             // 这个地方不用加锁，因为多个线程获取的都是同一个
@@ -33,7 +33,7 @@ public class TxProxy extends AspectProxy {
     }
 
     @Override
-    public void after(Class<?> cls, Method method, Object[] params, Object result) {
+    public void after(Object object,Class<?> cls, Method method, Object[] params, Object result) {
         boolean success = txCacheService.after();
         //
         if(success){ // 没有事务或事务提交成功

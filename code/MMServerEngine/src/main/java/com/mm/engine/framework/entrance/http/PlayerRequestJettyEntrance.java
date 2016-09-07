@@ -31,6 +31,8 @@ public class PlayerRequestJettyEntrance extends Entrance {
     private static final Logger log = LoggerFactory.getLogger(PlayerRequestJettyEntrance.class);
     private Server server;
 
+
+    public PlayerRequestJettyEntrance(){}
     public PlayerRequestJettyEntrance(String name, int port){
         super(name,port);
     }

@@ -1,5 +1,6 @@
 package com.mm.engine.framework.entrance.socket;
 
+import com.mm.engine.framework.control.aop.annotation.AspectMark;
 import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.control.netEvent.NetEventService;
 import com.mm.engine.framework.entrance.Entrance;
@@ -19,18 +20,20 @@ public class NetEventNettyEntrance extends Entrance {
     private static final Logger log = LoggerFactory.getLogger(NetEventNettyEntrance.class);
     Channel channel = null;
     NetEventService netEventService;
+    public NetEventNettyEntrance(){}
     public NetEventNettyEntrance(String name, int port){
         super(name,port);
     }
 
+//    @AspectMark(mark = {"EntranceStart"})
     @Override
     public void start() throws Exception {
         channel = NettyHelper.createAndStart(
                 port,DefaultNettyEncoder.class,DefaultNettyDecoder.class,DiscardServerHandler.class,name);
         log.info("bind port :"+port);
-        // 向mainServer取得连接
-        netEventService = BeanHelper.getServiceBean(NetEventService.class);
-        netEventService.notifyConnMainServer();
+        // 向mainServer取得连接 :这个通过aop和事件做了，和具体的入口隔离
+//        netEventService = BeanHelper.getServiceBean(NetEventService.class);
+//        netEventService.notifyConnMainServer();
     }
 
     public class DiscardServerHandler extends ChannelInboundHandlerAdapter { // (1)

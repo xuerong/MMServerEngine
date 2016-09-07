@@ -40,14 +40,16 @@ public final class AopHelper {
      * 如果某个类在此之外被代理，那么就要对被代理之后的心类添加aop，并实例化之
      * **/
     public static <T> T getProxyObject(Class<?> keyCls,Class<T> newCls){
-        if(targetMap.containsKey(keyCls)){
-            return createProxyObject(newCls, targetMap.get(keyCls));
+        List<Proxy> proxyList = targetMap.get(keyCls);
+        if(proxyList != null){
+            return createProxyObject(newCls, proxyList);
         }
         return ReflectionUtil.newInstance(newCls);
     }
     public static <T> T getProxyObject(Class<T> cls){
-        if(targetMap.containsKey(cls)){
-            return createProxyObject(cls, targetMap.get(cls));
+        List<Proxy> proxyList = targetMap.get(cls);
+        if(proxyList != null){
+            return createProxyObject(cls, proxyList);
         }
         return ReflectionUtil.newInstance(cls);
     }
@@ -65,7 +67,7 @@ public final class AopHelper {
             public Object intercept(Object targetObject, Method method, Object[] methodParams, MethodProxy methodProxy) throws Throwable {
                 for (Proxy proxy :proxyList) {
                     if(proxy.executeMethod(method)){
-                        proxy.before(target,method,methodParams);
+                        proxy.before(targetObject,target,method,methodParams);
                     }
                 }
                 int size=proxyList.size();
@@ -74,7 +76,7 @@ public final class AopHelper {
                 for(int i=size-1;i>=0;i--){
                     Proxy proxy=proxyList.get(i);
                     if(proxy.executeMethod(method)){
-                        proxy.after(target,method,methodParams,result);
+                        proxy.after(targetObject,target,method,methodParams,result);
                     }
                 }
                 return result;

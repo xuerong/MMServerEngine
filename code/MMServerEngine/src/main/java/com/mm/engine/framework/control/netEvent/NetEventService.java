@@ -5,12 +5,15 @@ import com.mm.engine.framework.control.annotation.EventListener;
 import com.mm.engine.framework.control.annotation.NetEventListener;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.event.EventData;
+import com.mm.engine.framework.entrance.Entrance;
 import com.mm.engine.framework.entrance.client.ServerClient;
 import com.mm.engine.framework.entrance.client.socket.NettyServerClient;
 import com.mm.engine.framework.exception.MMException;
+import com.mm.engine.framework.server.MonitorService;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.server.SysConstantDefine;
+import com.mm.engine.framework.server.configure.EntranceConfigure;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.mm.engine.framework.tool.util.Util;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -61,6 +64,9 @@ public class NetEventService {
     //
     private String selfAdd;
 
+    //
+    private MonitorService monitorService;
+
     public void init(){
         handlerMap = new HashMap<>();
         TIntObjectHashMap<Class<?>> netEventHandlerClassMap = ServiceHelper.getNetEventListenerHandlerClassMap();
@@ -73,6 +79,19 @@ public class NetEventService {
         });
 
         selfAdd = Util.getHostAddress()+":"+Server.getEngineConfigure().getNetEventPort();
+
+        monitorService.addStartCondition(SysConstantDefine.NetEventServiceStart,
+                "wait for netEvent start and connect mainServer");
+    }
+    @EventListener(event = SysConstantDefine.Event_EntranceStart)
+    public void entranceStart(EventData eventData){
+        Entrance entrance = (Entrance) eventData.getData();
+        EntranceConfigure entranceConfigure = Server.getEngineConfigure().getNetEventEntrance();
+        if(entranceConfigure.getName().equals(entrance.getName())){
+            // netEvent入口已经启动
+            notifyConnMainServer();
+            monitorService.removeStartCondition(SysConstantDefine.NetEventServiceStart);
+        }
     }
 
     public void notifyConnMainServer(){

@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by a on 2016/8/29.
+ * Netty的解码器和http的解码器不同，它要求每个客户端拥有一个实例
  */
 public class DefaultNettyDecoder extends ByteToMessageDecoder {
     private static final int headSize = 4;

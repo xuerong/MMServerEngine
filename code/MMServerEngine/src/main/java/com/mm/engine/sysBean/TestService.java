@@ -84,5 +84,7 @@ public class TestService {
     @Updatable(isAsynchronous = true,cronExpression = "1/10 * * * * ? *")
     public void testUpdateSync2(int interval){
 //        System.out.println("testUpdateSync2:"+interval);
+//        MyProxyTarget myProxyTarget = BeanHelper.getServiceBean(MyProxyTarget.class);
+//        myProxyTarget.p1();
     }
 }

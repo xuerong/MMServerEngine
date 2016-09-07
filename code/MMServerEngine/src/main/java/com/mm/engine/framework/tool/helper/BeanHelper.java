@@ -3,13 +3,16 @@ package com.mm.engine.framework.tool.helper;
 import com.mm.engine.framework.control.ServiceHelper;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.aop.AopHelper;
+import com.mm.engine.framework.entrance.Entrance;
 import com.mm.engine.framework.exception.MMException;
-import com.mm.engine.framework.server.EngineConfigure;
+import com.mm.engine.framework.server.configure.EngineConfigure;
 import com.mm.engine.framework.server.Server;
+import com.mm.engine.framework.server.configure.EntranceConfigure;
 import com.mm.engine.sysBean.MyProxyTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,9 +29,14 @@ public final class BeanHelper {
     private final static Map<Class<?>,Object> userBeans=new HashMap<Class<?>,Object>();
 
     private final static Map<Class<?>,Object> serviceBeans=new HashMap<Class<?>,Object>();
+    private final static Map<String,Entrance> entranceBeans = new HashMap<>();
 
     public static Map<Class<?>, Object> getServiceBeans() {
         return serviceBeans;
+    }
+
+    public static Map<String, Entrance> getEntranceBeans() {
+        return entranceBeans;
     }
 
     /**
@@ -62,17 +70,33 @@ public final class BeanHelper {
                 }
             }
             // aop
-            frameBeans.put(MyProxyTarget.class, newInstance(MyProxyTarget.class));
+//            frameBeans.put(MyProxyTarget.class, newInstance(MyProxyTarget.class));
+            // entrance
+            Map<String,EntranceConfigure> entranceClassMap = configure.getEntranceClassMap();
+            for (EntranceConfigure entranceConfigure:entranceClassMap.values()) {
+                Entrance entrance = (Entrance)serviceBeans.get(entranceConfigure.getCls()) ; // 入口也可能声明为service
+                if(entrance == null){
+                    entrance = (Entrance) newInstance(entranceConfigure.getCls());
+                }
+                Method nameMethod = Entrance.class.getMethod("setName",String.class);
+                nameMethod.invoke(entrance,entranceConfigure.getName());
+                Method portMethod = Entrance.class.getMethod("setPort",int.class);
+                portMethod.invoke(entrance,entranceConfigure.getPort());
+
+                entranceBeans.put(entranceConfigure.getName(),entrance);
+            }
+
         }catch (Throwable e){
             e.printStackTrace();
             log.error("init BeanHelper fail");
         }
     }
-    // Bean类的实例化，之前需要先加aop
+    // Bean类的实例化，之前需要先加aop : 目标类等于代理类
     private static <T> T newInstance(Class<T> cls){
         T reCls = AopHelper.getProxyObject(cls);
         return reCls;
     }
+    //  : 目标类不等于代理类
     private static <T> T newInstance(Class<?> keyCls,Class<T> newCls){
         T reCls = AopHelper.getProxyObject(keyCls,newCls);
         return reCls;
