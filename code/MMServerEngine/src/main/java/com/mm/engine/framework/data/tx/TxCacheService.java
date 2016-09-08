@@ -5,8 +5,8 @@ import com.mm.engine.framework.data.DataService;
 import com.mm.engine.framework.data.OperType;
 import com.mm.engine.framework.data.cache.CacheEntity;
 import com.mm.engine.framework.data.cache.KeyParser;
-import com.mm.engine.framework.exception.ExceptionHelper;
-import com.mm.engine.framework.exception.ExceptionLevel;
+import com.mm.engine.framework.security.exception.ExceptionHelper;
+import com.mm.engine.framework.security.exception.ExceptionLevel;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,6 +133,7 @@ public class TxCacheService {
             }
         }
         // --- 提交事务,无论中间出现什么情况,都要解锁
+        // TODO 事务的提交要作些改变，做成一次性提交，提高效率
         try{
             for(PrepareCachedData data : map.values()){
                 switch (data.getOperType()){

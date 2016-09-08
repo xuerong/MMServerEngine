@@ -4,7 +4,7 @@ import com.mm.engine.framework.control.annotation.NetEventListener;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.control.netEvent.NetEventService;
-import com.mm.engine.framework.exception.MMException;
+import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.server.SysConstantDefine;

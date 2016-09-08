@@ -3,8 +3,8 @@ package com.mm.engine.framework.tool.helper;
 import com.mm.engine.framework.control.ServiceHelper;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.aop.AopHelper;
-import com.mm.engine.framework.entrance.Entrance;
-import com.mm.engine.framework.exception.MMException;
+import com.mm.engine.framework.net.entrance.Entrance;
+import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.configure.EngineConfigure;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.configure.EntranceConfigure;
@@ -71,7 +71,7 @@ public final class BeanHelper {
             }
             // aop
 //            frameBeans.put(MyProxyTarget.class, newInstance(MyProxyTarget.class));
-            // entrance
+            // net
             Map<String,EntranceConfigure> entranceClassMap = configure.getEntranceClassMap();
             for (EntranceConfigure entranceConfigure:entranceClassMap.values()) {
                 Entrance entrance = (Entrance)serviceBeans.get(entranceConfigure.getCls()) ; // 入口也可能声明为service

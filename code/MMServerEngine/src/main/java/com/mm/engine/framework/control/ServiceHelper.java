@@ -1,6 +1,6 @@
 package com.mm.engine.framework.control;
 
-import com.mm.engine.framework.entrance.code.protocol.RetPacket;
+import com.mm.engine.framework.net.code.protocol.RetPacket;
 import com.mm.engine.framework.control.annotation.*;
 import com.mm.engine.framework.control.annotation.EventListener;
 import com.mm.engine.framework.control.event.EventListenerHandler;
@@ -26,7 +26,7 @@ import java.util.List;
  * ServiceHelper
  * 在系统启动的时候，找到所有的Service并用对应的Handler封装，
  * 然后传递给对应的管理器,分别为：
- * Request-RequestHandler-RequestDispatcher
+ * Request-RequestHandler-RequestService
  * EventListener-EventListenerHandler-EventService
  * NetEventListener-NetEventListenerHandler-NetEventService
  * Updatable-
@@ -235,9 +235,9 @@ public final class ServiceHelper {
             CtClass superCt = pool.get(RequestHandler.class.getName());  //需要实现RequestHandler接口
             ct.addInterface(superCt);
             //添加handler方法，在其中添上switch...case段
-            StringBuilder sb = new StringBuilder("public com.mm.engine.framework.entrance.code.protocol.RetPacket handle(" +
+            StringBuilder sb = new StringBuilder("public com.mm.engine.framework.net.code.protocol.RetPacket handle(" +
                     "int opcode,Object clientData,com.mm.engine.framework.data.entity.session.Session session) throws Exception{");
-            sb.append("com.mm.engine.framework.entrance.code.protocol.RetPacket rePacket=null;");
+            sb.append("com.mm.engine.framework.net.code.protocol.RetPacket rePacket=null;");
             sb.append("short opCode = opcode;");//$1.getOpcode();");
             sb.append("switch (opCode) {");
             Iterator<Map.Entry<Short,String>> ite = opMethods.entrySet().iterator();

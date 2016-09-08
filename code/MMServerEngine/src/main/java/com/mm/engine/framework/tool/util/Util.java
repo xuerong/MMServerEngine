@@ -1,6 +1,6 @@
 package com.mm.engine.framework.tool.util;
 
-import com.mm.engine.framework.exception.MMException;
+import com.mm.engine.framework.security.exception.MMException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.RemoteEndpoint;

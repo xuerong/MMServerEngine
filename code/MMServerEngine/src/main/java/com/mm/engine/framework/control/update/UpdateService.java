@@ -4,7 +4,7 @@ import com.mm.engine.framework.control.ServiceHelper;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.annotation.Updatable;
 import com.mm.engine.framework.control.update.cronExpression.CronExpression;
-import com.mm.engine.framework.exception.MMException;
+import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.tool.helper.BeanHelper;

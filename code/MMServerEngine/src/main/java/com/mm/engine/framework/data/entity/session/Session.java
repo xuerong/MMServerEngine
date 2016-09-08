@@ -1,7 +1,7 @@
 package com.mm.engine.framework.data.entity.session;
 
 import com.mm.engine.framework.data.cache.CacheEntity;
-import com.mm.engine.framework.entrance.NetType;
+import com.mm.engine.framework.net.NetType;
 
 import java.util.Date;
 

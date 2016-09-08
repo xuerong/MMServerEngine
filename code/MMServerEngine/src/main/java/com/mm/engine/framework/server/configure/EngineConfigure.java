@@ -2,13 +2,13 @@ package com.mm.engine.framework.server.configure;
 
 import com.mm.engine.framework.control.job.JobStorage;
 import com.mm.engine.framework.data.cache.CacheCenter;
-import com.mm.engine.framework.entrance.Entrance;
-import com.mm.engine.framework.entrance.code.net.http.HttpDecoder;
-import com.mm.engine.framework.entrance.code.net.http.HttpEncoder;
+import com.mm.engine.framework.net.entrance.Entrance;
+import com.mm.engine.framework.net.code.net.http.HttpDecoder;
+import com.mm.engine.framework.net.code.net.http.HttpEncoder;
 import com.mm.engine.framework.data.persistence.dao.DataAccessor;
 import com.mm.engine.framework.data.persistence.ds.DataSourceFactory;
-import com.mm.engine.framework.entrance.http.EntranceJetty;
-import com.mm.engine.framework.entrance.socket.NetEventNettyEntrance;
+import com.mm.engine.framework.net.entrance.http.EntranceJetty;
+import com.mm.engine.framework.net.entrance.socket.NetEventNettyEntrance;
 import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.tool.helper.ConfigHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +39,8 @@ public final class EngineConfigure {
     public EngineConfigure(String serverTypeStr){
         this(serverTypeStr,8000);
     }
+    // session update
+    public static final int sessionUpdateCycle = 200000;
 
     public EntranceConfigure netEventEntrance;
 

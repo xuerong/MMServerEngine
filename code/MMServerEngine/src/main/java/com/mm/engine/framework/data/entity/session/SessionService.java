@@ -2,9 +2,10 @@ package com.mm.engine.framework.data.entity.session;
 
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.annotation.Updatable;
-import com.mm.engine.framework.data.cache.CacheCenter;
-import com.mm.engine.framework.entrance.NetType;
+import com.mm.engine.framework.data.cache.CacheService;
+import com.mm.engine.framework.net.NetType;
 import com.mm.engine.framework.server.Server;
+import com.mm.engine.framework.server.configure.EngineConfigure;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.mm.engine.framework.tool.util.Util;
 import org.slf4j.Logger;
@@ -44,17 +45,17 @@ public class SessionService {
      * **/
     private static int maxOnceRemoveSessionCount = 300;
 
-    private static CacheCenter cacheCenter;
+    private static CacheService cacheService;
 
     public void init(){
         cycle= Server.getEngineConfigure().getSessionCycle();
         survivalTime=Server.getEngineConfigure().getSessionSurvivalTime();
-        cacheCenter= BeanHelper.getFrameBean(CacheCenter.class);
+        cacheService = BeanHelper.getServiceBean(CacheService.class);
         updateTime=new ConcurrentHashMap<>();
     }
 
     public Session get(String sessionId){
-        Session session = (Session) cacheCenter.get(sessionId);
+        Session session = (Session) cacheService.get(sessionId);
         if(session!=null) {
             // 更新session时间
             session.setLastUpdateTime(new Date());
@@ -67,7 +68,7 @@ public class SessionService {
     public Session create(HttpServletRequest request){
         Session session=new Session(NetType.Http,request.getContextPath(), createSessionIdPrefix(), Util.getIp(request),new Date());
         updateTime.put(session.getSessionId(),session.getLastUpdateTime().getTime());
-        Object older = cacheCenter.putIfAbsent(session.getSessionId(),session);
+        Object older = cacheService.putIfAbsent(session.getSessionId(),session);
         if(older != null){
             session = (Session)older;
         }
@@ -76,7 +77,7 @@ public class SessionService {
     public Session create(NetType netType, String url,String ip){
         Session session=new Session(netType,url, createSessionIdPrefix(), ip,new Date());
         updateTime.put(session.getSessionId(),session.getLastUpdateTime().getTime());
-        Object older = cacheCenter.putIfAbsent(session.getSessionId(),session);
+        Object older = cacheService.putIfAbsent(session.getSessionId(),session);
         if(older != null){
             session = (Session)older;
         }
@@ -84,7 +85,7 @@ public class SessionService {
     }
 
     // 这个地方如何赋值？可以取final值，所以可以从配置文件中取
-    @Updatable(isAsynchronous = true,cycle = 200000)
+    @Updatable(isAsynchronous = true,cycle = EngineConfigure.sessionUpdateCycle)
     public void update(int interval){
         final long currentTime=System.currentTimeMillis();
         final List<String> expiredIds = new ArrayList<>();
@@ -99,17 +100,17 @@ public class SessionService {
             }
         }
         for (String key :expiredIds) {
-            removeSession((Session) cacheCenter.get(key));
+            removeSession((Session) cacheService.get(key));
         }
     }
 
-    private void removeSession(Session session){
+    public void removeSession(Session session){
         if(session.getSessionClient() != null) {
             session.getSessionClient().destroySession();
         }
         updateTime.remove(session.getSessionId());
         // 是否从当前缓存中剔除：1不踢，2踢本地缓存，3踢本地和远程
-        cacheCenter.remove(session.getSessionId());
+        cacheService.remove(session.getSessionId());
     }
 
     private String createSessionIdPrefix(){

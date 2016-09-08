@@ -5,11 +5,11 @@ import com.mm.engine.framework.control.annotation.EventListener;
 import com.mm.engine.framework.control.annotation.NetEventListener;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.event.EventData;
-import com.mm.engine.framework.entrance.Entrance;
-import com.mm.engine.framework.entrance.client.ServerClient;
-import com.mm.engine.framework.entrance.client.socket.NettyServerClient;
-import com.mm.engine.framework.exception.MMException;
-import com.mm.engine.framework.server.MonitorService;
+import com.mm.engine.framework.net.entrance.Entrance;
+import com.mm.engine.framework.net.client.ServerClient;
+import com.mm.engine.framework.net.client.socket.NettyServerClient;
+import com.mm.engine.framework.security.exception.MMException;
+import com.mm.engine.framework.security.MonitorService;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.server.SysConstantDefine;
@@ -79,7 +79,7 @@ public class NetEventService {
         });
 
         selfAdd = Util.getHostAddress()+":"+Server.getEngineConfigure().getNetEventPort();
-
+        monitorService = BeanHelper.getServiceBean(MonitorService.class);
         monitorService.addStartCondition(SysConstantDefine.NetEventServiceStart,
                 "wait for netEvent start and connect mainServer");
     }

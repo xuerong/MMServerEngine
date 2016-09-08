@@ -1,7 +1,8 @@
 package com.mm.engine.framework.server;
 
 import com.mm.engine.framework.control.ServiceHelper;
-import com.mm.engine.framework.entrance.Entrance;
+import com.mm.engine.framework.net.entrance.Entrance;
+import com.mm.engine.framework.security.MonitorService;
 import com.mm.engine.framework.server.configure.EngineConfigure;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
@@ -60,11 +61,11 @@ public final class Server {
                 entrance.start();
             }catch (Exception e){
 //                e.printStackTrace();
-                log.error("entrance start fail , entrance name = "+entrance.getName()+","+e.getMessage());
+                log.error("net start fail , net name = "+entrance.getName()+","+e.getMessage());
                 try{
                     entrance.stop();
                 }catch (Exception e2){
-                    log.error("entrance stop fail , entrance name = "+entrance.getName()+":"+e2.getStackTrace());
+                    log.error("net stop fail , net name = "+entrance.getName()+":"+e2.getStackTrace());
                 }
             }
         }
@@ -82,7 +83,7 @@ public final class Server {
             try{
                 entrance.stop();
             }catch (Exception e2){
-                log.error("entrance stop fail , entrance name = "+entrance.getName()+":"+e2.getStackTrace());
+                log.error("net stop fail , net name = "+entrance.getName()+":"+e2.getStackTrace());
             }
         }
         // 关闭所有的Service

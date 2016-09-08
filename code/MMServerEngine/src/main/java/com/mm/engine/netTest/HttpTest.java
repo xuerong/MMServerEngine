@@ -1,7 +1,7 @@
 package com.mm.engine.netTest;
 
-import com.mm.engine.framework.entrance.client.http.HttpClient;
-import com.mm.engine.framework.entrance.client.http.PBPacket;
+import com.mm.engine.framework.net.client.http.HttpClient;
+import com.mm.engine.framework.net.client.http.PBPacket;
 import com.protocol.OpCode;
 import com.protocol.PBMessage;
 

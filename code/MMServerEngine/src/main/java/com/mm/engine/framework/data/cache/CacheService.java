@@ -1,7 +1,6 @@
 package com.mm.engine.framework.data.cache;
 
 import com.mm.engine.framework.control.annotation.Service;
-import com.mm.engine.framework.exception.MMException;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 
 import java.util.List;
