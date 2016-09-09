@@ -11,12 +11,12 @@ MMServerEngine设计的最主要的目标有两点：
 * 使用高效：尽量去掉和具体游戏逻辑无关的枝节，进而减少bug出现的概率
 
 # 框架 
-* 系统框架
-![image](https://github.com/xuerong/MMServerEngine/blob/master/resource/sys.png)
-* Server框架
-![image](https://github.com/xuerong/MMServerEngine/blob/master/resource/server.png)
-* Service框架
-![image](https://github.com/xuerong/MMServerEngine/blob/master/resource/service.png)
+* 系统框架  
+![image](https://github.com/xuerong/MMServerEngine/blob/master/resource/sys.png)  
+* Server框架  
+![image](https://github.com/xuerong/MMServerEngine/blob/master/resource/server.png)  
+* Service框架  
+![image](https://github.com/xuerong/MMServerEngine/blob/master/resource/service.png)  
 
 # 使用  
 #####1、编写客户端消息入口  
