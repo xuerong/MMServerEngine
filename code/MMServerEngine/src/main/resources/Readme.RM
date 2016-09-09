@@ -115,7 +115,8 @@ Entrance
 （3）如果需要使用其它Service，可以通过BeanHelper.getServiceBean方法获得。（建议在init方法中设置好，提高效率，并且系统启动可以检查其存在）
 3、编写数据库对应实体类
 （1）需要用DBEntity来注解，如果字段名字和表的字段名不同，要添加Column注解
-（2）通过DataService来对DB数据进行操作
+（2）继承Serializable接口，因为需要进行缓存
+（3）通过DataService来对DB数据进行操作
 4、Request
 （1）对于处理入口来的某个opcode的方法添加Request注解，并设置opcode变量
 5、Event
@@ -148,6 +149,23 @@ Entrance
 （1）通过CacheService可以缓存自己想要缓存的对象
 12、运行状态监控
 （1）通过MonitorService可以来监控自己服务的运行状态（还未实现）
+
+四、目前使用的主要技术
+注意：下面部分技术是以插件的形式加入系统中的，而非与系统耦合，如果需要可以更换或添加其它技术框架
+ehcache：目前使用的local缓存
+memcached：目前使用的remote缓存
+jetty:嵌入式http服务器
+netty：NetEvent使用的网络通讯框架
+cglib：代理工具，如Aop
+javassist：利用字节码生成扩展Service，使对其中的request，event，netEvent的调用采用Switch进行，提高调用效率
+dbcp：连接池
+dbutils:实现orm
+log4j：
+
+
+
+
+
 
 
 
