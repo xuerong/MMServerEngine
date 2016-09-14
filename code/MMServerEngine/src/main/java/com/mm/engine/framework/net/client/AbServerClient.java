@@ -4,8 +4,6 @@ package com.mm.engine.framework.net.client;
  * Created by apple on 16-8-28.
  */
 public abstract class AbServerClient implements ServerClient {
-
-
     protected int serverType;
 
     protected String host;

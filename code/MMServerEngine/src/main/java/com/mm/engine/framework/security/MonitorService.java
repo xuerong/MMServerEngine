@@ -40,6 +40,11 @@ public class MonitorService {
         if(!state.equals("ok")){
             log.error(state);
         }
+        if(conditions.size()>0){
+            for(Map.Entry<String,String> entry : conditions.entrySet()){
+                log.warn(entry.getKey()+":"+entry.getValue());
+            }
+        }
     }
 
     public synchronized void addStartCondition(String key,String describe){

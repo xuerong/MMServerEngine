@@ -11,10 +11,6 @@ public abstract class Entrance {
     protected String name;
     protected int port;
     public Entrance(){}
-    public Entrance(String name,int port){
-        this.name = name;
-        this.port = port;
-    }
     @AspectMark(mark = {"EntranceStart"})
     public abstract void start() throws Exception;
 

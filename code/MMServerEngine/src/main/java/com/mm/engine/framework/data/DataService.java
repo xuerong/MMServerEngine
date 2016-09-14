@@ -220,6 +220,9 @@ public class DataService {
      * 插入一个对象，
      */
     public boolean insert(Object object){
+        return insert(object,true);
+    }
+    public boolean insert(Object object,boolean async){
         String key = KeyParser.parseKey(object);
         // 在事事务中仅插入事务
         if(txCacheService.isInTx()){
@@ -232,7 +235,9 @@ public class DataService {
         CacheEntity cacheEntity = new CacheEntity(object);
         cacheService.update(key,cacheEntity);
         // 异步
-        asyncService.insert(key,object);
+        if(async) {
+            asyncService.insert(key, object);
+        }
         return true;
     }
     /**
@@ -241,6 +246,9 @@ public class DataService {
      * 加锁更新的就用cas,否则就不用cas
      */
     public boolean update(Object object){
+        return update(object,true);
+    }
+    public boolean update(Object object,boolean async){
         String key = KeyParser.parseKey(object);
         // 在事事务中仅更新事务
         if(txCacheService.isInTx()){
@@ -260,8 +268,9 @@ public class DataService {
         cacheEntity.setState(CacheEntity.CacheEntityState.Normal);
         cacheService.update(key,cacheEntity); // 没有cas,也就可以没有失败
         // 异步
-        asyncService.update(key,object);
-
+        if(async) {
+            asyncService.update(key, object);
+        }
         return true;
     }
     /**
@@ -269,6 +278,9 @@ public class DataService {
      * 由于要异步删除，缓存中设置删除标志位,所以，在缓存中是update
      */
     public boolean delete(Object object){
+        return delete(object,true);
+    }
+    public boolean delete(Object object,boolean async){
         String key = KeyParser.parseKey(object);
         // 在事事务中仅在事务中删除事务
         if(txCacheService.isInTx()){
@@ -281,7 +293,9 @@ public class DataService {
         cacheEntity.setState(CacheEntity.CacheEntityState.Delete);
         cacheService.update(key,cacheEntity); // 这里用update
         // 异步
-        asyncService.delete(key,object);
+        if(async) {
+            asyncService.delete(key, object);
+        }
         return true;
     }
     /**

@@ -2,13 +2,11 @@ package com.mm.engine.framework.net.entrance.http;
 
 import com.google.protobuf.AbstractMessage;
 import com.mm.engine.framework.control.request.RequestService;
-import com.mm.engine.framework.control.request.RequestHandler;
 import com.mm.engine.framework.data.entity.session.Session;
 import com.mm.engine.framework.data.entity.session.SessionService;
+import com.mm.engine.framework.net.code.HttpDecoder;
 import com.mm.engine.framework.net.entrance.Entrance;
-import com.mm.engine.framework.net.NetType;
-import com.mm.engine.framework.net.code.net.http.HttpDecoder;
-import com.mm.engine.framework.net.code.protocol.RetPacket;
+import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.server.SysConstantDefine;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.mm.engine.framework.tool.util.Util;
@@ -29,13 +27,13 @@ import java.io.IOException;
  */
 public class PlayerRequestJettyEntrance extends Entrance {
     private static final Logger log = LoggerFactory.getLogger(PlayerRequestJettyEntrance.class);
+
+    public static final String sessionKey = "sessionKey";
+
     private Server server;
 
 
     public PlayerRequestJettyEntrance(){}
-    public PlayerRequestJettyEntrance(String name, int port){
-        super(name,port);
-    }
 
     private SessionService sessionService;
     private RequestService requestService;
@@ -59,23 +57,22 @@ public class PlayerRequestJettyEntrance extends Entrance {
 
     private void fire(HttpServletRequest request, HttpServletResponse response,String entranceName){
         try {
-            HttpDecoder httpDecoder = BeanHelper.getFrameBean(HttpDecoder.class);
-            byte[] data = httpDecoder.decode(request);
+            byte[] data = HttpDecoder.decode(request);
             // 获取controller，并根据controller获取相应的编解码器
             Object opcodeObj = request.getHeader(SysConstantDefine.opcodeKey);
             if(opcodeObj==null){
-                log.warn("opcode is not exist when decode in : PlayerPacketCoder");
+                log.warn("opcode is not exist when decode in : PlayerRequestJettyEntrance");
                 return;
             }
             String opcodeStr= opcodeObj.toString();
             if(opcodeStr.length()==0 || !StringUtils.isNumeric(opcodeStr)){
-                log.warn("opcode is not exist when decode in : PlayerPacketCoder");
+                log.warn("opcode is not exist when decode in : PlayerRequestJettyEntrance");
                 return;
             }
             int opcode=Integer.parseInt(opcodeStr);
             // 获取sessionId
             String sessionId=null;
-            Object sessionIdObj = request.getHeader(Session.sessionKey);
+            Object sessionIdObj = request.getHeader(sessionKey);
             if(sessionIdObj!=null && sessionIdObj instanceof String){
                 String sessionIdStr=(String)sessionIdObj;
                 if(!StringUtils.isEmpty(sessionIdStr)){
@@ -92,7 +89,7 @@ public class PlayerRequestJettyEntrance extends Entrance {
                 }
             }
             if(session == null){
-                session = sessionService.create(NetType.Http,request.getContextPath(), Util.getIp(request));
+                session = sessionService.create(request.getContextPath(), Util.getIp(request));
             }
 
             RetPacket rePacket = requestService.handle(opcode, data, session);
@@ -106,7 +103,7 @@ public class PlayerRequestJettyEntrance extends Entrance {
 
             response.setHeader(SysConstantDefine.opcodeKey,""+rePacket.getOpcode());
             if(rePacket.keepSession()){
-                response.setHeader(Session.sessionKey,session.getSessionId());
+                response.setHeader(sessionKey,session.getSessionId());
             }
             AbstractMessage.Builder<?> builder=(AbstractMessage.Builder<?>)rePacket.getRetData();
             byte[] reData=builder.build().toByteArray();

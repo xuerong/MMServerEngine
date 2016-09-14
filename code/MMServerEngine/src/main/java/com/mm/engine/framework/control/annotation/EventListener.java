@@ -11,6 +11,8 @@ import java.lang.annotation.Target;
  * 要求，监听事件接收一个参数EventData
  *
  * 每个event可以有多个处理方法，分布在多个Service中
+ *
+ * TODO Event要不要广播到其它服务器，比如一个玩家的升级？
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

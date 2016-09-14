@@ -54,7 +54,7 @@ public class UpdateService {
             Object service= BeanHelper.getServiceBean(entry.getKey());
             List<Method> methodList=entry.getValue();
             for(Method method : methodList){
-                method.setAccessible(true);// 取消 Java 语言访问检查
+                method.setAccessible(true);//TODO 取消 Java 语言访问检查   看看其他地方能否用到
                 Updatable updatable=method.getAnnotation(Updatable.class);// 前面ServiceHelper已经进行了校验此处不用重复校验
                 UpdatableBean updatableBean=new UpdatableBean(service,method,updatable.isAsynchronous(),updatable.cycle(),
                         updatable.runEveryServer(),updatable.cronExpression());
@@ -66,7 +66,7 @@ public class UpdateService {
             }
         }
         // 从配置文件取出同步更新时间间隔
-        syncUpdateInterval= Server.getEngineConfigure().getUpdateCycle();
+        syncUpdateInterval= Server.getEngineConfigure().getSyncUpdateCycle();
         // 启动
         start();
     }

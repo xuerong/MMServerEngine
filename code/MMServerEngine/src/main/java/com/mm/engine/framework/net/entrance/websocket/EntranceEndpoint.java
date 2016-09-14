@@ -1,7 +1,5 @@
 package com.mm.engine.framework.net.entrance.websocket;
 
-import com.mm.engine.framework.net.code.net.NetPacket;
-import com.mm.engine.framework.net.code.net.NetPacketImpl;
 import com.mm.engine.framework.tool.util.Util;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -51,11 +49,6 @@ public class EntranceEndpoint {
                     session.getUserProperties().remove("messageBefore");
                 }
                 Map<String,List<String>> rpMap=session.getRequestParameterMap();
-                Map<String,Object> headerMap=new HashMap<>();
-                for(Map.Entry<String,List<String>> entry : rpMap.entrySet()){
-                    headerMap.put(entry.getKey(),entry.getValue());
-                }
-                NetPacket netPacket = new NetPacketImpl(headerMap,data);
                 String url = session.getRequestURI().getPath();
                 // the socket object is hidden in WsSession,client IP is not exposed via JSR-356
                 // http://stackoverflow.com/questions/22880055/jsr-356-websockets-with-tomcat-how-to-limit-connections-within-single-ip-addre

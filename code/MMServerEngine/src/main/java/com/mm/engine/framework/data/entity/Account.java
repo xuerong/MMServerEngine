@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public abstract class Account implements SessionClient {
     //
-    protected int id;
+    protected String id;
     protected String name="";
     protected String icon="";
     protected String clientVersion;//客户端版本号

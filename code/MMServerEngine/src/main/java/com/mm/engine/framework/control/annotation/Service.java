@@ -12,6 +12,8 @@ import java.lang.annotation.Target;
  * 监听事件服务@EventListener
  * 更新服务@Updatable
  * 监听远程调用服务@NetEventListener
+ *
+ * TODO 添加runOnEveryServer
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

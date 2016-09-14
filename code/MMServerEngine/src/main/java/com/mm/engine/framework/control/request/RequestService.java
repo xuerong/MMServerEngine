@@ -3,7 +3,7 @@ package com.mm.engine.framework.control.request;
 import com.mm.engine.framework.control.ServiceHelper;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.data.entity.session.Session;
-import com.mm.engine.framework.net.code.protocol.RetPacket;
+import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import gnu.trove.map.hash.TIntObjectHashMap;

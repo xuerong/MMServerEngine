@@ -1,4 +1,4 @@
-package com.mm.engine.framework.net.code.protocol;
+package com.mm.engine.framework.net.code;
 
 /**
  * Created by Administrator on 2015/11/19.

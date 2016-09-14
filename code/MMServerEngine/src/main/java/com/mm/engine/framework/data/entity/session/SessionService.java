@@ -3,7 +3,6 @@ package com.mm.engine.framework.data.entity.session;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.annotation.Updatable;
 import com.mm.engine.framework.data.cache.CacheService;
-import com.mm.engine.framework.net.NetType;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.configure.EngineConfigure;
 import com.mm.engine.framework.tool.helper.BeanHelper;
@@ -12,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -26,94 +22,64 @@ import java.util.concurrent.ConcurrentHashMap;
  * 定期更新session
  * 删除session
  * 保存session
+ *
+ * Session作为一个工具来存在，不是和框架任何部分耦合的
  */
 @Service(init = "init")
 public class SessionService {
     private static final Logger log = LoggerFactory.getLogger(SessionService.class);
-
-    private static ConcurrentHashMap<String,Long> updateTime;
-    private static int cycle;
-    /**
-     * session的存活时间，后面考虑一下是否将其改为由SessionClient决定
-     *
-     * 或者：session有自身的存活时间，而SessionClient自身可以有自己的存活时间，通过是否过期可以让自身的session销毁！！
-     *
-     * **/
-    private static int survivalTime;
-    /**
-     * 最多移除数量
-     * **/
-    private static int maxOnceRemoveSessionCount = 300;
-
-    private static CacheService cacheService;
+    private ConcurrentHashMap<String,Session> sessionMap;
 
     public void init(){
-        cycle= Server.getEngineConfigure().getSessionCycle();
-        survivalTime=Server.getEngineConfigure().getSessionSurvivalTime();
-        cacheService = BeanHelper.getServiceBean(CacheService.class);
-        updateTime=new ConcurrentHashMap<>();
+        sessionMap = new ConcurrentHashMap<>();
     }
 
     public Session get(String sessionId){
-        Session session = (Session) cacheService.get(sessionId);
+        Session session = (Session) sessionMap.get(sessionId);
         if(session!=null) {
             // 更新session时间
             session.setLastUpdateTime(new Date());
-            updateTime.put(sessionId, session.getLastUpdateTime().getTime());
         }
+        return session;
+    }
+    public Session create(String url,String ip){
+        Session session=new Session(url, createSessionIdPrefix(), ip,new Date());
+        sessionMap.put(session.getSessionId(),session);
         return session;
     }
 
-    // 创建http的session
-    public Session create(HttpServletRequest request){
-        Session session=new Session(NetType.Http,request.getContextPath(), createSessionIdPrefix(), Util.getIp(request),new Date());
-        updateTime.put(session.getSessionId(),session.getLastUpdateTime().getTime());
-        Object older = cacheService.putIfAbsent(session.getSessionId(),session);
-        if(older != null){
-            session = (Session)older;
-        }
-        return session;
-    }
-    public Session create(NetType netType, String url,String ip){
-        Session session=new Session(netType,url, createSessionIdPrefix(), ip,new Date());
-        updateTime.put(session.getSessionId(),session.getLastUpdateTime().getTime());
-        Object older = cacheService.putIfAbsent(session.getSessionId(),session);
-        if(older != null){
-            session = (Session)older;
-        }
-        return session;
-    }
-
-    // 这个地方如何赋值？可以取final值，所以可以从配置文件中取
-    @Updatable(isAsynchronous = true,cycle = EngineConfigure.sessionUpdateCycle)
-    public void update(int interval){
-        final long currentTime=System.currentTimeMillis();
-        final List<String> expiredIds = new ArrayList<>();
-        // 先找出过期的session，然后更新
-        int expiredIdNum = 0;
-        for (Map.Entry<String,Long> entry :updateTime.entrySet()) {
-            if(currentTime - entry.getValue() >=survivalTime){
-                expiredIds.add(entry.getKey());
-            }
-            if(expiredIdNum++ > maxOnceRemoveSessionCount){
-                break;
-            }
-        }
-        for (String key :expiredIds) {
-            removeSession((Session) cacheService.get(key));
-        }
-    }
+    // TODO 这个地方如何赋值？可以取final值，所以可以从配置文件中取：这些改到accountService中去
+//    @Updatable(isAsynchronous = true,cycle = EngineConfigure.sessionUpdateCycle)
+//    public void update(int interval){
+//        final long currentTime=System.currentTimeMillis();
+//        final List<String> expiredIds = new ArrayList<>();
+//        // 先找出过期的session，然后更新
+//        int expiredIdNum = 0;
+//        for (Map.Entry<String,Long> entry :updateTime.entrySet()) {
+//            if(currentTime - entry.getValue() >=survivalTime){
+//                expiredIds.add(entry.getKey());
+//            }
+//            if(expiredIdNum++ > maxOnceRemoveSessionCount){
+//                break;
+//            }
+//        }
+//        for (String key :expiredIds) {
+//            removeSession((Session) cacheService.get(key));
+//        }
+//    }
 
     public void removeSession(Session session){
         if(session.getSessionClient() != null) {
             session.getSessionClient().destroySession();
         }
-        updateTime.remove(session.getSessionId());
-        // 是否从当前缓存中剔除：1不踢，2踢本地缓存，3踢本地和远程
-        cacheService.remove(session.getSessionId());
+        sessionMap.remove(session.getSessionId());
+    }
+
+    public ConcurrentHashMap<String, Session> getSessionMap() {
+        return sessionMap;
     }
 
     private String createSessionIdPrefix(){
-        return System.currentTimeMillis()+"";
+        return UUID.randomUUID().toString();
     }
 }

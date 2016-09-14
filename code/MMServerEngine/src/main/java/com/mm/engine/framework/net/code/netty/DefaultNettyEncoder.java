@@ -1,4 +1,4 @@
-package com.mm.engine.framework.net.code.net.netty;
+package com.mm.engine.framework.net.code.netty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

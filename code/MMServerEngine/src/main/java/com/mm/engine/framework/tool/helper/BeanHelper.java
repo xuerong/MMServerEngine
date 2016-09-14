@@ -49,7 +49,7 @@ public final class BeanHelper {
             // service
             Map<Class<?>, Class<?>> serviceClassMap = ServiceHelper.getServiceClassMap();
             for (Map.Entry<Class<?>, Class<?>> entry : serviceClassMap.entrySet()) {
-                serviceBeans.put(entry.getKey(), newInstance(entry.getKey(), entry.getValue()));
+                serviceBeans.put(entry.getKey(), newAopInstance(entry.getKey(), entry.getValue()));
             }
             // 框架Bean
             EngineConfigure configure = Server.getEngineConfigure();
@@ -65,18 +65,18 @@ public final class BeanHelper {
                         }
                         frameBeans.put(entry.getKey(), object);
                     }else{
-                        frameBeans.put(entry.getKey(), newInstance(entry.getValue()));
+                        frameBeans.put(entry.getKey(), newAopInstance(entry.getValue()));
                     }
                 }
             }
             // aop
-//            frameBeans.put(MyProxyTarget.class, newInstance(MyProxyTarget.class));
+//            frameBeans.put(MyProxyTarget.class, newAopInstance(MyProxyTarget.class));
             // net
             Map<String,EntranceConfigure> entranceClassMap = configure.getEntranceClassMap();
             for (EntranceConfigure entranceConfigure:entranceClassMap.values()) {
                 Entrance entrance = (Entrance)serviceBeans.get(entranceConfigure.getCls()) ; // 入口也可能声明为service
                 if(entrance == null){
-                    entrance = (Entrance) newInstance(entranceConfigure.getCls());
+                    entrance = (Entrance) newAopInstance(entranceConfigure.getCls());
                 }
                 Method nameMethod = Entrance.class.getMethod("setName",String.class);
                 nameMethod.invoke(entrance,entranceConfigure.getName());
@@ -92,12 +92,12 @@ public final class BeanHelper {
         }
     }
     // Bean类的实例化，之前需要先加aop : 目标类等于代理类
-    private static <T> T newInstance(Class<T> cls){
+    public static <T> T newAopInstance(Class<T> cls){
         T reCls = AopHelper.getProxyObject(cls);
         return reCls;
     }
     //  : 目标类不等于代理类
-    private static <T> T newInstance(Class<?> keyCls,Class<T> newCls){
+    public static <T> T newAopInstance(Class<?> keyCls, Class<T> newCls){
         T reCls = AopHelper.getProxyObject(keyCls,newCls);
         return reCls;
     }
@@ -112,7 +112,7 @@ public final class BeanHelper {
         if(t == null){
             Class<?> c = configureBeans.get(cls);
             if(c != null){
-                t = newInstance(c);
+                t = newAopInstance(c);
                 frameBeans.put(cls, t);
             }else{
                 log.error("con't get frame bean by class" + cls);

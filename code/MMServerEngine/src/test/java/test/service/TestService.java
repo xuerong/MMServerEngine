@@ -1,7 +1,7 @@
 package test.service;
 
-import com.mm.engine.framework.net.code.protocol.RetPacket;
-import com.mm.engine.framework.net.code.protocol.RetPacketImpl;
+import com.mm.engine.framework.net.code.RetPacket;
+import com.mm.engine.framework.net.code.RetPacketImpl;
 import com.mm.engine.framework.control.annotation.Request;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.data.entity.session.Session;

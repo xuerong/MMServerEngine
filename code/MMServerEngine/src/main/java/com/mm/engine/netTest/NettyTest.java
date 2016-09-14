@@ -9,8 +9,8 @@ package com.mm.engine.netTest;
 public class NettyTest {
 
     public static void main(String[] args) throws Throwable{
-        Server.init(new EngineConfigure(null,8003));
-        Server.start();
+//        Server.init(new EngineConfigure(null,8003));
+//        Server.start();
 //        NettyServerClient nettyServerClient = new NettyServerClient(ServerType.MAIN_SERVER,"localhost",8000);
 //        nettyServerClient.start();
     }

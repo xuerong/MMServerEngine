@@ -131,7 +131,6 @@ public class AsyncService {
 
     /**
      * 事务可以考虑用这个，这样，一个事务只需要一次网络访问
-     * TODO 现在为什么还没有用？
      */
     public void asyncData(List<AsyncData> asyncDataList){
         Integer t = threadNum.get();

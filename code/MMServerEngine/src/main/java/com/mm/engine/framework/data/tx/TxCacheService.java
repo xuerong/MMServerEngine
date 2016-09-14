@@ -4,6 +4,7 @@ import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.data.DataService;
 import com.mm.engine.framework.data.OperType;
 import com.mm.engine.framework.data.cache.CacheEntity;
+import com.mm.engine.framework.data.cache.CacheService;
 import com.mm.engine.framework.data.cache.KeyParser;
 import com.mm.engine.framework.security.exception.ExceptionHelper;
 import com.mm.engine.framework.security.exception.ExceptionLevel;
@@ -46,9 +47,12 @@ public class TxCacheService {
 
     private LockerService lockerService;
     private DataService dataService;
+    private AsyncService asyncService;
 
     public void init(){
         lockerService = BeanHelper.getServiceBean(LockerService.class);
+        dataService = BeanHelper.getServiceBean(DataService.class);
+        asyncService = BeanHelper.getServiceBean(AsyncService.class);
     }
 
     public boolean isLockClass(Class<?> cls){
@@ -68,6 +72,7 @@ public class TxCacheService {
     public void setTXState(TxState txState){
         txStates.set(txState);
     }
+    // 事务开始
     public void begin(boolean isTx, boolean isLock, Class<?>[] lockClass){
         if(!isTx){
             return;
@@ -84,6 +89,7 @@ public class TxCacheService {
             }
         }
     }
+    // 事务结束
     public boolean after(){
         if(!isInTx()){
             return true;
@@ -133,21 +139,36 @@ public class TxCacheService {
             }
         }
         // --- 提交事务,无论中间出现什么情况,都要解锁
-        // TODO 事务的提交要作些改变，做成一次性提交，提高效率
+        // 先更新缓存，再统一提交异步服务器
         try{
+            List<AsyncService.AsyncData> asyncDataList = null;
             for(PrepareCachedData data : map.values()){
                 switch (data.getOperType()){
                     case Insert:
-                        dataService.insert(data.getData()); // 这个地方用这种方式提交,如果有需要,可以换方式
+                        dataService.insert(data.getData(),false); // 这个地方用这种方式提交,如果有需要,可以换方式
                         break;
                     case Update:
-                        dataService.update(data.getData());
+                        dataService.update(data.getData(),false);
                         break;
                     case Delete:
-                        dataService.delete(data.getData());
+                        dataService.delete(data.getData(),false);
                         break;
-
                 }
+                if(data.getOperType() == OperType.Insert || data.getOperType() == OperType.Update ||
+                        data.getOperType() == OperType.Delete) {
+                    if (asyncDataList == null) {
+                        asyncDataList = new ArrayList<>();
+                    }
+                    AsyncService.AsyncData asyncData = new AsyncService.AsyncData();
+                    asyncData.setOperType(data.getOperType());
+                    asyncData.setKey(data.getKey());
+                    asyncData.setObject(data.getData());
+                    asyncDataList.add(asyncData);
+                }
+            }
+            // 提交异步服务器
+            if(asyncDataList!=null && asyncDataList.size()>0){
+                asyncService.asyncData(asyncDataList);
             }
         }finally {
             // -- 解锁

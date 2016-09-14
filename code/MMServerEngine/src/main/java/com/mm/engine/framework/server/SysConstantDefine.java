@@ -25,6 +25,7 @@ public final class SysConstantDefine {
     // --------------------------------------------------------------------------------------------------------event
     public static final int Event_NettyServerClient = 1201;
     public static final int Event_EntranceStart = 1202; // 入口启动完成
+    public static final int Event_ServerStart = 1203; // server启动完成
     // ----------------------------------------------------------------------------------------monitorService conditions
     public static final String NetEventServiceStart = "NetEventServiceStart";
 }

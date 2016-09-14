@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -38,6 +39,7 @@ public class LockerService {
     }
     ////---------------------------外部代用
     public boolean lockAndCheckKeys(LockerData... lockerDatas){
+        Arrays.sort(lockerDatas); //先做个排序 防止死锁
         NetEventData eventData = new NetEventData(SysConstantDefine.LOCKKEYSANDCHECK);
         eventData.setParam(lockerDatas);
         NetEventData ret = netEventService.fireMainServerNetEventSyn(eventData); // 需要同步发送
@@ -53,7 +55,9 @@ public class LockerService {
         netEventService.fireMainServerNetEvent(eventData); // 异步发送解锁就可以
     }
     // TODO 如果确保每个服务在自己返回的时候，即使发生异常，也会把加的锁释放
+    // TODO 有没有必要先做个排序，防止死锁
     public boolean lockKeys(String... keys){
+        Arrays.sort(keys); //先做个排序 防止死锁
         NetEventData eventData = new NetEventData(SysConstantDefine.LOCKKEYS);
         eventData.setParam(keys);
         NetEventData ret = netEventService.fireMainServerNetEventSyn(eventData); // 需要同步发送
@@ -173,7 +177,7 @@ public class LockerService {
         lockers.remove(key);
     }
 
-    public static class LockerData implements Serializable{
+    public static class LockerData implements Serializable,Comparable<LockerData>{
         private String key;
         private OperType operType;
         private long casUnique;
@@ -200,6 +204,11 @@ public class LockerService {
 
         public void setCasUnique(long casUnique) {
             this.casUnique = casUnique;
+        }
+
+        @Override
+        public int compareTo(LockerData o) {
+            return key.compareTo(o.getKey());
         }
     }
 

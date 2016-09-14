@@ -1,6 +1,6 @@
 package com.mm.engine.framework.control.request;
 
-import com.mm.engine.framework.net.code.protocol.RetPacket;
+import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.data.entity.session.Session;
 
 /**

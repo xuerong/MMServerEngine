@@ -11,6 +11,7 @@ import java.util.*;
 
 /**
  * Created by Administrator on 2015/11/24.
+ * TODO 这个怎么做淘汰?
  */
 public class EhCacheHelper {
     private static final Map<String, Cache<String,CacheEntity>> cacheMap=new HashMap<>();

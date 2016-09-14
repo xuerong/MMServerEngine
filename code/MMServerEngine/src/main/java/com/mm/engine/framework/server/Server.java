@@ -1,6 +1,8 @@
 package com.mm.engine.framework.server;
 
 import com.mm.engine.framework.control.ServiceHelper;
+import com.mm.engine.framework.control.event.EventData;
+import com.mm.engine.framework.control.event.EventService;
 import com.mm.engine.framework.net.entrance.Entrance;
 import com.mm.engine.framework.security.MonitorService;
 import com.mm.engine.framework.server.configure.EngineConfigure;
@@ -73,17 +75,20 @@ public final class Server {
         MonitorService monitorService = BeanHelper.getServiceBean(MonitorService.class);
         monitorService.startWait();
         // 服务器启动完成
+        EventService eventService = BeanHelper.getServiceBean(EventService.class);
+        eventService.fireEventSyn(new EventData(SysConstantDefine.Event_ServerStart));
+
         log.info("服务器启动完成!");
     }
 
     public static void stop(){
         // 关闭入口
-        List<Entrance> entranceList = configure.getEntranceList();
+        Collection<Entrance> entranceList = BeanHelper.getEntranceBeans().values();
         for (Entrance entrance :entranceList) {
-            try{
+            try {
                 entrance.stop();
-            }catch (Exception e2){
-                log.error("net stop fail , net name = "+entrance.getName()+":"+e2.getStackTrace());
+            }catch (Exception e){
+                log.error("net stop fail , net name = "+entrance.getName()+":"+e.getStackTrace());
             }
         }
         // 关闭所有的Service

@@ -1,9 +1,11 @@
 package com.mm.engine.framework.data.entity.session;
 
 import com.mm.engine.framework.data.cache.CacheEntity;
-import com.mm.engine.framework.net.NetType;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2015/11/16.
@@ -16,8 +18,6 @@ import java.util.Date;
  */
 
 public final class Session extends CacheEntity{
-    public static final String sessionKey="mmsession";
-    private NetType netType;
     private String url;
     // sessionid的组成包括两部分，一是前缀，用来记录和登陆相关的一些信息，二是cacheEntity的id
     private final String sessionId;
@@ -26,15 +26,24 @@ public final class Session extends CacheEntity{
     private final String ip;
     private final Date createTime;
     private Date lastUpdateTime;
-    // session是否过期，入登出时，设置为过期
+    // 属性
+    private Map<String,Object> attrs;
 
-    public Session(NetType netType, String url, String sessionIdPrefix, String ip, Date createTime){
-        this.netType = netType;
+    public Session(String url, String sessionIdPrefix, String ip, Date createTime){
         this.url=url;
+        //"Session_"+sessionIdPrefix;
         this.sessionId="Session_"+sessionIdPrefix;
         this.ip=ip;
         this.createTime=createTime;
         this.lastUpdateTime=createTime;
+        attrs = new HashMap<>();
+    }
+
+    public Object getAttr(String key){
+        return attrs.get(key);
+    }
+    public void setAttr(String key,Object object){
+        this.attrs.put(key,object);
     }
 
     public String getSessionId() {

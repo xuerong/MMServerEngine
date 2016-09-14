@@ -1,35 +1,15 @@
-package com.mm.engine.framework.net.code.net.http;
-
-import com.mm.engine.framework.net.code.net.NetPacket;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package com.mm.engine.framework.net.code;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * Created by Administrator on 2015/11/13.
+ * Created by a on 2016/9/13.
  */
-public class HttpCoderImpl implements HttpEncoder, HttpDecoder {
-    private static final Logger log = LoggerFactory.getLogger(HttpCoderImpl.class);
-
-    @Override
-    public HttpPacket encode(NetPacket packet) {
-        Map<String,String> httpHeader=new HashMap<>();
-        Map<String,Object> packetHeader=packet.getHeaders();
-        for(Map.Entry<String,Object> entry : packetHeader.entrySet()){
-            httpHeader.put(entry.getKey(),entry.getValue().toString());
-        }
-        HttpPacket httpPacket=new HttpPacketImpl(httpHeader,packet.getData());
-        return httpPacket;
-    }
-
-    @Override
-    public byte[] decode(HttpServletRequest request) throws IOException {
-        //data
+public class HttpDecoder {
+    public static byte[] decode(HttpServletRequest request) throws IOException {
+//data
         String ignoredata = request.getHeader("IGNORE_DATA");// 当是空包的时候，如，logout,unity发不出来，故设此参数
         byte[] buffer = null;
         if(ignoredata==null || ignoredata.length()<=0){
