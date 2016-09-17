@@ -8,6 +8,8 @@ import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.tool.helper.ConfigHelper;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -15,10 +17,10 @@ import java.util.*;
  * Created by Administrator on 2015/11/16.
  */
 public final class EngineConfigure {
+    private static final Logger log = LoggerFactory.getLogger(EngineConfigure.class);
     private Map<Class<?>,Class<?>> configureBeans=new HashMap<Class<?>,Class<?>>();
     private String defaultRequestController;
     private int syncUpdateCycle = 1000;
-    private int netEventPort = 8001;
 
     // 系统开启的网络入口
     private final Map<String,EntranceConfigure> entranceClassMap = new HashMap<>();
@@ -49,6 +51,23 @@ public final class EngineConfigure {
 //        sessionUpdateCycle = Integer.parseInt(getString("session.cycle"));
         // syncUpdate.cycle
         syncUpdateCycle = Integer.parseInt(getString("syncUpdate.cycle"));
+    }
+
+    public void changeEntrancePort(String portStr){
+        if(portStr == null || portStr.length() == 0){
+            return;
+        }
+        String[] pStrs  = portStr.split("\\|");
+        for(String pStr : pStrs){
+            String[] itemStrs = pStr.split(":");
+            EntranceConfigure configure = entranceClassMap.get(itemStrs[0]);
+            if(configure == null ){
+//                throw new MMException("entrance "+itemStrs[0]+" is not exist");
+                log.warn("entrance "+itemStrs[0]+" is not exist");
+                continue;
+            }
+            configure.setPort(Integer.parseInt(itemStrs[1]));
+        }
     }
 
     private void initEntrance(){
@@ -133,10 +152,11 @@ public final class EngineConfigure {
         return true;
     }
     public int getNetEventPort(){
+        int netEventPort = entranceClassMap.get("netEvent").getPort();
         return netEventPort;
     }
 
     public String getMainServerNetEventAdd(){
-        return "localhost:8000";
+        return ConfigHelper.getString("mainServer");
     }
 }

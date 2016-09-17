@@ -23,4 +23,15 @@ public final class ReflectionUtil {
         }
         return instance;
     }
+
+    public static Class[] getParamsTypes(Object... params){
+        if(params == null || params.length == 0){
+            return null;
+        }
+        Class[] result = new Class[params.length];
+        for(int i = 0;i<params.length;i++){
+            result[i] = params[i].getClass();
+        }
+        return result;
+    }
 }

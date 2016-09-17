@@ -912,7 +912,7 @@ public abstract class GeneratedMessage extends AbstractMessage {
 
   // =================================================================
 
-  /** Calls Class.getMethod and throws a RuntimeException if it fails. */
+  /** Calls Class.getMethodName and throws a RuntimeException if it fails. */
   @SuppressWarnings("unchecked")
   private static Method getMethodOrDie(
       final Class clazz, final String name, final Class... params) {

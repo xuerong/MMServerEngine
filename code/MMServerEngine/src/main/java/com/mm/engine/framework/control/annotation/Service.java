@@ -29,4 +29,8 @@ public @interface Service {
      * @return
      */
     String destroy() default "";
+    /**
+     *
+     */
+    boolean runOnEveryServer() default true;
 }

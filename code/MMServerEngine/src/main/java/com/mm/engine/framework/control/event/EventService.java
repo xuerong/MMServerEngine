@@ -1,7 +1,11 @@
 package com.mm.engine.framework.control.event;
 
 import com.mm.engine.framework.control.ServiceHelper;
+import com.mm.engine.framework.control.annotation.NetEventListener;
 import com.mm.engine.framework.control.annotation.Service;
+import com.mm.engine.framework.control.netEvent.NetEventData;
+import com.mm.engine.framework.control.netEvent.NetEventService;
+import com.mm.engine.framework.server.SysConstantDefine;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import gnu.trove.map.hash.TShortObjectHashMap;
 import gnu.trove.procedure.TShortObjectProcedure;
@@ -39,7 +43,10 @@ public class EventService {
 
     private final TShortObjectHashMap<Set<EventListenerHandler>> handlerMap=new TShortObjectHashMap<>();
 
+    private NetEventService netEventService;
+
     public void init(){
+        netEventService = BeanHelper.getServiceBean(NetEventService.class);
         TShortObjectHashMap<Set<Class<?>>> handlerClassMap= ServiceHelper.getEventListenerHandlerClassMap();
         handlerClassMap.forEachEntry(new TShortObjectProcedure<Set<Class<?>>>() {
             @Override
@@ -66,13 +73,28 @@ public class EventService {
     /**
      * 事件是异步的
      * **/
-    public void fireEvent(final EventData event){
+    public void fireEvent(final EventData eventData){
+        fireEvent(eventData,false);
+    }
+    public void fireEvent(final EventData eventData, final boolean broadcast){
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                fireEventSyn(event);
+                fireEventSyn(eventData);
+                if(broadcast){
+                    NetEventData netEventData = new NetEventData(SysConstantDefine.broadcastEvent);
+                    netEventData.setParam(eventData);
+                    netEventService.broadcastNetEvent(netEventData,false);
+                }
             }
         });
+    }
+    // 接受到其它服务器发送的事件
+    @NetEventListener(netEvent = SysConstantDefine.broadcastEvent)
+    public NetEventData receiveEventData(NetEventData netEventData){
+        EventData eventData = (EventData)netEventData.getParam();
+        fireEvent(eventData,false);
+        return null;
     }
 
     /**

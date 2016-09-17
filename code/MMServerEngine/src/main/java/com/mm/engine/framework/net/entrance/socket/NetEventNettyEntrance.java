@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 public class NetEventNettyEntrance extends Entrance {
     private static final Logger log = LoggerFactory.getLogger(NetEventNettyEntrance.class);
     Channel channel = null;
-    NetEventService netEventService;
+    static NetEventService netEventService;
 
     @Override
     public void start() throws Exception {
@@ -28,7 +28,7 @@ public class NetEventNettyEntrance extends Entrance {
         log.info("bind port :"+port);
     }
 
-    public class DiscardServerHandler extends ChannelInboundHandlerAdapter { // (1)
+    public static class DiscardServerHandler extends ChannelInboundHandlerAdapter { // (1)
         @Override
         public void channelActive(final ChannelHandlerContext ctx) { // (1)
 
@@ -50,7 +50,7 @@ public class NetEventNettyEntrance extends Entrance {
             if(netEventData == null){
                 throw new MMException("NetEventNettyEntrance 收到包错误 ："+msg.getClass().getName());
             }
-            NetEventData retPacket = netEventService.handle(netEventData);
+            NetEventData retPacket = netEventService.handleNetEventData(netEventData);
             if(id>0){ // 需要返回的
                 SocketPacket socketPacket = new SocketPacket();
                 socketPacket.setId(id);

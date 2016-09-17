@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -30,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class NettyServerClient extends AbServerClient {
     private static final Logger log = LoggerFactory.getLogger(NettyServerClient.class);
-
+    private static final int timeout = 10; //10s
     private static final int reconnectionInterval = 10000;
 
     private LinkedBlockingQueue<Integer> idOut = new LinkedBlockingQueue<Integer>(); // 可以用的id，id池
@@ -102,9 +103,9 @@ public class NettyServerClient extends AbServerClient {
         }finally {
             workerGroup.shutdownGracefully();
         }
-    }
-};
-Thread thread = new Thread(runnable);
+        }
+    };
+    Thread thread = new Thread(runnable);
         thread.setName("NettyServerClient");
         thread.start();
         latch.await();
@@ -112,8 +113,8 @@ Thread thread = new Thread(runnable);
         running = true;
         }
 
-@Override
-public Object send(Object msg) { // TODO 要不要考虑用多个包整合成一个包，来降低网络访问量
+    @Override
+    public Object send(Object msg) { // TODO 要不要考虑用多个包整合成一个包，来降低网络访问量
         try{
             SocketPacket socketPacket = new SocketPacket();
             Integer id = idOut.poll();
@@ -126,9 +127,14 @@ public Object send(Object msg) { // TODO 要不要考虑用多个包整合成一
             socketPacket.setLatch(latch);
             packetMap.put(id,socketPacket);
             final ChannelFuture f = channel.writeAndFlush(socketPacket); // (3)
-            latch.await();
+            if(!latch.await(timeout, TimeUnit.SECONDS)){
+                throw new MMException("timeout while send packet,to "+getHost()+":"+getPort());
+            }
             return socketPacket.getReData();
         }catch (Throwable e){
+            if(e instanceof InterruptedException){
+                throw new MMException(e);
+            }
             e.printStackTrace();
         }
         return null;

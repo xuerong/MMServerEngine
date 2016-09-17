@@ -228,7 +228,7 @@ public class NetEventService {
         serverClientMap.put(serverInfo.getHost()+":"+serverInfo.getPort(),client);
     }
     // 一个系统的一种NetEvent只有一个监听器(因为很多事件需要返回数据)，可以通过内部事件分发
-    public NetEventData handle(NetEventData netEventData){
+    public NetEventData handleNetEventData(NetEventData netEventData){
         if(handlerMap == null){ //TODO 这个要变成start时候初始化，
             throw new MMException("改造这些Manager");
         }
@@ -236,7 +236,8 @@ public class NetEventService {
         if(handler == null){
             throw new MMException("netEventHandle is not exist , netEvent="+netEventData.getNetEvent());
         }
-        return handler.handle(netEventData);
+        NetEventData ret = handler.handle(netEventData);
+        return ret;
     }
 
     /**
@@ -255,7 +256,7 @@ public class NetEventService {
                     }
                 }
                 if(self){
-                    handle(netEvent);
+                    handleNetEventData(netEvent);
                 }
             }
         });
@@ -286,7 +287,7 @@ public class NetEventService {
             }
             latch.await();
             if(self){
-                NetEventData ret = handle(netEvent);
+                NetEventData ret = handleNetEventData(netEvent);
                 result.put(Util.getHostAddress()+":"+Server.getEngineConfigure().getNetEventPort(),ret);
             }
             return result;
@@ -303,7 +304,7 @@ public class NetEventService {
      */
     public void fireMainServerNetEvent(NetEventData netEvent){
         if(ServerType.isMainServer()){
-            handle(netEvent);
+            handleNetEventData(netEvent);
             return;
         }
         if(mainServerClient != null){
@@ -317,7 +318,7 @@ public class NetEventService {
      */
     public NetEventData fireMainServerNetEventSyn(NetEventData netEvent){
         if(ServerType.isMainServer()){
-            return handle(netEvent);
+            return handleNetEventData(netEvent);
         }
         if(mainServerClient != null){
             return (NetEventData) mainServerClient.send(netEvent);
@@ -330,7 +331,7 @@ public class NetEventService {
      */
     public void fireAsyncServerNetEvent(NetEventData netEvent){
         if(ServerType.isAsyncServer()){
-            handle(netEvent);
+            handleNetEventData(netEvent);
             return;
         }
         if(asyncServerClient != null){
@@ -344,7 +345,7 @@ public class NetEventService {
      */
     public NetEventData fireAsyncServerNetEventSyn(NetEventData netEvent){
         if(ServerType.isAsyncServer()){
-            return handle(netEvent);
+            return handleNetEventData(netEvent);
         }
         if(asyncServerClient != null){
             return (NetEventData)asyncServerClient.send(netEvent);
@@ -357,7 +358,7 @@ public class NetEventService {
      */
     public void fireServerNetEvent(String add,NetEventData netEvent){
         if(add.equals(selfAdd)){
-            handle(netEvent);
+            handleNetEventData(netEvent);
             return;
         }
         ServerClient serverClient = serverClientMap.get(add);
@@ -373,7 +374,7 @@ public class NetEventService {
      */
     public NetEventData fireServerNetEventSyn(String add,NetEventData netEvent){
         if(add.equals(selfAdd)){
-            return handle(netEvent);
+            return handleNetEventData(netEvent);
         }
         ServerClient serverClient = serverClientMap.get(add);
         if(serverClient != null){

@@ -69,7 +69,7 @@ public class NettyHelper {
                                 ch.pipeline().addLast(
                                         (ChannelHandler) decoderClass.newInstance(), // 解码器
                                         (ChannelHandler) encoderClass.newInstance(), // 编码器
-                                        (ChannelHandler) handlerClass.newInstance() //处理器
+                                        (ChannelInboundHandlerAdapter) handlerClass.newInstance() //处理器
                                 );
                             }
                         })

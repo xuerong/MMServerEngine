@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public class SceneNettyEntrance extends Entrance {
     private static final Logger log = LoggerFactory.getLogger(SceneNettyEntrance.class);
     Channel channel = null;
-    SceneService sceneService;
+    static SceneService sceneService;
 
     @Override
     public void start() throws Exception {
@@ -26,7 +26,7 @@ public class SceneNettyEntrance extends Entrance {
         sceneService = BeanHelper.getServiceBean(SceneService.class);
         log.info("bind port :"+port);
     }
-    public class DiscardServerHandler extends ChannelInboundHandlerAdapter { // (1)
+    public static class DiscardServerHandler extends ChannelInboundHandlerAdapter { // (1)
         @Override
         public void channelActive(final ChannelHandlerContext ctx) { // (1)
 

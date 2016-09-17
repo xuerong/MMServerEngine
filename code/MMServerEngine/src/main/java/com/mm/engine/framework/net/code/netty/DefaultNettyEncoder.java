@@ -13,14 +13,18 @@ import java.io.ObjectOutputStream;
  */
 public class DefaultNettyEncoder extends MessageToByteEncoder {
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, Object o, ByteBuf byteBuf) throws Exception {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(bos);
-        out.writeObject(o);
-        out.flush();
-        out.close(); // 这个是否能重复用？
-        byte[] nb = bos.toByteArray();
-        byteBuf.writeInt(nb.length);
-        byteBuf.writeBytes(nb);
+    protected void encode(ChannelHandlerContext channelHandlerContext, Object o, ByteBuf byteBuf){
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(bos);
+            out.writeObject(o);
+            out.flush();
+            out.close(); // 这个是否能重复用？
+            byte[] nb = bos.toByteArray();
+            byteBuf.writeInt(nb.length);
+            byteBuf.writeBytes(nb);
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
     }
 }

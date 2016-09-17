@@ -3,10 +3,12 @@ package com.mm.engine.sysBean;
 import com.mm.engine.framework.control.annotation.*;
 import com.mm.engine.framework.control.event.EventService;
 import com.mm.engine.framework.control.netEvent.NetEventData;
+import com.mm.engine.framework.control.netEvent.RemoteCallService;
 import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.net.code.RetPacketImpl;
 import com.mm.engine.framework.control.event.EventData;
 import com.mm.engine.framework.data.entity.session.Session;
+import com.mm.engine.framework.server.IdService;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.mm.engine.framework.tool.util.Util;
 import com.protocol.OpCode;
@@ -21,9 +23,13 @@ import java.util.Map;
 @Service(init = "init")
 public class TestService {
     private EventService eventService;
+    private IdService idService;
     public void init(){
 //        System.out.println("TestService init");
         eventService = BeanHelper.getServiceBean(EventService.class);
+        idService = BeanHelper.getServiceBean(IdService.class);
+//        RemoteCallService remoteCallService = BeanHelper.getServiceBean(RemoteCallService.class);
+//        remoteCallService.aaa();
     }
     @Request(opcode = 20002)
     public RetPacket handlerLogin(Object clientData, Session session){
@@ -80,6 +86,7 @@ public class TestService {
     @Updatable(isAsynchronous = false)
     public void testUpdateSync1(int interval){
 //        System.out.println("testUpdateSync1"+interval);
+        System.out.println("idService,id:"+idService.acquireInt(TestService.class));
     }
     @Updatable(isAsynchronous = true,cronExpression = "1/10 * * * * ? *")
     public void testUpdateSync2(int interval){
@@ -87,4 +94,24 @@ public class TestService {
 //        MyProxyTarget myProxyTarget = BeanHelper.getServiceBean(MyProxyTarget.class);
 //        myProxyTarget.p1();
     }
+    public void hahaha(){};
+    protected void aaa(){}
+    private  void bbb(){}
+
+    public static class A{
+        public void aaa(int a) {
+            System.out.println("one");
+        }
+    }
+    public static class B extends A{
+//        @Override
+        public void aaa(Integer a){
+            System.out.println("two");
+        }
+    }
+    public static void main(String[] args){
+        B a = new B();
+        a.aaa(new Integer(1));
+    }
+
 }

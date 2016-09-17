@@ -1,16 +1,14 @@
 package com.mm.engine.framework.control;
 
-import com.mm.engine.framework.net.code.RetPacket;
-import com.mm.engine.framework.control.annotation.*;
 import com.mm.engine.framework.control.annotation.EventListener;
+import com.mm.engine.framework.control.annotation.*;
+import com.mm.engine.framework.control.event.EventData;
 import com.mm.engine.framework.control.event.EventListenerHandler;
+import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.control.netEvent.NetEventListenerHandler;
 import com.mm.engine.framework.control.request.RequestHandler;
-import com.mm.engine.framework.control.event.EventData;
-import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.data.entity.session.Session;
-import com.mm.engine.framework.server.ServerType;
-import com.mm.engine.framework.tool.helper.BeanHelper;
+import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.tool.helper.ClassHelper;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TShortObjectHashMap;
@@ -18,12 +16,9 @@ import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
-import javassist.bytecode.MethodInfo;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by Administrator on 2015/11/18.
@@ -35,7 +30,7 @@ import java.util.List;
  * NetEventListener-NetEventListenerHandler-NetEventService
  * Updatable-
  */
-public final class ServiceHelper {
+public final class ServiceHelperCopy {
     private static TIntObjectHashMap<Class<?>> requestHandlerClassMap=new TIntObjectHashMap<>();
     private static TShortObjectHashMap<Set<Class<?>>> eventListenerHandlerClassMap=new TShortObjectHashMap<>();
     private static TIntObjectHashMap<Class<?>> netEventListenerHandlerClassMap=new TIntObjectHashMap<>();
@@ -84,10 +79,6 @@ public final class ServiceHelper {
                     if(method.isAnnotationPresent(Request.class)){
                         addMethodToMap(requestMap,serviceClass,method);
                     }
-                    //
-                    if(!service.runOnEveryServer() && !ServerType.isMainServer()){
-                        continue;
-                    }
                     if(method.isAnnotationPresent(EventListener.class)){
                         addMethodToMap(eventListenerMap,serviceClass,method);
                     }
@@ -119,58 +110,6 @@ public final class ServiceHelper {
                 List<Integer> netEventList=null;
 
                 Class<?> newServiceClass=serviceClass;
-
-                Service service = serviceClass.getAnnotation(Service.class);
-                // TODO 这里用的isMainServer,可考虑修改
-                if(!service.runOnEveryServer() && !ServerType.isMainServer()){
-                    // 改写所有的public方法,使用远程调用
-                    ClassPool pool = ClassPool.getDefault();
-                    CtClass oldClass =  pool.get(serviceClass.getName());
-                    CtClass cls = pool.makeClass(oldClass.getName()+"$Proxy",oldClass);
-
-                    for(CtMethod ctMethod : oldClass.getDeclaredMethods()){
-                        MethodInfo methodInfo = ctMethod.getMethodInfo();
-                        if(methodInfo.getAccessFlags() == 1){ // public 的
-                            // 重写该方法
-                            StringBuilder sb = new StringBuilder(ctMethod.getReturnType().getName()+" "+ctMethod.getName()+"(" );
-                            CtClass[] paramClasses = ctMethod.getParameterTypes();
-                            int i=0;
-                            StringBuilder paramsStr = new StringBuilder();
-                            for(CtClass paramClass : paramClasses){
-                                if(i > 0){
-                                    sb.append(",");
-                                    paramsStr.append(",");
-                                }
-                                sb.append(paramClass.getName()+" p"+i);
-                                // 这个地方需要进行一步强制转换,基本类型不能编译成Object类型
-                                paramsStr.append(praseBaseTypeStrToObjectTypeStr(paramClass.getName(),"p"+i));
-                                i++;
-                            }
-                            sb.append(") {");
-                            String paramStr = "null";
-                            if(i >0){
-                                sb.append("Object[] param = new Object[]{"+paramsStr+"};");
-                                paramStr = "param";
-                            }
-                            // --------------这个地方要进行强制转换
-                            sb.append("com.mm.engine.framework.control.netEvent.RemoteCallService remoteCallService = (com.mm.engine.framework.control.netEvent.RemoteCallService)com.mm.engine.framework.tool.helper.BeanHelper.getServiceBean(com.mm.engine.framework.control.netEvent.RemoteCallService.class);");
-                            String invokeStr = "remoteCallService.remoteCallMainServerSyn("+serviceClass.getName()+".class,\""+ctMethod.getName()+"\","+paramStr+");";
-                            if(ctMethod.getReturnType().getName().toLowerCase().equals("void")){
-                                sb.append(invokeStr);
-                            }else{
-                                sb.append("Object object = "+invokeStr);
-                                sb.append("return "+parseBaseTypeStrToObjectTypeStr(ctMethod.getReturnType().getName()));
-                            }
-                            sb.append("}");
-//                            System.out.println(sb.toString());
-                            CtMethod method = CtMethod.make(sb.toString(), cls);
-                            cls.addMethod(method);
-                        }
-                    }
-                    newServiceClass = cls.toClass();
-                }
-
-
                 if(requestMap.containsKey(serviceClass)){
                     newServiceClass=generateRequestHandlerClass(newServiceClass,serviceClass);
                     opcodeList=new ArrayList<>();
@@ -240,47 +179,6 @@ public final class ServiceHelper {
         }
 
     }
-    private static String praseBaseTypeStrToObjectTypeStr(String typeStr,String paramStr){
-        if(typeStr.equals("byte")){
-            return "new Byte("+paramStr+")";
-        }else if(typeStr.equals("short")){
-            return "new Short("+paramStr+")";
-        }else if(typeStr.equals("long")){
-            return "new Long("+paramStr+")";
-        }else if(typeStr.equals("int")){
-            return "new Integer("+paramStr+")";
-        }else if(typeStr.equals("float")){
-            return "new Float("+paramStr+")";
-        }else if(typeStr.equals("double")){
-            return "new Double("+paramStr+")";
-        }else if(typeStr.equals("char")){
-            return "new Character("+paramStr+")";
-        }else if(typeStr.equals("boolean")){
-            return "new Boolean("+paramStr+")";
-        }
-        return paramStr;
-    }
-    private static String parseBaseTypeStrToObjectTypeStr(String typeStr){
-        if(typeStr.equals("byte")){
-            return "((Byte)object).byteValue();";
-        }else if(typeStr.equals("short")){
-            return "((Short)object).shortValue();";//"Short";
-        }else if(typeStr.equals("long")){
-            return "((Long)object).longValue();";//"Long";
-        }else if(typeStr.equals("int")){
-            return "((Integer)object).intValue();";//"Integer";
-        }else if(typeStr.equals("float")){
-            return "((Float)object).floatValue();";//"Float";
-        }else if(typeStr.equals("double")){
-            return "((Double)object).doubleValue();";//"Double";
-        }else if(typeStr.equals("char")){
-            return "((Character)object).charValue();";//"Character";
-        }else if(typeStr.equals("boolean")){
-            return "((Boolean)object).booleanValue();";//"Boolean";
-        }
-        return "("+typeStr+")object";
-    }
-
     //get set
     public static TIntObjectHashMap<Class<?>> getRequestHandlerMap(){
         return requestHandlerClassMap;
@@ -367,7 +265,6 @@ public final class ServiceHelper {
             sb.append("}");
             CtMethod method = CtMethod.make(sb.toString(), ct);
             ct.addMethod(method);
-
             return ct.toClass();
         }else{
             return clazz;

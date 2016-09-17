@@ -7,8 +7,6 @@ import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -42,7 +40,7 @@ public class SceneService {
             throw new MMException("create scene error,"+cls.getName()+"is not Scene");
         }
         Scene scene = (Scene)BeanHelper.newAopInstance(cls);
-        scene.setId(idService.acquire(Scene.class));
+        scene.setId(idService.acquireInt(Scene.class));
         scene.init();
         return (T)scene;
     }
@@ -57,7 +55,7 @@ public class SceneService {
             log.warn("scene is not exist while removeScene,sceneId = "+id);
         }else {
             scene.destroy();
-            idService.release(Scene.class,scene.getId());
+            idService.releaseInt(Scene.class,scene.getId());
         }
         return scene;
     }

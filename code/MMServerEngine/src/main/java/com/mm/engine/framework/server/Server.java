@@ -127,7 +127,13 @@ public final class Server {
      */
     public static void main(String[] args){
         String serverTypeStr = args[0];
-        Server.init(serverTypeStr);
+        EngineConfigure configure = new EngineConfigure(serverTypeStr);
+        if(args.length>1){
+            System.out.println(args[1]);
+            configure.changeEntrancePort(args[1]);
+        }
+
+        Server.init(configure);
         Server.start();
     }
 }

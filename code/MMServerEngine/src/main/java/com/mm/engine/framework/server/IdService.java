@@ -1,10 +1,11 @@
 package com.mm.engine.framework.server;
 
 import com.mm.engine.framework.control.annotation.Service;
+import com.mm.engine.framework.control.netEvent.RemoteCallService;
 import com.mm.engine.framework.security.exception.MMException;
+import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,34 +15,49 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by a on 2016/9/14.
  * id服务，为类的对象生成唯一
+ * TODO id服务的持久化
+ * id服务提供两种就可:int和long
+ * 
+ * ,runOnEveryServer = false
  */
-@Service(init = "init")
+@Service(init = "init",runOnEveryServer = false)
 public class IdService {
 
-    private Map<Class,IdSegment> idSegmentMap;
+    private RemoteCallService remoteCallService;
+
+    private ConcurrentHashMap<Class,IdSegment> intIdSegmentMap;
+    private ConcurrentHashMap<Class,IdSegment> longIdSegmentMap;
 
 
     public void init(){
+        remoteCallService = BeanHelper.getServiceBean(RemoteCallService.class);
         //TODO 从数据库中载入当前各个id状态
-        idSegmentMap = new ConcurrentHashMap<>();
+        intIdSegmentMap = new ConcurrentHashMap<>();
+        longIdSegmentMap = new ConcurrentHashMap<>();
     }
 
-    public int acquire(Class<?> cls){
-        IdSegment idSegment = idSegmentMap.get(cls);
-        if(idSegment == null){
-            idSegment = new IdSegment(cls);
-            idSegmentMap.putIfAbsent(cls,idSegment);
-            idSegment = idSegmentMap.get(cls);
+    public int acquireInt(Class<?> cls){
+//        if(!ServerType.isMainServer()){
+//            return (int)remoteCallService.remoteCallMainServerSyn(IdService.class,"acquireInt",cls);
+//        }
+        IdSegment IdSegment = intIdSegmentMap.get(cls);
+        if(IdSegment == null){
+            IdSegment = new IdSegment(cls);
+            intIdSegmentMap.putIfAbsent(cls, IdSegment);
+            IdSegment = intIdSegmentMap.get(cls);
         }
-        return idSegment.acquire();
+        return IdSegment.acquire();
     }
 
-    public void release(Class<?> cls,int id){
-        IdSegment idSegment = idSegmentMap.get(cls);
-        if(idSegment == null){
-            throw new MMException("idSegment is not exist,cls = "+cls.getName());
+    public void releaseInt(Class<?> cls, int id){
+//        if(!ServerType.isMainServer()){
+//            remoteCallService.remoteCallMainServer(IdService.class,"releaseInt",cls,id);
+//        }
+        IdSegment IdSegment = intIdSegmentMap.get(cls);
+        if(IdSegment == null){
+            throw new MMException("IdSegment is not exist,cls = "+cls.getName());
         }
-        idSegment.release(id);
+        IdSegment.release(id);
     }
 
     class IdSegment{
@@ -54,19 +70,20 @@ public class IdService {
             this.cls = cls;
             this.usingIds = new ConcurrentHashSet<>();
             this.canUseIds = new ConcurrentLinkedDeque<>();
-            this.idMark = new AtomicInteger(0);
+            this.idMark = new AtomicInteger();
+
         }
 
         public int acquire(){
             Integer id = canUseIds.poll();
             if(id == null){
-                id = idMark.incrementAndGet();
+                id = idMark.getAndIncrement();
                 usingIds.add(id);
             }
             return id;
         }
 
-        public void release(int id){
+        public void release(Integer id){
             usingIds.remove(id);
             canUseIds.offer(id);
         }
@@ -84,24 +101,12 @@ public class IdService {
             return usingIds;
         }
 
-        public void setUsingIds(Set<Integer> usingIds) {
-            this.usingIds = usingIds;
-        }
-
         public Queue<Integer> getCanUseIds() {
             return canUseIds;
         }
 
-        public void setCanUseIds(Queue<Integer> canUseIds) {
-            this.canUseIds = canUseIds;
-        }
-
-        public AtomicInteger getIdMark() {
+        public Number getIdMark() {
             return idMark;
-        }
-
-        public void setIdMark(AtomicInteger idMark) {
-            this.idMark = idMark;
         }
     }
 }
