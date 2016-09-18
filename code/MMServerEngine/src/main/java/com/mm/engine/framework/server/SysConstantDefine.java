@@ -7,6 +7,10 @@ public final class SysConstantDefine {
     // ------------------------------------------------------------------------------------------------一些key标记
     public static final String controller = "controller";
     public static final String opcodeKey = "opcode";
+    public static final String accountId = "accountId";
+    public static final String serverHost = "serverHost";
+    public static final String serverPort = "serverPort";
+    public static final String sessionId = "sessionId";
     // -------------------------------------------------------------------------------------------------NetEvent------------------------
     public static final int CACHEUPDATE = 1000; // 缓存更新
     public static final int LOCKKEYSANDCHECK = 1001; // 加锁并校验版本等
@@ -28,6 +32,14 @@ public final class SysConstantDefine {
     public static final int Event_NettyServerClient = 1201;
     public static final int Event_EntranceStart = 1202; // 入口启动完成
     public static final int Event_ServerStart = 1203; // server启动完成
+    public static final int Event_ConnectNewServer = 1204; // 添加新的server
+    public static final int Event_DisconnectNewServer = 1205; // 删除新的server
+    public static final int Event_AccountLogin = 1206;
+    public static final int Event_AccountLogout = 1207;
+    public static final int Event_AccountCreate = 1208; // 创建账号事件
     // ----------------------------------------------------------------------------------------monitorService conditions
     public static final String NetEventServiceStart = "NetEventServiceStart";
+    // ------------------------------------------------------------------------------------------request
+    public static final int loginOpcode = 10002;
+    public static final int logoutOpcode = 10002;
 }

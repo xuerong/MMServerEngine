@@ -49,8 +49,9 @@ public class RemoteCallService {
                         ReflectionUtil.getParamsTypes(remoteCallData.getParams()));
             Object serviceObject = BeanHelper.getServiceBean(remoteCallData.getCls());
             Object ret = method.invoke(serviceObject, remoteCallData.getParams());
-            netEventData.setParam(ret);
-
+            if(!(ret instanceof Void)) {
+                netEventData.setParam(ret);
+            }
             return netEventData;
         }catch (Throwable e){
             throw new MMException(e);
@@ -69,6 +70,18 @@ public class RemoteCallService {
         netEventData.setParam(remoteCallData);
 
         NetEventData retData = netEventService.fireMainServerNetEventSyn(netEventData);
+        return retData.getParam();
+    }
+
+    public Object remoteCallSyn(String  add,Class cls,String methodName,Object... params){
+        NetEventData netEventData = new NetEventData(SysConstantDefine.remoteCall);
+        RemoteCallData remoteCallData = new RemoteCallData();
+        remoteCallData.setCls(cls);
+        remoteCallData.setMethodName(methodName);
+        remoteCallData.setParams(params);
+        netEventData.setParam(remoteCallData);
+
+        NetEventData retData = netEventService.fireServerNetEventSyn(add,netEventData);
         return retData.getParam();
     }
 

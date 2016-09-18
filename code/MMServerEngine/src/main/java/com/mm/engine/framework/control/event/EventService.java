@@ -96,10 +96,15 @@ public class EventService {
         fireEvent(eventData,false);
         return null;
     }
-
     /**
      * 同步触发事假，即事件完成方可返回
      * */
+    // TODO 看看是否可以都换成这个，就像netEvent是否可以换成remoteCall
+    public void fireEventSyn(Object data,int event){
+        EventData eventData = new EventData(event);
+        eventData.setData(data);
+        fireEventSyn(eventData);
+    }
     public void fireEventSyn(EventData event){
         try {
             Set<EventListenerHandler> handlerSet = handlerMap.get(event.getEvent());

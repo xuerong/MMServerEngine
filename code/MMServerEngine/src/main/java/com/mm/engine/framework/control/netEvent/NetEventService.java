@@ -5,6 +5,7 @@ import com.mm.engine.framework.control.annotation.EventListener;
 import com.mm.engine.framework.control.annotation.NetEventListener;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.event.EventData;
+import com.mm.engine.framework.control.event.EventService;
 import com.mm.engine.framework.net.entrance.Entrance;
 import com.mm.engine.framework.net.client.ServerClient;
 import com.mm.engine.framework.net.client.socket.NettyServerClient;
@@ -66,6 +67,7 @@ public class NetEventService {
 
     //
     private MonitorService monitorService;
+    private EventService eventService;
 
     public void init(){
         handlerMap = new HashMap<>();
@@ -79,7 +81,10 @@ public class NetEventService {
         });
 
         selfAdd = Util.getHostAddress()+":"+Server.getEngineConfigure().getNetEventPort();
+
+
         monitorService = BeanHelper.getServiceBean(MonitorService.class);
+        eventService = BeanHelper.getServiceBean(EventService.class);
         monitorService.addStartCondition(SysConstantDefine.NetEventServiceStart,
                 "wait for netEvent start and connect mainServer");
     }
@@ -133,7 +138,7 @@ public class NetEventService {
         }
         // 添加到serverList，返回其它server的List
         ServerInfo serverInfo = (ServerInfo)eventData.getParam();
-        String add = serverInfo.getHost()+":"+serverInfo.getPort();
+        String add = serverInfo.getHost()+":"+serverInfo.getNetEventPort();
         ServerInfo old = servers.putIfAbsent(add,serverInfo);
         if(old == null){ // 没有添加它
             // 告诉其他服务器，它的存在
@@ -143,6 +148,7 @@ public class NetEventService {
             connectServer(serverInfo);
             // 告诉它，所有其他的
             NetEventData ret = new NetEventData(eventData.getNetEvent(),servers);
+            //
             return ret;
         }
         throw new MMException("该服务器已经注册完成，是否是断线重连？");
@@ -151,9 +157,9 @@ public class NetEventService {
     @NetEventListener(netEvent = SysConstantDefine.TellServersNewInfo)
     public NetEventData receiveServerInfoFromMainServer(NetEventData eventData){
         ServerInfo serverInfo = (ServerInfo)eventData.getParam();
-        String add = serverInfo.getHost()+":"+serverInfo.getPort();
+        String add = serverInfo.getHost()+":"+serverInfo.getNetEventPort();
         if(Util.isLocalHost(serverInfo.getHost()) &&
-                serverInfo.getPort() == Server.getEngineConfigure().getNetEventPort()){ // 过滤掉自己
+                serverInfo.getNetEventPort() == Server.getEngineConfigure().getNetEventPort()){ // 过滤掉自己
             return null;
         }
         ServerInfo old = servers.putIfAbsent(add,serverInfo);
@@ -176,20 +182,26 @@ public class NetEventService {
             tellMainServer();
         }else { //
             String add = client.getHost()+":"+client.getPort();
-            servers.remove(add);
+            ServerInfo serverInfo = servers.remove(add);
+            if(serverInfo != null){
+                eventService.fireEventSyn(serverInfo,SysConstantDefine.Event_DisconnectNewServer);
+            }
             serverClientMap.remove(add);
             if(asyncServerClient == client){
                 asyncServerClient = null;
             }
         }
     }
+
     private void tellMainServer(){
         // 告诉mainServer 自己是谁，并且从mainServer哪里获取其它服务器，并连接之
         NetEventData netEventData = new NetEventData(SysConstantDefine.TellMainServerSelfInfo);
         ServerInfo serverInfo = new ServerInfo();
         serverInfo.setHost(Util.getHostAddress());
-        serverInfo.setPort(Server.getEngineConfigure().getNetEventPort());
+        serverInfo.setNetEventPort(Server.getEngineConfigure().getNetEventPort());
         serverInfo.setType(ServerType.getServerType());
+        serverInfo.setRequestPort(Server.getEngineConfigure().getRequestPort());
+        serverInfo.setScenePort(Server.getEngineConfigure().getScenePort());
         netEventData.setParam(serverInfo);
 
         NetEventData ret = fireMainServerNetEventSyn(netEventData); //通知主服务器，并获取其它服务器列表
@@ -212,7 +224,7 @@ public class NetEventService {
     }
     private void connectServer(ServerInfo serverInfo){
         // 创建NettyServerClient，并连接
-        NettyServerClient client = new NettyServerClient(serverInfo.getType(),serverInfo.getHost(),serverInfo.getPort());
+        NettyServerClient client = new NettyServerClient(serverInfo.getType(),serverInfo.getHost(),serverInfo.getNetEventPort());
         try{
             client.start();
         }catch (Throwable e){
@@ -225,17 +237,16 @@ public class NetEventService {
                 throw new MMException("asyncServer 重复");
             }
         }
-        serverClientMap.put(serverInfo.getHost()+":"+serverInfo.getPort(),client);
+        serverClientMap.put(serverInfo.getHost()+":"+serverInfo.getNetEventPort(),client);
+        eventService.fireEventSyn(serverInfo,SysConstantDefine.Event_ConnectNewServer);
     }
     // 一个系统的一种NetEvent只有一个监听器(因为很多事件需要返回数据)，可以通过内部事件分发
     public NetEventData handleNetEventData(NetEventData netEventData){
-        if(handlerMap == null){ //TODO 这个要变成start时候初始化，
-            throw new MMException("改造这些Manager");
-        }
         NetEventListenerHandler handler = handlerMap.get(netEventData.getNetEvent());
         if(handler == null){
             throw new MMException("netEventHandle is not exist , netEvent="+netEventData.getNetEvent());
         }
+        // TODO 这里面抛异常如何处理？自己消化，并通知调用服务器异常了，不返回数据的呢？
         NetEventData ret = handler.handle(netEventData);
         return ret;
     }

@@ -7,8 +7,14 @@ import java.io.Serializable;
  */
 public class ServerInfo implements Serializable {
     private String host;
-    private int port;
+    private int netEventPort;
+    private int requestPort;
+    private int scenePort;
     private int type;
+
+    public ServerInfo(){
+
+    }
 
     public String getHost() {
         return host;
@@ -18,12 +24,12 @@ public class ServerInfo implements Serializable {
         this.host = host;
     }
 
-    public int getPort() {
-        return port;
+    public int getNetEventPort() {
+        return netEventPort;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setNetEventPort(int netEventPort) {
+        this.netEventPort = netEventPort;
     }
 
     public int getType() {
@@ -32,5 +38,21 @@ public class ServerInfo implements Serializable {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getRequestPort() {
+        return requestPort;
+    }
+
+    public void setRequestPort(int requestPort) {
+        this.requestPort = requestPort;
+    }
+
+    public int getScenePort() {
+        return scenePort;
+    }
+
+    public void setScenePort(int scenePort) {
+        this.scenePort = scenePort;
     }
 }

@@ -26,6 +26,7 @@ public final class EngineConfigure {
     private final Map<String,EntranceConfigure> entranceClassMap = new HashMap<>();
     public EntranceConfigure netEventEntrance;
     public EntranceConfigure requestEntrance;
+    public EntranceConfigure sceneEntrance;
     // session update:貌似不能定义系统参数
 
     //
@@ -101,12 +102,18 @@ public final class EngineConfigure {
             if(name.equals("request")){
                 requestEntrance = configure;
             }
+            if(name.equals("scene")){
+                sceneEntrance = configure;
+            }
         }
         if(netEventEntrance == null){
             throw new MMException("configure has no netEventEntrance");
         }
         if(requestEntrance == null){
             throw new MMException("configure has no requestEntrance");
+        }
+        if(sceneEntrance == null){
+            throw new MMException("configure has no sceneEntrance");
         }
     }
 
@@ -152,8 +159,13 @@ public final class EngineConfigure {
         return true;
     }
     public int getNetEventPort(){
-        int netEventPort = entranceClassMap.get("netEvent").getPort();
-        return netEventPort;
+        return netEventEntrance.getPort();
+    }
+    public int getRequestPort(){
+        return requestEntrance.getPort();
+    }
+    public int getScenePort(){
+        return sceneEntrance.getPort();
     }
 
     public String getMainServerNetEventAdd(){
