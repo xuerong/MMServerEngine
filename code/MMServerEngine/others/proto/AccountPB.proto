@@ -1,0 +1,11 @@
+option java_package = "com.protocol";
+//option java_outer_classname = "AccountPB";
+
+// 登陆nodeServer
+message CSLoginNode{
+	required string accountId 			= 1;
+	required string sessionId		= 2;
+}
+message SCLoginNode{
+
+}

@@ -41,5 +41,6 @@ public final class SysConstantDefine {
     public static final String NetEventServiceStart = "NetEventServiceStart";
     // ------------------------------------------------------------------------------------------request
     public static final int loginOpcode = 10002;
-    public static final int logoutOpcode = 10002;
+    public static final int logoutOpcode = 10003;
+    public static final int loginNodeOpcode = 10004;
 }

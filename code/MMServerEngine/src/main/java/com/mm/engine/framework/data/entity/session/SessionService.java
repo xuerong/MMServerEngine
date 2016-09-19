@@ -67,8 +67,15 @@ public class SessionService {
 //            removeSession((Session) cacheService.get(key));
 //        }
 //    }
-
+    public void removeSession(String sessionId){
+        Session session = sessionMap.get(sessionId);
+        removeSession(session);
+    }
     public void removeSession(Session session){
+        if(session == null){
+            log.warn("session == null while remove session");
+            return;
+        }
         if(session.getSessionClient() != null) {
             session.getSessionClient().destroySession();
         }

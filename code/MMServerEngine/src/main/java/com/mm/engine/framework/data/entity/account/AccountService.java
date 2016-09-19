@@ -16,6 +16,7 @@ import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.server.SysConstantDefine;
 import com.mm.engine.framework.tool.helper.BeanHelper;
+import com.mm.engine.framework.tool.helper.ClassHelper;
 import com.mm.engine.framework.tool.util.Util;
 
 import java.sql.Timestamp;
@@ -169,6 +170,30 @@ public class AccountService {
         }
         remoteCallService.remoteCallSyn(nodeServerState.getKey(),AccountService.class,"applyForLogout",id);
         nodeServerState.removeAccount(id);
+    }
+
+    /**
+     * 用sessionId登陆nodeServer，
+     * @param sessionId
+     */
+    public void loginNodeServer(String id,String sessionId){
+        String sId = nodeServerLoginMark.get(id);
+        if(sId == null){
+            sessionService.removeSession(sessionId);
+            throw new MMException("login error,sId = null");
+        }
+        if(!sId.equals(sessionId)){
+            throw new MMException("两个地方同时登陆一个账号,login error,sId = "+sId+",sessionId = "+sessionId+",accountId = "+id);
+        }
+        Session session = sessionService.get(sessionId);
+        if(session == null){
+            throw new MMException("session is not exist");
+        }
+        Account account = dataService.selectObject(Account.class,"id=?",id);
+        if(account == null){
+            throw new MMException("account is not exist , id = "+id);
+        }
+        session.setSessionClient(account);
     }
     /**
     * nodeServer接收，来自mainServer的一个account的login请求

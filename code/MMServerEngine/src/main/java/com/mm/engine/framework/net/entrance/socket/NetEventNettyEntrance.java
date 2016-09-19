@@ -9,6 +9,8 @@ import com.mm.engine.framework.net.code.netty.DefaultNettyEncoder;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import io.netty.channel.*;
+import io.netty.util.Attribute;
+import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,10 +27,11 @@ public class NetEventNettyEntrance extends Entrance {
         channel = NettyHelper.createAndStart(
                 port,DefaultNettyEncoder.class,DefaultNettyDecoder.class,DiscardServerHandler.class,name);
         netEventService = BeanHelper.getServiceBean(NetEventService.class);
-        log.info("bind port :"+port);
+        log.info("NetEventNettyEntrance bind port :"+port);
     }
 
     public static class DiscardServerHandler extends ChannelInboundHandlerAdapter { // (1)
+//        AttributeKey<String> sessionKey = AttributeKey.newInstance("sessionKey");
         @Override
         public void channelActive(final ChannelHandlerContext ctx) { // (1)
 
@@ -36,6 +39,7 @@ public class NetEventNettyEntrance extends Entrance {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) { // (2)
+//            String session = ctx.channel().attr(sessionKey).get();
             NetEventData netEventData = null;
             int id = -1;
             if(msg instanceof SocketPacket){

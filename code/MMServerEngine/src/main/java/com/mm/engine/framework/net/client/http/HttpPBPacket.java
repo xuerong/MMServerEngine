@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.google.protobuf.AbstractMessage.Builder;
 import com.google.protobuf.Message;
 
-public class PBPacket implements Serializable{
+public class HttpPBPacket implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private int result;
@@ -13,14 +13,14 @@ public class PBPacket implements Serializable{
 	private String session="";
 	private byte[] data;
 
-	public PBPacket(int opcode, Builder<?> builder) {
+	public HttpPBPacket(int opcode, Builder<?> builder) {
 		this.opcode = opcode;
 		Message msg = builder.build();
-//		log.info("[PBPacket][new] \nopode:{}, message:\n[\n{}]" , opcode,  msg);
+//		log.info("[HttpPBPacket][new] \nopode:{}, message:\n[\n{}]" , opcode,  msg);
 		this.data = msg.toByteArray();
 	}
 
-	public PBPacket(int opcode,byte[] data){
+	public HttpPBPacket(int opcode, byte[] data){
 		this.opcode=opcode;
 		this.data=data;
 	}

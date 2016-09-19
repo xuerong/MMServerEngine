@@ -37,8 +37,8 @@ public class HttpClient {
 	 *
 	 * 这里的实现是有问题的，如果先返回了，就不会被notify了，要用CountDownLatch
 	*/
-	public PBPacket send(final PBPacket packet,final String session){
-		final PBPacket rePacket = new PBPacket(packet.getOpcode(), new byte[0]);
+	public HttpPBPacket send(final HttpPBPacket packet, final String session){
+		final HttpPBPacket rePacket = new HttpPBPacket(packet.getOpcode(), new byte[0]);
 		rePacket.setResult(-1);
 //		final Thread thisThread=Thread.currentThread();
 		final CountDownLatch latch = new CountDownLatch(1);
