@@ -1,5 +1,6 @@
 package com.mm.engine.framework.data.entity.account;
 
+import com.mm.engine.framework.control.netEvent.ServerInfo;
 import com.mm.engine.framework.security.exception.MMException;
 
 import java.util.HashSet;
@@ -11,9 +12,7 @@ import java.util.Set;
  */
 public class NodeServerState {
 
-    private String host;
-    // 这里的port是指request的port，不是netEvent的port
-    private int port;
+    private ServerInfo serverInfo;
 
     private int workload; // 负载
     private int accountCount; // 账户数量
@@ -21,7 +20,7 @@ public class NodeServerState {
     private Set<String> accountIdSet = new HashSet<>();
 
     public String getKey(){
-        return host+":"+port;
+        return serverInfo.getHost()+":"+serverInfo.getRequestPort();
     }
 
     public synchronized void addAccount(String accountId){
@@ -42,24 +41,16 @@ public class NodeServerState {
         }
     }
 
+    public ServerInfo getServerInfo() {
+        return serverInfo;
+    }
+
+    public void setServerInfo(ServerInfo serverInfo) {
+        this.serverInfo = serverInfo;
+    }
+
     public Set<String> getAccountIdSet() {
         return accountIdSet;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
     }
 
     public int getWorkload() {

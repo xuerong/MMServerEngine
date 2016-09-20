@@ -88,16 +88,13 @@ public final class BeanHelper {
                 portMethod.invoke(entrance,entranceConfigure.getPort());
 
                 entranceBeans.put(entranceConfigure.getName(),entrance);
-            }
-            for(Map.Entry<String,Entrance> entry : entranceBeans.entrySet()){
-                Class<?> cls = entry.getValue().getClass();
-                Entrance object = entry.getValue();
-                Field[] fields = cls.getDeclaredFields(); // 这里只是给本类中生命的变量赋值了，继承的变量没有赋值，这个后面可以考虑，但要综合考虑系统启动效率
+                //-----ioc
+                Field[] fields = entranceConfigure.getCls().getDeclaredFields(); // 这里只是给本类中生命的变量赋值了，继承的变量没有赋值，这个后面可以考虑，但要综合考虑系统启动效率
                 for(Field field : fields){
                     Object service = serviceBeans.get(field.getType());
                     if(service != null){
                         field.setAccessible(true); // 可访问私有变量。
-                        field.set(object,service);
+                        field.set(entrance,service);
                     }
                 }
             }

@@ -132,7 +132,7 @@ public class TxCacheService {
                 }
             }
             if(lockerDataList!=null && lockerDataList.size()>0){
-                boolean result = lockerService.lockAndCheckKeys((LockerService.LockerData[])lockerDataList.toArray());
+                boolean result = lockerService.lockAndCheckKeys(lockerDataList.toArray(new LockerService.LockerData[lockerDataList.size()]));
                 if(!result){ // 加锁校验失败,提交也就失败
                     return false;
                 }

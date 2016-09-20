@@ -1,5 +1,7 @@
 package com.mm.engine.framework.net.client.http;
 
+import com.mm.engine.framework.server.SysConstantDefine;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +28,8 @@ public class HttpClient {
 	private HttpClient(){
 	}
 	private String urlStr="http://127.0.0.1:8080/";
-	private static final String KEY_GAME_SESSION="mmsession";
+	private static final String KEY_GAME_SESSION= SysConstantDefine.sessionId;
+	private static final String KEY_GAME_OPCODE = SysConstantDefine.opcodeKey;
 	/*
 	 * 返回一个PBPacket值,对应result值
 	 * 如果成功，返回1
@@ -57,7 +60,7 @@ public class HttpClient {
 						connection .setRequestProperty("Accept-Encoding", "identity");
 //						connection.setc
 						connection.setRequestProperty("controller", "DefaultRequestController");
-						connection.setRequestProperty("opcode", ""+packet.getOpcode());
+						connection.setRequestProperty(KEY_GAME_OPCODE, ""+packet.getOpcode());
 						connection.setRequestProperty(KEY_GAME_SESSION, session==null?"":session);
 						connection.setRequestMethod("POST");
 						BufferedOutputStream out=new BufferedOutputStream(connection.getOutputStream());
@@ -85,7 +88,7 @@ public class HttpClient {
 								readedSize += size;
 							}
 						}
-						String opcodeStr = connection.getHeaderField("opcode");
+						String opcodeStr = connection.getHeaderField(KEY_GAME_OPCODE);
 						String sessionStr= connection.getHeaderField(KEY_GAME_SESSION);
 						if (opcodeStr == null || sessionStr==null) {
 							rePacket.setResult(-2);

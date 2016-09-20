@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Calendar;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -104,6 +105,7 @@ public final class Util {
                 throw new MMException(e);
             }
         }
+//        System.out.println(hostAddress);
         return hostAddress;
     }
     public static boolean isIP(String addr)

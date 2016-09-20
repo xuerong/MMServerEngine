@@ -68,7 +68,13 @@ public class AccountSysService {
         if(ServerType.isMainServer() && ServerType.isNodeServer()){
             Entrance entrance = (Entrance)eventData.getData();
             if(entrance.getName().equals("request")) {
-                nodeServerRegister(Util.getHostAddress(), Server.getEngineConfigure().getRequestPort(), 10);
+                ServerInfo serverInfo = new ServerInfo();
+                serverInfo.setRequestPort(Server.getEngineConfigure().getRequestPort());
+                serverInfo.setScenePort(Server.getEngineConfigure().getScenePort());
+                serverInfo.setNetEventPort(Server.getEngineConfigure().getNetEventPort());
+                serverInfo.setType(ServerType.getServerType());
+                serverInfo.setHost(Util.getHostAddress());
+                nodeServerRegister(serverInfo, 10);
             }
         }
     }
@@ -79,7 +85,7 @@ public class AccountSysService {
         }
         ServerInfo serverInfo = (ServerInfo)eventData.getData();
         if(ServerType.isNodeServer(serverInfo.getType())){
-            nodeServerRegister(serverInfo.getHost(),serverInfo.getRequestPort(),0);
+            nodeServerRegister(serverInfo,0);
         }
     }
     @EventListener(event = SysConstantDefine.Event_DisconnectNewServer)
@@ -103,19 +109,18 @@ public class AccountSysService {
      * 注册一个nodeServer，
      * 这个最好要传入该服务器的负载能力，如两个不同性能的服务器显然不能同等分配玩家
      * 注意，这里的port是指request的port，不是netEvent的port
-     * @param host
-     * @param port
+     * @param serverInfo
+     * @param workload
      */
-    public synchronized void nodeServerRegister(String host,int port,int workload){
-        String key = host+":"+port;
+    public synchronized void nodeServerRegister(ServerInfo serverInfo,int workload){
+        String key = serverInfo.getHost()+":"+serverInfo.getRequestPort();
         if(nodeServerMap.containsKey(key)){
 //            throw new MMException("node server has register,key = "+key);
             log.warn("node server has register,key = "+key);
             return;
         }
         NodeServerState nodeServerState = new NodeServerState();
-        nodeServerState.setPort(port);
-        nodeServerState.setHost(host);
+        nodeServerState.setServerInfo(serverInfo);
         nodeServerState.setAccountCount(0);
         nodeServerState.setWorkload(workload);
         nodeServerMap.put(key,nodeServerState);
@@ -146,7 +151,10 @@ public class AccountSysService {
         }
         // distribute nodeServer
         NodeServerState nodeServerState  = distributeNodeServer();
-        String sessionId = (String)remoteCallService.remoteCallSyn(nodeServerState.getKey(),AccountSysService.class,"applyForLogin",id,url,ip);
+        ServerInfo serverInfo = nodeServerState.getServerInfo();
+
+        String sessionId = (String)remoteCallService.remoteCallSyn(
+                serverInfo.getHost()+":"+serverInfo.getNetEventPort(),AccountSysService.class,"applyForLogin",id,url,ip);
         if(sessionId == null || sessionId.length() == 0){
             throw new MMException("login false,see log on "+nodeServerState.getKey());
         }
@@ -156,8 +164,8 @@ public class AccountSysService {
         mainServerAccountLoginMap.put(id,nodeServerState.getKey());
         //
         LoginSegment loginSegment = new LoginSegment();
-        loginSegment.setHost(nodeServerState.getHost());
-        loginSegment.setPort(nodeServerState.getPort());
+        loginSegment.setHost(serverInfo.getHost());
+        loginSegment.setPort(serverInfo.getRequestPort());
         loginSegment.setSessionId(sessionId);
         loginSegment.setAccount(account);
         return loginSegment;
@@ -166,7 +174,7 @@ public class AccountSysService {
      * 登出mainServer
      * account主动登出，
      */
-    public void logout(String id){
+    public void logoutMain(String id){
         String nodeServerKey = mainServerAccountLoginMap.get(id);
         if(nodeServerKey == null){
             throw new MMException("user is not login,why logout?");
@@ -175,7 +183,9 @@ public class AccountSysService {
         if(nodeServerState == null){
             throw new MMException("nodeServer "+nodeServerKey +" has stopped");
         }
-        remoteCallService.remoteCallSyn(nodeServerState.getKey(),AccountSysService.class,"applyForLogout",id);
+        ServerInfo serverInfo = nodeServerState.getServerInfo();
+        remoteCallService.remoteCallSyn(
+                serverInfo.getHost()+":"+serverInfo.getNetEventPort(),AccountSysService.class,"applyForLogout",id);
         nodeServerState.removeAccount(id);
     }
 

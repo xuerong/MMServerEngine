@@ -27,7 +27,7 @@ MMServerEngine设计的最主要的目标有两点：
 #####2、编写Service    
 * 对服务添加Service注解，其变量init和destroy为初始化和销毁的方法
 * 服务包括Request,Event,Update,Job,NetEvent
-* 如果需要使用其它Service，可以通过BeanHelper.getServiceBean方法获得。（建议在init方法中设置好，提高效率，并且系统启动可以检查其存在）
+* 如果需要使用其它Service，可以通过BeanHelper.getServiceBean方法获得。（如果设置成Service的变量，系统会对serviceBean进行依赖注入） 
 
 #####3、编写数据库对应实体类  
 * 需要用DBEntity来注解，如果字段名字和表的字段名不同，要添加Column注解

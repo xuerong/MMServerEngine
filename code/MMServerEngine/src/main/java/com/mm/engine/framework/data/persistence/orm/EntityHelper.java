@@ -34,6 +34,7 @@ public class EntityHelper {
 
     /**
      * 实体类 => (字段名 => 列名)
+     * TODO 这里面只需要存储entity中对应表中有的字段
      */
     private static final Map<Class<?>, Map<String, String>> entityClassFieldMapMap = new HashMap<Class<?>, Map<String, String>>();
 
@@ -56,12 +57,17 @@ public class EntityHelper {
     }
 
     static {
-        // 获取并遍历所有实体类
-        List<Class<?>> entityClassList = ClassHelper.getClassListByAnnotation(DBEntity.class);
-        for (Class<?> entityClass : entityClassList) {
-            initEntityNameMap(entityClass);
-            initEntityFieldMapMap(entityClass);
-            initEntityGetMethods(entityClass);
+        try {
+            // 获取并遍历所有实体类
+            // TODO 校验数据库中对应的表的存在和对应的字段,只需要数据库中存在的列即可
+            List<Class<?>> entityClassList = ClassHelper.getClassListByAnnotation(DBEntity.class);
+            for (Class<?> entityClass : entityClassList) {
+                initEntityNameMap(entityClass);
+                initEntityFieldMapMap(entityClass);
+                initEntityGetMethods(entityClass);
+            }
+        }catch (Throwable e){
+            e.printStackTrace();
         }
     }
 
@@ -127,6 +133,7 @@ public class EntityHelper {
     private static void initEntityFieldMapMap(Class<?> entityClass) {
         // 获取并遍历该实体类中所有的字段（不包括父类中的方法）
         Field[] fields = entityClass.getDeclaredFields();
+//        Field[] fields = entityClass.getFields();
         if (ArrayUtils.isNotEmpty(fields)) {
             // 创建一个 fieldMap（用于存放列名与字段名的映射关系）
             Map<String, String> fieldMap = new HashMap<String, String>();
@@ -148,6 +155,7 @@ public class EntityHelper {
     }
 
     private static void initEntityGetMethods(Class<?> entityClass){
+//        System.out.println(entityClassFieldMapMap.size()+","+entityClass.getName());
         Set<String> set = entityClassFieldMapMap.get(entityClass).keySet();
         Map<String,Method> getMethodMap = new HashMap<>(set.size());
         Map<String,Method> getPkMethodMap = new HashMap<>(set.size());

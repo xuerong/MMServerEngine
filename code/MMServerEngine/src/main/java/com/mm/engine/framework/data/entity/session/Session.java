@@ -12,7 +12,7 @@ import java.util.UUID;
  * Session中封装了和客户端访问相关的数据，是对所有访问种类@class EntranceType的统一封装：
  * 如，访问种类，访问url，访问port，访问者ip等信息
  *
- * 每一个Request都包含一个Session，在Protocol解码中需要解出sessionId和opcode，由系统创建session
+ * 每一个Request都包含一个Session，
  *
  * TODO session放缓存的时候是不是需要把它作为CacheEntity的object，而不是继承自它
  */
@@ -44,6 +44,14 @@ public final class Session extends CacheEntity{
     }
     public void setAttr(String key,Object object){
         this.attrs.put(key,object);
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getSessionId() {

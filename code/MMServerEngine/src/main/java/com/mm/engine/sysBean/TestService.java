@@ -83,7 +83,7 @@ public class TestService {
     @Updatable(isAsynchronous = false)
     public void testUpdateSync1(int interval){
 //        System.out.println("testUpdateSync1"+interval);
-        System.out.println("idService,id:"+idService.acquireInt(TestService.class));
+//        System.out.println("idService,id:"+idService.acquireInt(TestService.class));
     }
     @Updatable(isAsynchronous = true,cronExpression = "1/10 * * * * ? *")
     public void testUpdateSync2(int interval){

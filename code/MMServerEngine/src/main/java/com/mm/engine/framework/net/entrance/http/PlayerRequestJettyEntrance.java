@@ -88,7 +88,7 @@ public class PlayerRequestJettyEntrance extends Entrance {
                 }
                 // 解析出来account
                 String accountId = request.getHeader(SysConstantDefine.accountId);
-                accountSysService.logout(accountId);
+                accountSysService.logoutMain(accountId);
                 response.setHeader(SysConstantDefine.opcodeKey,""+SysConstantDefine.logoutOpcode);
                 // 还要其他的吗？
                 response.getOutputStream().flush();
