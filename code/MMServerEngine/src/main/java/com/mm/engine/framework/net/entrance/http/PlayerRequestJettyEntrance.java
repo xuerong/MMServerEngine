@@ -2,7 +2,7 @@ package com.mm.engine.framework.net.entrance.http;
 
 import com.google.protobuf.AbstractMessage;
 import com.mm.engine.framework.control.request.RequestService;
-import com.mm.engine.framework.data.entity.account.AccountService;
+import com.mm.engine.framework.data.entity.account.AccountSysService;
 import com.mm.engine.framework.data.entity.account.LoginSegment;
 import com.mm.engine.framework.data.entity.session.Session;
 import com.mm.engine.framework.data.entity.session.SessionService;
@@ -39,12 +39,12 @@ public class PlayerRequestJettyEntrance extends Entrance {
 
     private SessionService sessionService;
     private RequestService requestService;
-    private AccountService accountService;
+    private AccountSysService accountSysService;
     @Override
     public void start() throws Exception {
         sessionService = BeanHelper.getServiceBean(SessionService.class);
         requestService = BeanHelper.getServiceBean(RequestService.class);
-        accountService = BeanHelper.getServiceBean(AccountService.class);
+        accountSysService = BeanHelper.getServiceBean(AccountSysService.class);
 
         Handler entranceHandler = new AbstractHandler(){
             @Override
@@ -74,7 +74,7 @@ public class PlayerRequestJettyEntrance extends Entrance {
                 }
                 // 解析出来account
                 String accountId = request.getHeader(SysConstantDefine.accountId);
-                LoginSegment loginSegment = accountService.loginMain(accountId,request.getContextPath(), Util.getIp(request));
+                LoginSegment loginSegment = accountSysService.loginMain(accountId,request.getContextPath(), Util.getIp(request));
                 response.setHeader(SysConstantDefine.opcodeKey,""+SysConstantDefine.loginOpcode);
                 response.setHeader(SysConstantDefine.serverHost,""+loginSegment.getHost());
                 response.setHeader(SysConstantDefine.serverPort,""+loginSegment.getPort());
@@ -88,7 +88,7 @@ public class PlayerRequestJettyEntrance extends Entrance {
                 }
                 // 解析出来account
                 String accountId = request.getHeader(SysConstantDefine.accountId);
-                accountService.logout(accountId);
+                accountSysService.logout(accountId);
                 response.setHeader(SysConstantDefine.opcodeKey,""+SysConstantDefine.logoutOpcode);
                 // 还要其他的吗？
                 response.getOutputStream().flush();

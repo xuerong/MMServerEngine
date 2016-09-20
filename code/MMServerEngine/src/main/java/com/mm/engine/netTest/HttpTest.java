@@ -9,12 +9,12 @@ import com.protocol.OpCode;
  */
 public class HttpTest {
     public static void main(String[] args){
-        PBMessage.CSLogin.Builder builder = PBMessage.CSLogin.newBuilder();
-        builder.setMid("123");
-        builder.setVersion("123");
-        builder.setChannelId(10);
-        HttpPBPacket httpPbPacket = new HttpPBPacket(OpCode.CSLogin,builder);
-        HttpPBPacket retPacket = HttpClient.getInstance().send(httpPbPacket,null);
-        System.out.println(retPacket.getResult()+","+retPacket.getOpcode()+" success,"+retPacket.getSession());
+//        PBMessage.CSLogin.Builder builder = PBMessage.CSLogin.newBuilder();
+//        builder.setMid("123");
+//        builder.setVersion("123");
+//        builder.setChannelId(10);
+//        HttpPBPacket httpPbPacket = new HttpPBPacket(OpCode.CSLogin,builder);
+//        HttpPBPacket retPacket = HttpClient.getInstance().send(httpPbPacket,null);
+//        System.out.println(retPacket.getResult()+","+retPacket.getOpcode()+" success,"+retPacket.getSession());
     }
 }

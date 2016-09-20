@@ -12,6 +12,7 @@ import com.mm.engine.sysBean.MyProxyTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +52,8 @@ public final class BeanHelper {
             for (Map.Entry<Class<?>, Class<?>> entry : serviceClassMap.entrySet()) {
                 serviceBeans.put(entry.getKey(), newAopInstance(entry.getKey(), entry.getValue()));
             }
+            // Ioc: 如果bean中有声明的serviceBeans中存在的变量，则赋值
+            iocSetService(serviceBeans);
             // 框架Bean
             EngineConfigure configure = Server.getEngineConfigure();
             configureBeans = configure.getConfigureBeans();
@@ -69,6 +72,7 @@ public final class BeanHelper {
                     }
                 }
             }
+            iocSetService(frameBeans);
             // aop
 //            frameBeans.put(MyProxyTarget.class, newAopInstance(MyProxyTarget.class));
             // net
@@ -85,12 +89,40 @@ public final class BeanHelper {
 
                 entranceBeans.put(entranceConfigure.getName(),entrance);
             }
+            for(Map.Entry<String,Entrance> entry : entranceBeans.entrySet()){
+                Class<?> cls = entry.getValue().getClass();
+                Entrance object = entry.getValue();
+                Field[] fields = cls.getDeclaredFields(); // 这里只是给本类中生命的变量赋值了，继承的变量没有赋值，这个后面可以考虑，但要综合考虑系统启动效率
+                for(Field field : fields){
+                    Object service = serviceBeans.get(field.getType());
+                    if(service != null){
+                        field.setAccessible(true); // 可访问私有变量。
+                        field.set(object,service);
+                    }
+                }
+            }
 
         }catch (Throwable e){
             e.printStackTrace();
             log.error("init BeanHelper fail");
         }
     }
+    // 给beans中的对象的service变量赋值
+    private static void iocSetService(Map<Class<?>,Object> beans) throws Throwable{
+        for(Map.Entry<Class<?>,Object> entry : beans.entrySet()){
+            Class<?> cls = entry.getKey();
+            Object object = entry.getValue();
+            Field[] fields = cls.getDeclaredFields();// 这里只是给本类中生命的变量赋值了，继承的变量没有赋值，这个后面可以考虑，但要综合考虑系统启动效率
+            for(Field field : fields){
+                Object service = serviceBeans.get(field.getType());
+                if(service != null){
+                    field.setAccessible(true); // 可访问私有变量。
+                    field.set(object,service);
+                }
+            }
+        }
+    }
+
     // Bean类的实例化，之前需要先加aop : 目标类等于代理类
     public static <T> T newAopInstance(Class<T> cls){
         T reCls = AopHelper.getProxyObject(cls);

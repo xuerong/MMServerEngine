@@ -14,10 +14,11 @@ import com.protocol.OpCode;
 public class TestService {
     @Request(opcode = OpCode.CSLogin)
     public RetPacket handlerLogin(Object clientData, Session session){
-        PBMessage.SCLoginRet.Builder builder= PBMessage.SCLoginRet.newBuilder();
-        builder.setHasNewVersion(1);
-        builder.setNewVersionUrl("123456");
-        return new RetPacketImpl(OpCode.SCLoginRet,builder);
+//        PBMessage.SCLoginRet.Builder builder= PBMessage.SCLoginRet.newBuilder();
+//        builder.setHasNewVersion(1);
+//        builder.setNewVersionUrl("123456");
+//        return new RetPacketImpl(OpCode.SCLoginRet,builder);
+        return null;
     }
 
 }
