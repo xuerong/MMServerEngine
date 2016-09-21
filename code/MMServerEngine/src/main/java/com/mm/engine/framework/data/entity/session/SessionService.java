@@ -67,9 +67,10 @@ public class SessionService {
 //            removeSession((Session) cacheService.get(key));
 //        }
 //    }
-    public void removeSession(String sessionId){
+    public Session removeSession(String sessionId){
         Session session = sessionMap.get(sessionId);
         removeSession(session);
+        return session;
     }
     public void removeSession(Session session){
         if(session == null){

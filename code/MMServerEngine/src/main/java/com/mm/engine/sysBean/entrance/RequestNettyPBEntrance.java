@@ -10,6 +10,7 @@ import com.mm.engine.framework.net.entrance.socket.NettyHelper;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.SysConstantDefine;
 import com.mm.engine.framework.tool.helper.BeanHelper;
+import com.protocol.AccountOpcode;
 import com.protocol.AccountPB;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -45,10 +46,20 @@ public class RequestNettyPBEntrance extends Entrance {
     }
 
     public static class RequestNettyPBHandler extends ChannelInboundHandlerAdapter {
-        AttributeKey<String> sessionKey = AttributeKey.newInstance("sessionKey");
+        static AttributeKey<String> sessionKey = AttributeKey.newInstance("sessionKey");
         @Override
-        public void channelActive(final ChannelHandlerContext ctx) { // (1)
-
+        public void channelActive(final ChannelHandlerContext ctx) throws Exception { // (1)
+            super.channelActive(ctx);
+        }
+        @Override
+        public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+            super.channelInactive(ctx);
+            String sessionId = ctx.channel().attr(sessionKey).get();
+            if(sessionId != null) {
+                accountSysService.netDisconnect(sessionId);
+            }else{
+                log.error("channelInactive , but session = "+sessionId);
+            }
         }
 
         @Override
@@ -56,27 +67,26 @@ public class RequestNettyPBEntrance extends Entrance {
             try {
                 NettyPBPacket nettyPBPacket = (NettyPBPacket) msg;
                 String sessionId = ctx.channel().attr(sessionKey).get();
-                if (nettyPBPacket.getOpcode() == SysConstantDefine.loginNodeOpcode) { // 必须是登陆消息
+                if (nettyPBPacket.getOpcode() == AccountOpcode.CSLoginNode) { // 必须是登陆消息
                     AccountPB.CSLoginNode csLoginNode = AccountPB.CSLoginNode.parseFrom(nettyPBPacket.getData());
-                    accountSysService.loginNodeServer(csLoginNode.getAccountId(),csLoginNode.getSessionId());
                     sessionId = csLoginNode.getSessionId();
                     ctx.channel().attr(sessionKey).set(sessionId);
-                }else if (sessionId == null || sessionId.length() == 0){
-                    throw new MMException("won't login");
-                }else{
-                    // 不是login，可以处理消息
-                    Session session = sessionService.get(sessionId);
-                    if(session == null){
-                        throw new MMException("login timeout , please login again");
-                    }
-                    RetPacket retPacket = requestService.handle(nettyPBPacket.getOpcode(),nettyPBPacket.getData(),session);
-                    if(retPacket == null){
-                        throw new MMException("server error!");
-                    }
-                    nettyPBPacket.setOpcode(retPacket.getOpcode());
-                    nettyPBPacket.setData((byte[])retPacket.getRetData());
-                    ctx.writeAndFlush(nettyPBPacket);
                 }
+                if (sessionId == null || sessionId.length() == 0){
+                    throw new MMException("won't get sessionId:"+sessionId);
+                }
+                // 不是login，可以处理消息
+                Session session = sessionService.get(sessionId);
+                if(session == null){
+                    throw new MMException("login timeout , please login again");
+                }
+                RetPacket retPacket = requestService.handle(nettyPBPacket.getOpcode(),nettyPBPacket.getData(),session);
+                if(retPacket == null){
+                    throw new MMException("server error!");
+                }
+                nettyPBPacket.setOpcode(retPacket.getOpcode());
+                nettyPBPacket.setData((byte[])retPacket.getRetData());
+                ctx.writeAndFlush(nettyPBPacket);
             }catch (Exception e){
                 if(e instanceof MMException){
 

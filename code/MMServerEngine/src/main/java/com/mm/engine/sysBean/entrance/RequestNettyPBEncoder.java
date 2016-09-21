@@ -13,6 +13,7 @@ public class RequestNettyPBEncoder extends MessageToByteEncoder {
         NettyPBPacket nettyPBPacket = (NettyPBPacket)object;
         byteBuf.writeInt(nettyPBPacket.getData().length);
         byteBuf.writeInt(nettyPBPacket.getOpcode());
+        byteBuf.writeInt(nettyPBPacket.getId());
         byteBuf.writeBytes(nettyPBPacket.getData());
     }
 }

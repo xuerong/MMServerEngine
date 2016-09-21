@@ -10,7 +10,7 @@ import com.protocol.OpCode;
  * Created by a on 2016/8/9.
  */
 public class HttpTest {
-    public static void main(String[] args){
+    public static void main(String[] args) throws Throwable{
 //        PBMessage.CSLogin.Builder builder = PBMessage.CSLogin.newBuilder();
 //        builder.setMid("123");
 //        builder.setVersion("123");
@@ -20,9 +20,13 @@ public class HttpTest {
 //        System.out.println(retPacket.getResult()+","+retPacket.getOpcode()+" success,"+retPacket.getSession());
 
         AccountPB.CSLoginMain.Builder builder = AccountPB.CSLoginMain.newBuilder();
-        builder.setAccountId("accountId_123");
+        builder.setAccountId("accountId_1241");
         HttpPBPacket httpPbPacket = new HttpPBPacket(AccountOpcode.CSLoginMain,builder);
         HttpPBPacket retPacket = HttpClient.getInstance().send(httpPbPacket,null);
-        System.out.println(retPacket.getResult()+","+retPacket.getOpcode()+" success,"+retPacket.getSession());
+        AccountPB.SCLoginMain scLoginMain = AccountPB.SCLoginMain.parseFrom(retPacket.getData());
+
+        System.out.println(retPacket.getResult()+","+retPacket.getOpcode()+" success,host:"+
+                scLoginMain.getHost()+",port:"+scLoginMain.getPort()+",session:"+scLoginMain.getSessionId());
+//        System.out.println();
     }
 }

@@ -368,7 +368,7 @@ public class AsyncService {
                                 }
                             }
                             if(success){ // 删除记录 TODO 这里删除是不是有点慢
-                                List<AsyncData> asyncDataList = asyncDataMap.get(asyncData.getClass().getName());
+                                List<AsyncData> asyncDataList = asyncDataMap.get(asyncData.getObject().getClass().getName());
                                 asyncDataList.remove(asyncData);
                             }
                         }catch (Throwable e){
@@ -378,6 +378,7 @@ public class AsyncService {
                             }
                             // 这里失败怎么办
                             asyncDbFail(asyncData);
+                            e.printStackTrace();
                         }
 
                     }

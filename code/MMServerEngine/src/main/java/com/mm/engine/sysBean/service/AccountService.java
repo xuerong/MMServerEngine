@@ -62,6 +62,9 @@ public class AccountService {
     }
     @Request(opcode = AccountOpcode.CSLoginNode)
     public RetPacket loginNode(Object data,Session session) throws Throwable{
+
+        System.out.println("doLogin,sessionId = "+session.getSessionId());
+
         AccountPB.CSLoginNode csLoginNode = AccountPB.CSLoginNode.parseFrom((byte[])data);
 
         accountSysService.loginNodeServer(csLoginNode.getAccountId(),csLoginNode.getSessionId());

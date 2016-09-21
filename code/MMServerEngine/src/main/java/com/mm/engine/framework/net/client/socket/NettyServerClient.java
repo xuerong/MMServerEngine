@@ -60,58 +60,59 @@ public class NettyServerClient extends AbServerClient {
             public void run() {
                 EventLoopGroup workerGroup = new NioEventLoopGroup();
                 try {
-            Bootstrap b = new Bootstrap(); // (1)
-            b.group(workerGroup); // (2)
-            b.channel(NioSocketChannel.class); // (3)
-            b.option(ChannelOption.SO_KEEPALIVE, true); // (4)
-            b.handler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                public void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(
-                            new DefaultNettyEncoder(),
-                            new DefaultNettyDecoder(),
-                            new NettyClientHandler()
-                    );
-                }
-            });
-            ChannelFuture f = null;
-            // Start the client.
-            while(true) {
-                try {
-                    f = b.connect(host, port); // (5) // 这行代码要在while循环里面
-                    f.sync();
-                    break;
-                } catch (Exception e) {
-                    if (e instanceof ConnectException) {
-                        log.warn("connect "+ ServerType.getServerTypeName(serverType)+"("+(host+":"+port) +") fail ," +
-                                "reconnect after "+ reconnectionInterval/1000+" s");
-                        Thread.sleep(reconnectionInterval);
-                        continue;
+                    Bootstrap b = new Bootstrap(); // (1)
+                    b.group(workerGroup); // (2)
+                    b.channel(NioSocketChannel.class); // (3)
+                    b.option(ChannelOption.SO_KEEPALIVE, true); // (4)
+                    b.handler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        public void initChannel(SocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(
+                                    new DefaultNettyEncoder(),
+                                    new DefaultNettyDecoder(),
+                                    new NettyClientHandler()
+                            );
+                        }
+                    });
+                    ChannelFuture f = null;
+                    // Start the client.
+                    while(true) {
+                        try {
+                            f = b.connect(host, port); // (5) // 这行代码要在while循环里面
+                            f.sync();
+                            break;
+                        } catch (Exception e) {
+                            if (e instanceof ConnectException) {
+                                log.warn("connect "+ ServerType.getServerTypeName(serverType)+"("+(host+":"+port) +") fail ," +
+                                        "reconnect after "+ reconnectionInterval/1000+" s");
+                                Thread.sleep(reconnectionInterval);
+                                continue;
+                            }
+                        }
                     }
+                    channel = f.channel();
+                    latch.countDown();
+                    f.channel().closeFuture().sync();
+                    // 客户端断线
+                    log.info("disconnect server:"+"("+(host+":"+port) +")");
+                    EventData eventData = new EventData(SysConstantDefine.Event_NettyServerClient);
+                    eventData.setData(NettyServerClient.this);
+                    eventService.fireEvent(eventData);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    workerGroup.shutdownGracefully();
                 }
             }
-            channel = f.channel();
-            latch.countDown();
-            f.channel().closeFuture().sync();
-            // 客户端断线
-            log.info("disconnect server:"+"("+(host+":"+port) +")");
-            EventData eventData = new EventData(SysConstantDefine.Event_NettyServerClient);
-            eventData.setData(NettyServerClient.this);
-            eventService.fireEvent(eventData);
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            workerGroup.shutdownGracefully();
-        }
-        }
-    };
-    Thread thread = new Thread(runnable);
+        };
+        Thread thread = new Thread(runnable);
         thread.setName("NettyServerClient");
         thread.start();
         latch.await();
         log.info("connect :"+ServerType.getServerTypeName(serverType)+"("+(host+":"+port) +") success");
         running = true;
-        }
+
+    }
 
     @Override
     public Object send(Object msg) { // TODO 要不要考虑用多个包整合成一个包，来降低网络访问量

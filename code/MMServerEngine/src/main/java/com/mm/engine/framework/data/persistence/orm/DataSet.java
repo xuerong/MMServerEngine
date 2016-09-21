@@ -1,11 +1,13 @@
 package com.mm.engine.framework.data.persistence.orm;
 
+import com.mm.engine.framework.data.persistence.dao.ColumnDesc;
 import com.mm.engine.framework.data.persistence.dao.DatabaseHelper;
 import com.mm.engine.framework.data.persistence.dao.SqlHelper;
 import com.mm.engine.framework.tool.util.ObjectUtil;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +140,31 @@ public class DataSet {
     }
 
     /**
+     * 获取表结构
+     * @param tableName
+     * @return
+     */
+    public static List<ColumnDesc> getTableDesc(String tableName){
+        try {
+            List<Map<String,Object>> l = DatabaseHelper.queryMapList("desc " + tableName);
+            if(l == null){
+                return null;
+            }
+            List<ColumnDesc> result = new ArrayList<>();
+            for(Map<String,Object> map : l){
+                ColumnDesc columnDesc = new ColumnDesc();
+                columnDesc.setField(map.get("Field").toString());
+                columnDesc.setType(map.get("Type").toString());
+                columnDesc.setKey(map.get("Key").equals("PRI"));
+                result.add(columnDesc);
+            }
+            return result;
+        }catch (Throwable e){
+            return null;
+        }
+    }
+
+    /**
      * 插入一条数据
      */
     public static boolean insert(Class<?> entityClass, Map<String, Object> fieldMap) {
@@ -157,7 +184,8 @@ public class DataSet {
             throw new IllegalArgumentException();
         }
         Class<?> entityClass = entity.getClass();
-        Map<String, Object> fieldMap = ObjectUtil.getFieldMap(entity);
+//        Map<String, Object> fieldMap = ObjectUtil.getFieldMap(entity);
+        Map<String, Object> fieldMap = EntityHelper.getFieldMap(entity);
         return insert(entityClass, fieldMap);
     }
 
@@ -188,7 +216,8 @@ public class DataSet {
             throw new IllegalArgumentException();
         }
         Class<?> entityClass = entityObject.getClass();
-        Map<String, Object> fieldMap = ObjectUtil.getFieldMap(entityObject);
+//        Map<String, Object> fieldMap = ObjectUtil.getFieldMap(entityObject);
+        Map<String, Object> fieldMap = EntityHelper.getFieldMap(entityObject);
         String condition = pkName + " = ?";
         Object[] params = {ObjectUtil.getFieldValue(entityObject, pkName)};
         return update(entityClass, fieldMap, condition, params);
@@ -201,7 +230,8 @@ public class DataSet {
             throw new IllegalArgumentException();
         }
         Class<?> entityClass = entityObject.getClass();
-        Map<String, Object> fieldMap = ObjectUtil.getFieldMap(entityObject);
+//        Map<String, Object> fieldMap = ObjectUtil.getFieldMap(entityObject);
+        Map<String, Object> fieldMap = EntityHelper.getFieldMap(entityObject);
         return update(entityClass, fieldMap, condition, params);
     }
     public static boolean update(Object entityObject, EntityHelper.ConditionItem conditionItem){

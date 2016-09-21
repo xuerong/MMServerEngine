@@ -89,8 +89,8 @@ public class HttpClient {
 							}
 						}
 						String opcodeStr = connection.getHeaderField(KEY_GAME_OPCODE);
-						String sessionStr= connection.getHeaderField(KEY_GAME_SESSION);
-						if (opcodeStr == null || sessionStr==null) {
+//						String sessionStr= connection.getHeaderField(KEY_GAME_SESSION);
+						if (opcodeStr == null) {
 							rePacket.setResult(-2);
 							latch.countDown();
 							return ;
@@ -102,7 +102,7 @@ public class HttpClient {
 						}else{
 							rePacket.setResult(opcode);
 						}
-						rePacket.setSession(sessionStr);
+//						rePacket.setSession(sessionStr);
 						rePacket.setOpcode(opcode);
 						rePacket.setData(buffer);
 						latch.countDown();

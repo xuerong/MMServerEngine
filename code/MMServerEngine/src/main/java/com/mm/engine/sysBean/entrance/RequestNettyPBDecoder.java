@@ -10,7 +10,7 @@ import java.util.List;
  * Created by a on 2016/9/19.
  */
 public class RequestNettyPBDecoder extends ByteToMessageDecoder {
-    private static final int headSize = 8; // body length + opcode
+    private static final int headSize = 12; // body length + opcode
     int size = headSize;
     boolean isReadHead = false;
     @Override
@@ -19,10 +19,12 @@ public class RequestNettyPBDecoder extends ByteToMessageDecoder {
         if (readAble < size) {
             return;
         }
-        int opcode = 0;
+        int opcode = 0,id = 0;
         if(!isReadHead) {
             size = in.readInt();
             opcode = in.readInt();
+            id = in.readInt();
+
             isReadHead = true;
             if(size>readAble - headSize){
                 return;
@@ -35,6 +37,7 @@ public class RequestNettyPBDecoder extends ByteToMessageDecoder {
         NettyPBPacket nettyPBPacket = new NettyPBPacket();
         nettyPBPacket.setData(bbb);
         nettyPBPacket.setOpcode(opcode);
+        nettyPBPacket.setId(id);
         list.add(nettyPBPacket);
         // 清理临时变量
         size = headSize;

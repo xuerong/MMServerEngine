@@ -5,7 +5,8 @@ package com.mm.engine.framework.data.entity.account;
  * 登出原因
  */
 public enum LogoutReason {
-    userLogout,
-    replaceLogout,
-    netErrorLogout
+    userLogout, // 从mainServer传过来，清除session信息
+    replaceLogout, // 从mainServer传过来，清除session信息
+    netErrorLogout,
+    netDisconnect // nodeServer断连,通知mainServer，并清除session信息
 }
