@@ -70,7 +70,7 @@ public class AccountService {
         accountSysService.loginNodeServer(csLoginNode.getAccountId(),csLoginNode.getSessionId());
 
         AccountPB.SCLoginNode.Builder builder = AccountPB.SCLoginNode.newBuilder();
-        RetPacket retPacket = new RetPacketImpl(AccountOpcode.SCLogoutMain,false,builder.build().toByteArray());
+        RetPacket retPacket = new RetPacketImpl(AccountOpcode.SCLoginNode,false,builder.build().toByteArray());
         return retPacket;
     }
 }

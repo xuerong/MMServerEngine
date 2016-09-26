@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * 更新服务@Updatable
  * 监听远程调用服务@NetEventListener
  *
- * TODO 添加runOnEveryServer
+ * TODO 添加runOnEveryServer，改为singleService吧，包括update的这个属性
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

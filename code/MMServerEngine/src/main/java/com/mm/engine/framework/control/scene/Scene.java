@@ -14,7 +14,6 @@ package com.mm.engine.framework.control.scene;
  * 场景支持AOP，但不鼓励使用，尤其是要求效率较高的场合
  */
 public abstract class Scene {
-
     protected int id;
 
     public int getId() {

@@ -134,7 +134,8 @@ public class DefaultDataAccessor implements DataAccessor {
         try {
             fieldMapList = queryRunner.query(sql, new MapListHandler(), params);
         } catch (SQLException e) {
-            logger.error("查询出错！");
+            // 这个地方就不输出了
+//            logger.error("查询出错！",e);
             throw new RuntimeException(e);
         }
         printSQL(sql);

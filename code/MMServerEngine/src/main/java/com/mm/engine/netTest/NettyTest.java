@@ -16,7 +16,7 @@ public class NettyTest {
         nettyClient.start();
         AccountPB.CSLoginNode.Builder builder = AccountPB.CSLoginNode.newBuilder();
         builder.setAccountId("accountId_1241");
-        builder.setSessionId("Session_f20eb697-d6d9-45e8-9626-51b515d51b35");
+        builder.setSessionId("Session_0a29c234-ad4a-4717-9c1b-d18a17915a55");
 
         byte[] reData = nettyClient.send(AccountOpcode.CSLoginNode,builder.build().toByteArray());
 
