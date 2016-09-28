@@ -4,6 +4,7 @@ import com.mm.engine.framework.control.job.JobStorage;
 import com.mm.engine.framework.data.cache.CacheCenter;
 import com.mm.engine.framework.data.persistence.dao.DataAccessor;
 import com.mm.engine.framework.data.persistence.ds.DataSourceFactory;
+import com.mm.engine.framework.data.sysPara.SysParaStorage;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.tool.helper.ConfigHelper;
@@ -44,6 +45,7 @@ public final class EngineConfigure {
         configureBeans.put(DataAccessor.class,getBeanFromConfigure("dataAccessor"));
         configureBeans.put(CacheCenter.class,getBeanFromConfigure("cacheCenter"));
         configureBeans.put(JobStorage.class,getBeanFromConfigure("jobStorage"));
+        configureBeans.put(SysParaStorage.class,getBeanFromConfigure("sysParaStorage"));
 
         defaultRequestController="DefaultRequestController";
         // 初始化入口

@@ -1,5 +1,7 @@
 package com.mm.engine.framework.control;
 
+import com.mm.engine.framework.control.gm.Gm;
+import com.mm.engine.framework.control.gm.GmService;
 import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.control.annotation.*;
 import com.mm.engine.framework.control.annotation.EventListener;
@@ -9,6 +11,7 @@ import com.mm.engine.framework.control.request.RequestHandler;
 import com.mm.engine.framework.control.event.EventData;
 import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.data.entity.session.Session;
+import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.mm.engine.framework.tool.helper.ClassHelper;
@@ -50,6 +53,7 @@ public final class ServiceHelper {
     // 各个service的初始化方法和销毁方法
     private static Map<Class<?>,Method> initMethodMap = new HashMap<>();
     private static Map<Class<?>,Method> destroyMethodMap = new HashMap<>();
+    private static Map<String,Method> gmMethod = new HashMap<>();
 
     static{
         try {
@@ -103,6 +107,14 @@ public final class ServiceHelper {
                     }
                     if(method.getName().equals(destroy)){
                         destroyMethodMap.put(serviceClass,method);
+                    }
+                    Gm gm = method.getAnnotation(Gm.class);
+                    if(gm != null){
+                        Method old = gmMethod.put(gm.id(),method);
+                        if(old != null){
+                            throw new MMException("gm id duplicate,id="+gm.id()+" at "+method.getDeclaringClass().getName()+"."+method.getName()
+                                    +" and "+old.getDeclaringClass().getName()+"."+old.getName());
+                        }
                     }
                 }
             }
@@ -306,6 +318,11 @@ public final class ServiceHelper {
     public static Map<Class<?>, Method> getDestroyMethodMap() {
         return destroyMethodMap;
     }
+
+    public static Map<String, Method> getGmMethod() {
+        return gmMethod;
+    }
+
     //
     private static void addMethodToMap(Map<Class<?>,List<Method>> map,Class<?> cls,Method method){
         if(map.containsKey(cls)){

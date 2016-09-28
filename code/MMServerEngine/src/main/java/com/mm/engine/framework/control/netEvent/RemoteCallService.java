@@ -8,8 +8,7 @@ import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.mm.engine.framework.tool.util.ReflectionUtil;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by apple on 16-9-15.
@@ -83,6 +82,22 @@ public class RemoteCallService {
 
         NetEventData retData = netEventService.fireServerNetEventSyn(add,netEventData);
         return retData.getParam();
+    }
+
+    public List broadcastRemoteCallSyn(Class cls, String methodName, Object... params){
+        NetEventData netEventData = new NetEventData(SysConstantDefine.remoteCall);
+        RemoteCallData remoteCallData = new RemoteCallData();
+        remoteCallData.setCls(cls);
+        remoteCallData.setMethodName(methodName);
+        remoteCallData.setParams(params);
+        netEventData.setParam(remoteCallData);
+
+        Map<String,NetEventData> retData = netEventService.broadcastNetEventSyn(netEventData,false);
+        List result = new ArrayList(retData.size());
+        for(NetEventData re : retData.values()){
+            result.add(re.getParam());
+        }
+        return result;
     }
 
     class RemoteMethodCache{

@@ -1,14 +1,9 @@
-// gm的模块化
+// gm的模块化:包括修改系统参数
 // 每日变更变量，清零，随机变化，或定时变更
 // 要考虑前端的各种请求,合理抛出异常
-// 由于要把所有的service添加start和stop,这样,把各种manager也变成service也好
-// 程序运行的时候修改文件自动加载
 // 网络出现问题的包的处理
 // 查看所有抛出的异常有没有正确处理
-// asyncDBServer与mainServer相同
 // 日志
-// 除了ServiceHelper,ClassHelper,BeanHelper,EntityHelper，等以外，其它的Manager等都可以变成非静态的，都做成Service，然后调用start方法
-// Sys-Service：EventService,JobService,NetEventService,UpdateService,DataService,SessionService,AsyncService,LockerService,TxCacheService,MonitorService,CacheService
 // code添加压缩
 // 过滤系统；敏感字
 // 权限系统
@@ -30,3 +25,4 @@
 // 在init方法中调用其它未初始化的service的时候，如何依赖初始化,注意死循环?
 // 心跳
 // 启动的时候要检测memceche的启动
+// excel的文本类型可能导致问题
