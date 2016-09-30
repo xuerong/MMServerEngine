@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Created by a on 2016/9/28.
+ * Gm 方法的返回值，要么是void，要么是map<String,String>，要么是string
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -18,4 +19,5 @@ public @interface Gm {
      */
     String id();
     String describe() default "";
+    String[] paramsName() default {};
 }

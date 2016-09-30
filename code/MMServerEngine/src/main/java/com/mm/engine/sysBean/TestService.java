@@ -2,6 +2,7 @@ package com.mm.engine.sysBean;
 
 import com.mm.engine.framework.control.annotation.*;
 import com.mm.engine.framework.control.event.EventService;
+import com.mm.engine.framework.control.gm.Gm;
 import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.control.event.EventData;
@@ -9,6 +10,9 @@ import com.mm.engine.framework.data.entity.session.Session;
 import com.mm.engine.framework.server.IdService;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.protocol.OpCode;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2015/11/19.
@@ -110,5 +114,32 @@ public class TestService {
         B a = new B();
         a.aaa(new Integer(1));
     }
-
+    @Gm(id = "test1",describe = "describe1")
+    public void gm1(String aaa){
+        System.out.println("test1,"+aaa);
+    }
+    @Gm(id = "test2",describe = "describe2")
+    public String gm2(String bbb,int a,Integer v){
+        System.out.println("test2,"+bbb+","+a+","+v);
+        return "test2,"+bbb+","+a+","+v;
+    }
+    @Gm(id = "test3",describe = "describe3",
+    paramsName = {"p1","p2"})
+    public Map gm3(String bbb, int a, Integer v,String ddd2,
+                   String ddd3,
+                   String ddd4,
+                   String ddd5,
+                   String ddd6,
+                   String ddd7,
+                   String ddd8,
+                   String ddd9
+                   ){
+        System.out.println("test3,"+bbb+","+a+","+v);
+        Map map = new HashMap();
+        map.put("gm3","test3");
+        map.put("bbb",bbb);
+        map.put("a",a);
+        map.put("v",v);
+        return map;
+    }
 }

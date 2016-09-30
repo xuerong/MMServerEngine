@@ -20,6 +20,12 @@ import java.io.IOException;
  */
 public class GmEntranceJetty extends Entrance{
     private static final Logger log = LoggerFactory.getLogger(GmEntranceJetty.class);
+    /**
+     * 这个目录是服务的根目录，即浏览器访问的时候要添加这个目录
+     * 而web.xml过滤的目录都是建立在该目录下面的，如：
+     * 浏览器访问：http://localhost:8081/gm/index.jsp
+     * 如果要过滤，只需要/*,而不是/gm/*
+     */
     private String contextPath = "/gm";
 //    private String resourceBase = "./src/main/webapp";// TODO 这个目录真是太蛋疼了，部署的时候要注意
 //    private String descriptor = "./src/main/webapp/WEB-INF/web.xml";
@@ -52,23 +58,12 @@ public class GmEntranceJetty extends Entrance{
             context.setContextPath(contextPath);
             context.setParentLoaderPriority(true);
 
-
-
-            Handler entranceHandler = new AbstractHandler(){
-                @Override
-                public void handle(String target, Request baseRequest,
-                                   HttpServletRequest request, HttpServletResponse response) throws IOException{
-                    System.out.println("-----------------------");
-                }
-            };
-//            context.setHandler(entranceHandler);
-
             server.setHandler(context);
 
             // 启动
             server.start();
 
-            System.out.println("windows环境请使用JettyServer.java启动,使用url:    http://localhost:8023/gameoms/login.jsp 进行访问");
+            System.out.println("gm模块启动,使用url:http://localhost:"+port+contextPath+" 进行访问");
 
             server.join();
 

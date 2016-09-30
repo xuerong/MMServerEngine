@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_mmserverengine" default="compile.module.mmserverengine">
+  <dirname property="module.mmserverengine.basedir" file="${ant.file.module_mmserverengine}"/>
+  
+  <property name="module.jdk.home.mmserverengine" value="${jdk.home.1.8}"/>
+  <property name="module.jdk.bin.mmserverengine" value="${jdk.bin.1.8}"/>
+  <property name="module.jdk.classpath.mmserverengine" value="jdk.classpath.1.8"/>
+  
+  <property name="compiler.args.mmserverengine" value="-encoding UTF-8 -source 1.7 -target 1.7 ${compiler.args}"/>
+  
+  <property name="mmserverengine.output.dir" value="${module.mmserverengine.basedir}/target/classes"/>
+  <property name="mmserverengine.testoutput.dir" value="${module.mmserverengine.basedir}/target/test-classes"/>
+  
+  <path id="mmserverengine.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="mmserverengine.module.production.classpath">
+    <path refid="${module.jdk.classpath.mmserverengine}"/>
+    <path refid="library.maven:_org.slf4j:slf4j-log4j12:1.7.13.classpath"/>
+    <path refid="library.maven:_org.slf4j:slf4j-api:1.7.13.classpath"/>
+    <path refid="library.maven:_log4j:log4j:1.2.17.classpath"/>
+    <path refid="library.maven:_org.apache.commons:commons-lang3:3.4.classpath"/>
+    <path refid="library.maven:_cglib:cglib:3.1.classpath"/>
+    <path refid="library.maven:_org.ow2.asm:asm:4.2.classpath"/>
+    <path refid="library.maven:_org.javassist:javassist:3.20.0-ga.classpath"/>
+    <path refid="library.maven:_net.sf.trove4j:trove4j:3.0.3.classpath"/>
+    <path refid="library.maven:_org.ehcache:ehcache:3.0.0.m4.classpath"/>
+    <path refid="library.maven:_org.terracotta:offheap-store:2.1.2.classpath"/>
+    <path refid="library.maven:_commons-dbutils:commons-dbutils:1.6.classpath"/>
+    <path refid="library.maven:_commons-collections:commons-collections:3.2.2.classpath"/>
+    <path refid="library.maven:_commons-io:commons-io:2.4.classpath"/>
+    <path refid="library.maven:_commons-dbcp:commons-dbcp:1.4.classpath"/>
+    <path refid="library.maven:_commons-pool:commons-pool:1.5.4.classpath"/>
+    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.9.2.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.37.classpath"/>
+    <path refid="library.maven:_org.apache.tomcat:tomcat-websocket-api:9.0.0.m1.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-server:9.3.10.v20160621.classpath"/>
+    <path refid="library.maven:_javax.servlet:javax.servlet-api:3.1.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-http:9.3.10.v20160621.classpath"/>
+    <path refid="library.maven:_com.googlecode.xmemcached:xmemcached:2.0.0.classpath"/>
+    <path refid="library.maven:_io.netty:netty-all:4.1.4.final.classpath"/>
+    <path refid="library.maven:_com.google.protobuf:protobuf-java:2.5.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-webapp:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-xml:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-servlet:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-security:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-io:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-util:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_javax.servlet:jsp-api:2.0.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.4.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-jsp:9.2.10.v20150310.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.toolchain:jetty-schemas:3.1.m0.classpath"/>
+    <path refid="library.maven:_javax.servlet.jsp:javax.servlet.jsp-api:2.3.1.classpath"/>
+    <path refid="library.maven:_org.glassfish.web:javax.servlet.jsp:2.3.2.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.orbit:javax.servlet.jsp.jstl:1.2.0.v201105211821.classpath"/>
+    <path refid="library.maven:_org.glassfish.web:javax.servlet.jsp.jstl:1.2.2.classpath"/>
+    <path refid="library.maven:_org.glassfish:javax.el:3.0.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.orbit:org.eclipse.jdt.core:3.8.2.v20130121.classpath"/>
+  </path>
+  
+  <path id="mmserverengine.runtime.production.module.classpath">
+    <pathelement location="${mmserverengine.output.dir}"/>
+    <path refid="library.maven:_org.slf4j:slf4j-log4j12:1.7.13.classpath"/>
+    <path refid="library.maven:_org.slf4j:slf4j-api:1.7.13.classpath"/>
+    <path refid="library.maven:_log4j:log4j:1.2.17.classpath"/>
+    <path refid="library.maven:_org.apache.commons:commons-lang3:3.4.classpath"/>
+    <path refid="library.maven:_cglib:cglib:3.1.classpath"/>
+    <path refid="library.maven:_org.ow2.asm:asm:4.2.classpath"/>
+    <path refid="library.maven:_org.javassist:javassist:3.20.0-ga.classpath"/>
+    <path refid="library.maven:_net.sf.trove4j:trove4j:3.0.3.classpath"/>
+    <path refid="library.maven:_org.ehcache:ehcache:3.0.0.m4.classpath"/>
+    <path refid="library.maven:_org.terracotta:offheap-store:2.1.2.classpath"/>
+    <path refid="library.maven:_commons-dbutils:commons-dbutils:1.6.classpath"/>
+    <path refid="library.maven:_commons-collections:commons-collections:3.2.2.classpath"/>
+    <path refid="library.maven:_commons-io:commons-io:2.4.classpath"/>
+    <path refid="library.maven:_commons-dbcp:commons-dbcp:1.4.classpath"/>
+    <path refid="library.maven:_commons-pool:commons-pool:1.5.4.classpath"/>
+    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.9.2.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.37.classpath"/>
+    <path refid="library.maven:_org.apache.tomcat:tomcat-websocket-api:9.0.0.m1.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-server:9.3.10.v20160621.classpath"/>
+    <path refid="library.maven:_javax.servlet:javax.servlet-api:3.1.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-http:9.3.10.v20160621.classpath"/>
+    <path refid="library.maven:_com.googlecode.xmemcached:xmemcached:2.0.0.classpath"/>
+    <path refid="library.maven:_io.netty:netty-all:4.1.4.final.classpath"/>
+    <path refid="library.maven:_com.google.protobuf:protobuf-java:2.5.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-webapp:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-xml:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-servlet:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-security:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-io:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-util:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_javax.servlet:jsp-api:2.0.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.4.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-jsp:9.2.10.v20150310.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.toolchain:jetty-schemas:3.1.m0.classpath"/>
+    <path refid="library.maven:_javax.servlet.jsp:javax.servlet.jsp-api:2.3.1.classpath"/>
+    <path refid="library.maven:_org.glassfish.web:javax.servlet.jsp:2.3.2.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.orbit:javax.servlet.jsp.jstl:1.2.0.v201105211821.classpath"/>
+    <path refid="library.maven:_org.glassfish.web:javax.servlet.jsp.jstl:1.2.2.classpath"/>
+    <path refid="library.maven:_org.glassfish:javax.el:3.0.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.orbit:org.eclipse.jdt.core:3.8.2.v20130121.classpath"/>
+  </path>
+  
+  <path id="mmserverengine.module.classpath">
+    <path refid="${module.jdk.classpath.mmserverengine}"/>
+    <pathelement location="${mmserverengine.output.dir}"/>
+    <path refid="library.maven:_junit:junit:4.12.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+    <path refid="library.maven:_org.slf4j:slf4j-log4j12:1.7.13.classpath"/>
+    <path refid="library.maven:_org.slf4j:slf4j-api:1.7.13.classpath"/>
+    <path refid="library.maven:_log4j:log4j:1.2.17.classpath"/>
+    <path refid="library.maven:_org.apache.commons:commons-lang3:3.4.classpath"/>
+    <path refid="library.maven:_cglib:cglib:3.1.classpath"/>
+    <path refid="library.maven:_org.ow2.asm:asm:4.2.classpath"/>
+    <path refid="library.maven:_org.javassist:javassist:3.20.0-ga.classpath"/>
+    <path refid="library.maven:_net.sf.trove4j:trove4j:3.0.3.classpath"/>
+    <path refid="library.maven:_org.ehcache:ehcache:3.0.0.m4.classpath"/>
+    <path refid="library.maven:_org.terracotta:offheap-store:2.1.2.classpath"/>
+    <path refid="library.maven:_commons-dbutils:commons-dbutils:1.6.classpath"/>
+    <path refid="library.maven:_commons-collections:commons-collections:3.2.2.classpath"/>
+    <path refid="library.maven:_commons-io:commons-io:2.4.classpath"/>
+    <path refid="library.maven:_commons-dbcp:commons-dbcp:1.4.classpath"/>
+    <path refid="library.maven:_commons-pool:commons-pool:1.5.4.classpath"/>
+    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.9.2.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.37.classpath"/>
+    <path refid="library.maven:_org.apache.tomcat:tomcat-websocket-api:9.0.0.m1.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-server:9.3.10.v20160621.classpath"/>
+    <path refid="library.maven:_javax.servlet:javax.servlet-api:3.1.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-http:9.3.10.v20160621.classpath"/>
+    <path refid="library.maven:_com.googlecode.xmemcached:xmemcached:2.0.0.classpath"/>
+    <path refid="library.maven:_io.netty:netty-all:4.1.4.final.classpath"/>
+    <path refid="library.maven:_com.google.protobuf:protobuf-java:2.5.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-webapp:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-xml:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-servlet:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-security:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-io:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-util:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_javax.servlet:jsp-api:2.0.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.4.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-jsp:9.2.10.v20150310.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.toolchain:jetty-schemas:3.1.m0.classpath"/>
+    <path refid="library.maven:_javax.servlet.jsp:javax.servlet.jsp-api:2.3.1.classpath"/>
+    <path refid="library.maven:_org.glassfish.web:javax.servlet.jsp:2.3.2.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.orbit:javax.servlet.jsp.jstl:1.2.0.v201105211821.classpath"/>
+    <path refid="library.maven:_org.glassfish.web:javax.servlet.jsp.jstl:1.2.2.classpath"/>
+    <path refid="library.maven:_org.glassfish:javax.el:3.0.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.orbit:org.eclipse.jdt.core:3.8.2.v20130121.classpath"/>
+  </path>
+  
+  <path id="mmserverengine.runtime.module.classpath">
+    <pathelement location="${mmserverengine.testoutput.dir}"/>
+    <pathelement location="${mmserverengine.output.dir}"/>
+    <path refid="library.maven:_junit:junit:4.12.classpath"/>
+    <path refid="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath"/>
+    <path refid="library.maven:_org.slf4j:slf4j-log4j12:1.7.13.classpath"/>
+    <path refid="library.maven:_org.slf4j:slf4j-api:1.7.13.classpath"/>
+    <path refid="library.maven:_log4j:log4j:1.2.17.classpath"/>
+    <path refid="library.maven:_org.apache.commons:commons-lang3:3.4.classpath"/>
+    <path refid="library.maven:_cglib:cglib:3.1.classpath"/>
+    <path refid="library.maven:_org.ow2.asm:asm:4.2.classpath"/>
+    <path refid="library.maven:_org.javassist:javassist:3.20.0-ga.classpath"/>
+    <path refid="library.maven:_net.sf.trove4j:trove4j:3.0.3.classpath"/>
+    <path refid="library.maven:_org.ehcache:ehcache:3.0.0.m4.classpath"/>
+    <path refid="library.maven:_org.terracotta:offheap-store:2.1.2.classpath"/>
+    <path refid="library.maven:_commons-dbutils:commons-dbutils:1.6.classpath"/>
+    <path refid="library.maven:_commons-collections:commons-collections:3.2.2.classpath"/>
+    <path refid="library.maven:_commons-io:commons-io:2.4.classpath"/>
+    <path refid="library.maven:_commons-dbcp:commons-dbcp:1.4.classpath"/>
+    <path refid="library.maven:_commons-pool:commons-pool:1.5.4.classpath"/>
+    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.9.2.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.1.1.classpath"/>
+    <path refid="library.maven:_mysql:mysql-connector-java:5.1.37.classpath"/>
+    <path refid="library.maven:_org.apache.tomcat:tomcat-websocket-api:9.0.0.m1.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-server:9.3.10.v20160621.classpath"/>
+    <path refid="library.maven:_javax.servlet:javax.servlet-api:3.1.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-http:9.3.10.v20160621.classpath"/>
+    <path refid="library.maven:_com.googlecode.xmemcached:xmemcached:2.0.0.classpath"/>
+    <path refid="library.maven:_io.netty:netty-all:4.1.4.final.classpath"/>
+    <path refid="library.maven:_com.google.protobuf:protobuf-java:2.5.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-webapp:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-xml:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-servlet:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-security:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-io:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-util:9.3.11.v20160721.classpath"/>
+    <path refid="library.maven:_javax.servlet:jsp-api:2.0.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.4.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty:jetty-jsp:9.2.10.v20150310.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.toolchain:jetty-schemas:3.1.m0.classpath"/>
+    <path refid="library.maven:_javax.servlet.jsp:javax.servlet.jsp-api:2.3.1.classpath"/>
+    <path refid="library.maven:_org.glassfish.web:javax.servlet.jsp:2.3.2.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.orbit:javax.servlet.jsp.jstl:1.2.0.v201105211821.classpath"/>
+    <path refid="library.maven:_org.glassfish.web:javax.servlet.jsp.jstl:1.2.2.classpath"/>
+    <path refid="library.maven:_org.glassfish:javax.el:3.0.0.classpath"/>
+    <path refid="library.maven:_org.eclipse.jetty.orbit:org.eclipse.jdt.core:3.8.2.v20130121.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.mmserverengine">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.mmserverengine">
+    <patternset refid="excluded.from.module.mmserverengine"/>
+  </patternset>
+  
+  <path id="mmserverengine.module.sourcepath">
+    <dirset dir="${module.mmserverengine.basedir}">
+      <include name="src/main/resources"/>
+      <include name="src/main/java"/>
+    </dirset>
+  </path>
+  
+  <path id="mmserverengine.module.test.sourcepath">
+    <dirset dir="${module.mmserverengine.basedir}">
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.mmserverengine" depends="compile.module.mmserverengine.production,compile.module.mmserverengine.tests" description="Compile module MMServerEngine"/>
+  
+  <target name="compile.module.mmserverengine.production" depends="register.custom.compilers" description="Compile module MMServerEngine; production classes">
+    <mkdir dir="${mmserverengine.output.dir}"/>
+    <javac2 destdir="${mmserverengine.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.mmserverengine}/javac">
+      <compilerarg line="${compiler.args.mmserverengine}"/>
+      <bootclasspath refid="mmserverengine.module.bootclasspath"/>
+      <classpath refid="mmserverengine.module.production.classpath"/>
+      <src refid="mmserverengine.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.mmserverengine"/>
+    </javac2>
+    
+    <copy todir="${mmserverengine.output.dir}">
+      <fileset dir="${module.mmserverengine.basedir}/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.mmserverengine.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.mmserverengine.tests" depends="register.custom.compilers,compile.module.mmserverengine.production" description="compile module MMServerEngine; test classes" unless="skip.tests">
+    <mkdir dir="${mmserverengine.testoutput.dir}"/>
+    <javac2 destdir="${mmserverengine.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.mmserverengine}/javac">
+      <compilerarg line="${compiler.args.mmserverengine}"/>
+      <bootclasspath refid="mmserverengine.module.bootclasspath"/>
+      <classpath refid="mmserverengine.module.classpath"/>
+      <src refid="mmserverengine.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.mmserverengine"/>
+    </javac2>
+    
+    <copy todir="${mmserverengine.testoutput.dir}">
+      <fileset dir="${module.mmserverengine.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.mmserverengine" description="cleanup module">
+    <delete dir="${mmserverengine.output.dir}"/>
+    <delete dir="${mmserverengine.testoutput.dir}"/>
+  </target>
+</project>

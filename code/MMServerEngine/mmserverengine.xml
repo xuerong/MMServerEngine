@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="mmserverengine" default="all">
+  
+  
+  <property file="mmserverengine.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.swc"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.egg"/>
+    <include name="*.ane"/>
+    <include name="*.jar"/>
+    <include name="*.ear"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+  <path id="jdk.classpath.1.8">
+    <fileset dir="${jdk.home.1.8}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/ext/access-bridge-64.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxswt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.maven:_cglib:cglib:3.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/cglib/cglib/3.1/cglib-3.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.google.protobuf:protobuf-java:2.5.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/google/protobuf/protobuf-java/2.5.0/protobuf-java-2.5.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_com.googlecode.xmemcached:xmemcached:2.0.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/com/googlecode/xmemcached/xmemcached/2.0.0/xmemcached-2.0.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_commons-beanutils:commons-beanutils:1.9.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-beanutils/commons-beanutils/1.9.2/commons-beanutils-1.9.2.jar"/>
+  </path>
+  
+  <path id="library.maven:_commons-collections:commons-collections:3.2.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-collections/commons-collections/3.2.2/commons-collections-3.2.2.jar"/>
+  </path>
+  
+  <path id="library.maven:_commons-dbcp:commons-dbcp:1.4.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar"/>
+  </path>
+  
+  <path id="library.maven:_commons-dbutils:commons-dbutils:1.6.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-dbutils/commons-dbutils/1.6/commons-dbutils-1.6.jar"/>
+  </path>
+  
+  <path id="library.maven:_commons-io:commons-io:2.4.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-io/commons-io/2.4/commons-io-2.4.jar"/>
+  </path>
+  
+  <path id="library.maven:_commons-logging:commons-logging:1.1.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_commons-pool:commons-pool:1.5.4.classpath">
+    <pathelement location="${path.variable.maven_repository}/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar"/>
+  </path>
+  
+  <path id="library.maven:_io.netty:netty-all:4.1.4.final.classpath">
+    <pathelement location="${path.variable.maven_repository}/io/netty/netty-all/4.1.4.Final/netty-all-4.1.4.Final.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.servlet.jsp:javax.servlet.jsp-api:2.3.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/servlet/jsp/javax.servlet.jsp-api/2.3.1/javax.servlet.jsp-api-2.3.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.servlet:javax.servlet-api:3.1.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.servlet:jsp-api:2.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/servlet/jsp-api/2.0/jsp-api-2.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_javax.servlet:servlet-api:2.4.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar"/>
+  </path>
+  
+  <path id="library.maven:_junit:junit:4.12.classpath">
+    <pathelement location="${path.variable.maven_repository}/junit/junit/4.12/junit-4.12.jar"/>
+  </path>
+  
+  <path id="library.maven:_log4j:log4j:1.2.17.classpath">
+    <pathelement location="${path.variable.maven_repository}/log4j/log4j/1.2.17/log4j-1.2.17.jar"/>
+  </path>
+  
+  <path id="library.maven:_mysql:mysql-connector-java:5.1.37.classpath">
+    <pathelement location="${path.variable.maven_repository}/mysql/mysql-connector-java/5.1.37/mysql-connector-java-5.1.37.jar"/>
+  </path>
+  
+  <path id="library.maven:_net.sf.trove4j:trove4j:3.0.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.apache.commons:commons-lang3:3.4.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.apache.tomcat:tomcat-websocket-api:9.0.0.m1.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/apache/tomcat/tomcat-websocket-api/9.0.0.M1/tomcat-websocket-api-9.0.0.M1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty.orbit:javax.servlet.jsp.jstl:1.2.0.v201105211821.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/orbit/javax.servlet.jsp.jstl/1.2.0.v201105211821/javax.servlet.jsp.jstl-1.2.0.v201105211821.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty.orbit:org.eclipse.jdt.core:3.8.2.v20130121.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/orbit/org.eclipse.jdt.core/3.8.2.v20130121/org.eclipse.jdt.core-3.8.2.v20130121.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty.toolchain:jetty-schemas:3.1.m0.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/toolchain/jetty-schemas/3.1.M0/jetty-schemas-3.1.M0.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty:jetty-http:9.3.10.v20160621.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/jetty-http/9.3.10.v20160621/jetty-http-9.3.10.v20160621.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty:jetty-io:9.3.11.v20160721.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/jetty-io/9.3.11.v20160721/jetty-io-9.3.11.v20160721.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty:jetty-jsp:9.2.10.v20150310.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/jetty-jsp/9.2.10.v20150310/jetty-jsp-9.2.10.v20150310.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty:jetty-security:9.3.11.v20160721.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/jetty-security/9.3.11.v20160721/jetty-security-9.3.11.v20160721.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty:jetty-server:9.3.10.v20160621.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/jetty-server/9.3.10.v20160621/jetty-server-9.3.10.v20160621.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty:jetty-servlet:9.3.11.v20160721.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/jetty-servlet/9.3.11.v20160721/jetty-servlet-9.3.11.v20160721.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty:jetty-util:9.3.11.v20160721.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/jetty-util/9.3.11.v20160721/jetty-util-9.3.11.v20160721.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty:jetty-webapp:9.3.11.v20160721.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/jetty-webapp/9.3.11.v20160721/jetty-webapp-9.3.11.v20160721.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.eclipse.jetty:jetty-xml:9.3.11.v20160721.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/eclipse/jetty/jetty-xml/9.3.11.v20160721/jetty-xml-9.3.11.v20160721.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.ehcache:ehcache:3.0.0.m4.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/ehcache/ehcache/3.0.0.m4/ehcache-3.0.0.m4.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.glassfish.web:javax.servlet.jsp.jstl:1.2.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/glassfish/web/javax.servlet.jsp.jstl/1.2.2/javax.servlet.jsp.jstl-1.2.2.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.glassfish.web:javax.servlet.jsp:2.3.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/glassfish/web/javax.servlet.jsp/2.3.2/javax.servlet.jsp-2.3.2.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.glassfish:javax.el:3.0.0.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/glassfish/javax.el/3.0.0/javax.el-3.0.0.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.hamcrest:hamcrest-core:1.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.javassist:javassist:3.20.0-ga.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.ow2.asm:asm:4.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/ow2/asm/asm/4.2/asm-4.2.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.slf4j:slf4j-api:1.7.13.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.slf4j:slf4j-log4j12:1.7.13.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/slf4j/slf4j-log4j12/1.7.13/slf4j-log4j12-1.7.13.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.terracotta:offheap-store:2.1.2.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/terracotta/offheap-store/2.1.2/offheap-store-2.1.2.jar"/>
+  </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  <import file="${basedir}/module_mmserverengine.xml"/>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.mmserverengine, clean.artifact.mmserverengine:war_exploded" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.mmserverengine" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.mmserverengine:war" value="${basedir}/target"/>
+    <property name="artifact.output.mmserverengine:war_exploded" value="${basedir}/target/mmserverengine"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.mmserverengine.war" value="${artifacts.temp.dir}/mmserverengine.war"/>
+  </target>
+  
+  <target name="clean.artifact.mmserverengine:war_exploded" description="clean MMServerEngine:war exploded artifact output">
+    <delete dir="${artifact.output.mmserverengine:war_exploded}"/>
+  </target>
+  
+  <target name="artifact.mmserverengine:war" depends="init.artifacts, artifact.mmserverengine:war_exploded" description="Build &#39;MMServerEngine:war&#39; artifact">
+    <property name="artifact.temp.output.mmserverengine:war" value="${artifacts.temp.dir}/MMServerEngine_war"/>
+    <mkdir dir="${artifact.temp.output.mmserverengine:war}"/>
+    <zip destfile="${temp.jar.path.mmserverengine.war}">
+      <zipfileset dir="${artifact.output.mmserverengine:war_exploded}"/>
+    </zip>
+    <copy file="${temp.jar.path.mmserverengine.war}" tofile="${artifact.temp.output.mmserverengine:war}/mmserverengine.war"/>
+  </target>
+  
+  <target name="artifact.mmserverengine:war_exploded" depends="init.artifacts, compile.module.mmserverengine" description="Build &#39;MMServerEngine:war exploded&#39; artifact">
+    <mkdir dir="${artifact.output.mmserverengine:war_exploded}"/>
+    <mkdir dir="${artifact.output.mmserverengine:war_exploded}/WEB-INF"/>
+    <mkdir dir="${artifact.output.mmserverengine:war_exploded}/WEB-INF/classes"/>
+    <copy todir="${artifact.output.mmserverengine:war_exploded}/WEB-INF/classes">
+      <fileset dir="${mmserverengine.output.dir}"/>
+    </copy>
+    <mkdir dir="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib"/>
+    <copy file="${path.variable.maven_repository}/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/javax.servlet-api-3.1.0.jar"/>
+    <copy file="${path.variable.maven_repository}/org/slf4j/slf4j-log4j12/1.7.13/slf4j-log4j12-1.7.13.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/slf4j-log4j12-1.7.13.jar"/>
+    <copy file="${path.variable.maven_repository}/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/slf4j-api-1.7.13.jar"/>
+    <copy file="${path.variable.maven_repository}/log4j/log4j/1.2.17/log4j-1.2.17.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/log4j-1.2.17.jar"/>
+    <copy file="${path.variable.maven_repository}/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/commons-lang3-3.4.jar"/>
+    <copy file="${path.variable.maven_repository}/cglib/cglib/3.1/cglib-3.1.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/cglib-3.1.jar"/>
+    <copy file="${path.variable.maven_repository}/org/ow2/asm/asm/4.2/asm-4.2.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/asm-4.2.jar"/>
+    <copy file="${path.variable.maven_repository}/org/javassist/javassist/3.20.0-GA/javassist-3.20.0-GA.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/javassist-3.20.0-GA.jar"/>
+    <copy file="${path.variable.maven_repository}/net/sf/trove4j/trove4j/3.0.3/trove4j-3.0.3.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/trove4j-3.0.3.jar"/>
+    <copy file="${path.variable.maven_repository}/org/ehcache/ehcache/3.0.0.m4/ehcache-3.0.0.m4.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/ehcache-3.0.0.m4.jar"/>
+    <copy file="${path.variable.maven_repository}/org/terracotta/offheap-store/2.1.2/offheap-store-2.1.2.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/offheap-store-2.1.2.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-dbutils/commons-dbutils/1.6/commons-dbutils-1.6.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/commons-dbutils-1.6.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-collections/commons-collections/3.2.2/commons-collections-3.2.2.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/commons-collections-3.2.2.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-io/commons-io/2.4/commons-io-2.4.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/commons-io-2.4.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/commons-dbcp-1.4.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/commons-pool-1.5.4.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-beanutils/commons-beanutils/1.9.2/commons-beanutils-1.9.2.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/commons-beanutils-1.9.2.jar"/>
+    <copy file="${path.variable.maven_repository}/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/lib/commons-logging-1.1.1.jar"/>
+    <mkdir dir="${artifact.output.mmserverengine:war_exploded}/META-INF"/>
+    <copy file="${basedir}/target/mmserverengine/META-INF/MANIFEST.MF" tofile="${artifact.output.mmserverengine:war_exploded}/META-INF/MANIFEST.MF"/>
+    <copy todir="${artifact.output.mmserverengine:war_exploded}">
+      <fileset dir="${basedir}/src/main/webapp"/>
+    </copy>
+    <mkdir dir="${artifact.output.mmserverengine:war_exploded}/WEB-INF"/>
+    <copy file="${basedir}/src/main/webapp/WEB-INF/web.xml" tofile="${artifact.output.mmserverengine:war_exploded}/WEB-INF/web.xml"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.mmserverengine:war, artifact.mmserverengine:war_exploded" description="Build all artifacts">
+    <mkdir dir="${artifact.output.mmserverengine:war}"/>
+    <copy todir="${artifact.output.mmserverengine:war}">
+      <fileset dir="${artifact.temp.output.mmserverengine:war}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>

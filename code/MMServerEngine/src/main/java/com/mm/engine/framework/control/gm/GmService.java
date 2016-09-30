@@ -6,6 +6,7 @@ import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,10 +15,41 @@ import java.util.Map;
  */
 @Service(init = "init")
 public class GmService {
-    private Map<String,Method> gmMethods;
+
+    private Map<String,GmSegment> gmSegments;
     public void init(){
+        gmSegments = new HashMap<>();
         // 取出gm的所有方法的参数
-        gmMethods = ServiceHelper.getGmMethod();
+        Map<String,Method> gmMethods = ServiceHelper.getGmMethod();
+        for(Map.Entry<String,Method> entry : gmMethods.entrySet()){
+            Method method = entry.getValue();
+            Class returnType = method.getReturnType();
+            if(returnType != Void.class && returnType!=Map.class && returnType!=String.class&& returnType!=void.class){
+                throw new MMException("gm method returnType error,id="+entry.getKey()+",returnType="+returnType);
+            }
+            GmSegment gmSegment = new GmSegment();
+            gmSegment.setReturnType(returnType);
+            Class[] paramsTypes = method.getParameterTypes();
+            // 校验一下：
+            for(Class cls: paramsTypes){
+                if(!isGmPermitType(cls)){
+                    throw new MMException("gm param error, just permit primitive and String!");
+                }
+            }
+            gmSegment.setParamsType(paramsTypes);
+            gmSegment.setMethod(method);
+            Object service = BeanHelper.getServiceBean(method.getDeclaringClass());
+            gmSegment.setService(service);
+            Gm gm = method.getAnnotation(Gm.class);
+            gmSegment.setParamsName(gm.paramsName());
+            gmSegment.setId(gm.id());
+            gmSegment.setDescribe(gm.describe());
+            gmSegments.put(gm.id(),gmSegment);
+        }
+    }
+
+    public Map<String, GmSegment> getGmSegments() {
+        return gmSegments;
     }
 
     /**
@@ -26,17 +58,12 @@ public class GmService {
      * @param params
      */
     public Object handle(String id,Object... params){
-        Method method = gmMethods.get(id);
-        if(method == null){
+        GmSegment gmSegment = gmSegments.get(id);
+        if(gmSegment == null){
             throw new MMException("gm is not exist , id = "+id);
         }
-        System.out.println(method.getDeclaringClass());
-        Object service = BeanHelper.getServiceBean(method.getDeclaringClass());
-        if(service == null){
-            throw new MMException("gm service is not exist , id = "+id+",class = "+method.getDeclaringClass());
-        }
         // 校验参数
-        Class[] clses = method.getParameterTypes();
+        Class[] clses = gmSegment.getParamsType();
         if(clses.length>params.length){
             throw new MMException("gm params error!need "+clses.length+" params"+",but get "+params.length);
         }
@@ -49,7 +76,7 @@ public class GmService {
         }
         // 调用
         try {
-            Object result = method.invoke(service, params);
+            Object result = gmSegment.getMethod().invoke(gmSegment.getService(), params);
             return result;
         }catch (Throwable e){
             throw new MMException(e);
@@ -72,5 +99,21 @@ public class GmService {
             else if(cls == short.class) cls = Short.class;
         }
         return cls;
+    }
+
+    private boolean isGmPermitType(Class cls){
+        if(cls.isPrimitive()){
+            return true;
+        }
+        if(cls == Integer.class) return true;
+        else if(cls == Long.class) return true;
+        else if(cls == Float.class) return true;
+        else if(cls == Double.class) return true;
+        else if(cls == Character.class) return true;
+        else if(cls == Byte.class) return true;
+        else if(cls == Boolean.class) return true;
+        else if(cls == Short.class) return true;
+        else if(cls == String.class) return true;
+        return false;
     }
 }

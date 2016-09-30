@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="MMServerEngine:war">
+  <artifact type="war" build-on-make="true" name="MMServerEngine:war">
     <output-path>$PROJECT_DIR$/target</output-path>
     <root id="archive" name="mmserverengine.war">
       <element id="artifact" artifact-name="MMServerEngine:war exploded" />
