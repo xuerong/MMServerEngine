@@ -65,7 +65,7 @@ public class GmEntranceJetty extends Entrance{
 
             System.out.println("gm模块启动,使用url:http://localhost:"+port+contextPath+" 进行访问");
 
-            server.join();
+//            server.join();
 
         } catch (Throwable e) {
             e.printStackTrace();

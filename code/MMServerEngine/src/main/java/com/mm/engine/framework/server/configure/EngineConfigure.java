@@ -98,6 +98,7 @@ public final class EngineConfigure {
             configure.setPort(port);
             configure.setCls(cls);
             entranceClassMap.put(name,configure);
+
             if(name.equals("netEvent")){
                 netEventEntrance = configure;
             }

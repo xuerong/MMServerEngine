@@ -1,5 +1,7 @@
 package com.mm.engine.framework.tool.helper;
 
+import com.mm.engine.framework.security.exception.MMException;
+import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.tool.AnnotationClassTemplate;
 import com.mm.engine.framework.tool.ClassTemplate;
 import com.mm.engine.framework.tool.SupperClassTemplate;
@@ -19,12 +21,17 @@ public class ClassHelper {
      * 获取基础包名
      */
     public static final String basePackage = "com.mm.engine";
-    public static final String appPackage="com.summer";
+    public static final String appPackage;
 
     static {
         // 系统包
         // 用户定义的包
+        appPackage = Server.getEngineConfigure().getString("appPackage");
         // 要校验两个包是否重复
+        if(basePackage.startsWith(appPackage) || appPackage.startsWith(basePackage)){
+            throw new MMException("basePackage and appPackage duplicate,don't contain each other" +
+                    "basePacket = "+basePackage+",appPacket="+appPackage);
+        }
     }
 
     public static boolean containPacket(String packetName){

@@ -52,8 +52,7 @@ public final class BeanHelper {
             for (Map.Entry<Class<?>, Class<?>> entry : serviceClassMap.entrySet()) {
                 serviceBeans.put(entry.getKey(), newAopInstance(entry.getKey(), entry.getValue()));
             }
-            // Ioc: 如果bean中有声明的serviceBeans中存在的变量，则赋值
-            iocSetService(serviceBeans);
+
             // 框架Bean
             EngineConfigure configure = Server.getEngineConfigure();
             configureBeans = configure.getConfigureBeans();
@@ -68,16 +67,19 @@ public final class BeanHelper {
                         }
                         frameBeans.put(entry.getKey(), object);
                     }else{
-                        frameBeans.put(entry.getKey(), newAopInstance(entry.getValue()));
+                        Object object = newAopInstance(entry.getValue());
+                        frameBeans.put(entry.getKey(), object);
                     }
                 }
             }
-            iocSetService(frameBeans);
+            // Ioc: 如果bean中有声明的serviceBeans中存在的变量，则赋值
+            iocSetService();
             // aop
 //            frameBeans.put(MyProxyTarget.class, newAopInstance(MyProxyTarget.class));
             // net
             Map<String,EntranceConfigure> entranceClassMap = configure.getEntranceClassMap();
             for (EntranceConfigure entranceConfigure:entranceClassMap.values()) {
+
                 Entrance entrance = (Entrance)serviceBeans.get(entranceConfigure.getCls()) ; // 入口也可能声明为service
                 if(entrance == null){
                     entrance = (Entrance) newAopInstance(entranceConfigure.getCls());
@@ -89,14 +91,7 @@ public final class BeanHelper {
 
                 entranceBeans.put(entranceConfigure.getName(),entrance);
                 //-----ioc
-                Field[] fields = entranceConfigure.getCls().getDeclaredFields(); // 这里只是给本类中生命的变量赋值了，继承的变量没有赋值，这个后面可以考虑，但要综合考虑系统启动效率
-                for(Field field : fields){
-                    Object service = serviceBeans.get(field.getType());
-                    if(service != null){
-                        field.setAccessible(true); // 可访问私有变量。
-                        field.set(entrance,service);
-                    }
-                }
+                iocSetObject(entranceConfigure.getCls(),entrance);
             }
 
         }catch (Throwable e){
@@ -105,17 +100,29 @@ public final class BeanHelper {
         }
     }
     // 给beans中的对象的service变量赋值
-    private static void iocSetService(Map<Class<?>,Object> beans) throws Throwable{
-        for(Map.Entry<Class<?>,Object> entry : beans.entrySet()){
+    private static void iocSetService() throws Throwable{
+        // service
+        for(Map.Entry<Class<?>,Object> entry : serviceBeans.entrySet()){
             Class<?> cls = entry.getKey();
-            Object object = entry.getValue();
-            Field[] fields = cls.getDeclaredFields();// 这里只是给本类中生命的变量赋值了，继承的变量没有赋值，这个后面可以考虑，但要综合考虑系统启动效率
-            for(Field field : fields){
-                Object service = serviceBeans.get(field.getType());
-                if(service != null){
-                    field.setAccessible(true); // 可访问私有变量。
-                    field.set(object,service);
-                }
+            iocSetObject(cls,entry.getValue());
+        }
+        // frame
+        // ioc
+        for (Map.Entry<Class<?>, Class<?>> entry : configureBeans.entrySet()) {
+            Object object = frameBeans.get(entry.getKey());
+            iocSetObject(entry.getValue(),object);
+        }
+    }
+    private static void iocSetObject(Class sourceClass,Object object) throws Throwable{
+        Field[] fields = sourceClass.getDeclaredFields();
+        for(Field field : fields){
+            Object service = serviceBeans.get(field.getType());
+            if(service == null){
+                service = frameBeans.get(field.getType());
+            }
+            if(service != null){
+                field.setAccessible(true); // 可访问私有变量。
+                field.set(object,service);
             }
         }
     }

@@ -3,8 +3,6 @@ package com.mm.engine.framework.data.persistence.orm;
 import com.mm.engine.framework.data.persistence.dao.ColumnDesc;
 import com.mm.engine.framework.data.persistence.orm.annotation.Column;
 import com.mm.engine.framework.data.persistence.orm.annotation.DBEntity;
-import com.mm.engine.framework.security.exception.ExceptionHelper;
-import com.mm.engine.framework.security.exception.ExceptionLevel;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.ClassHelper;
 import com.mm.engine.framework.tool.util.ObjectUtil;
@@ -17,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -83,7 +80,7 @@ public class EntityHelper {
     public static ConditionItem parsePkCondition(Object object){
         Map<String,Method> map = getPkGetMethodMap(object.getClass());
         if(map == null || map.size() == 0){
-            ExceptionHelper.handle(ExceptionLevel.Error,"getPkGetMethodMap is null , class = "+object.getClass(),null);
+            throw new MMException("getPkGetMethodMap is null , class = "+object.getClass());
         }
 
         Object[] params = new Object[map.size()];

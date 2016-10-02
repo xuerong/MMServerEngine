@@ -4,10 +4,8 @@ import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.data.DataService;
 import com.mm.engine.framework.data.OperType;
 import com.mm.engine.framework.data.cache.CacheEntity;
-import com.mm.engine.framework.data.cache.CacheService;
 import com.mm.engine.framework.data.cache.KeyParser;
-import com.mm.engine.framework.security.exception.ExceptionHelper;
-import com.mm.engine.framework.security.exception.ExceptionLevel;
+import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -260,7 +258,7 @@ public class TxCacheService {
         Map<String, PrepareCachedData> map = cacheDatas.get();
         PrepareCachedData older = map.get(key);
         if(older != null && older.getOperType() != OperType.Delete){
-            ExceptionHelper.handle(ExceptionLevel.Warn,"object is exist while insert object key = "+key,null);
+            throw new MMException("object is exist while insert object key = "+key);
         }
 
         PrepareCachedData prepareCachedData = new PrepareCachedData();
@@ -277,7 +275,7 @@ public class TxCacheService {
         Map<String, PrepareCachedData> map = cacheDatas.get();
         PrepareCachedData older = map.get(key);
         if(older != null && older.getOperType() == OperType.Delete){
-            ExceptionHelper.handle(ExceptionLevel.Warn,"object has deleted while update object key = "+key,null);
+            throw new MMException("object has deleted while update object key = "+key);
         }
         PrepareCachedData prepareCachedData = new PrepareCachedData();
         prepareCachedData.setData(entity);

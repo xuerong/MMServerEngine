@@ -10,8 +10,6 @@ import com.mm.engine.framework.data.cache.CacheEntity;
 import com.mm.engine.framework.data.cache.KeyParser;
 import com.mm.engine.framework.data.persistence.orm.DataSet;
 import com.mm.engine.framework.data.persistence.orm.EntityHelper;
-import com.mm.engine.framework.security.exception.ExceptionHelper;
-import com.mm.engine.framework.security.exception.ExceptionLevel;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.SysConstantDefine;
@@ -35,14 +33,14 @@ public class AsyncService {
 //    private static LinkedBlockingQueue<AsyncData> asyncDataQueue = new LinkedBlockingQueue<AsyncData>();
     // 另一个队列，key为对象的类的名字,只存储增加和删除，根据异步对象的类型进行存储，在REFRESHDBLIST中起作用：
     // 1防止漏掉数据：插入数据库之后才删它，而asyncDataQueue在插入数据库之前就会被删掉了，2提高查询效率
-    private Map<String,List<AsyncData>> asyncDataMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String,List<AsyncData>> asyncDataMap = new ConcurrentHashMap<>();
     private final int threadCount = Runtime.getRuntime().availableProcessors()+1;
     private Random threadRand = new Random();
     private ThreadLocal<Integer> threadNum = new ThreadLocal<>();
     private Map<Integer,Worker> workerMap = new HashMap<>();
     // listKeys
     // key为对象的类的名字，值为其对应的listKeys
-    private Map<String,Set<String>> listKeysMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String,Set<String>> listKeysMap = new ConcurrentHashMap<>();
     //
     private CacheCenter cacheCenter;
     private NetEventService netEventService;
@@ -222,7 +220,7 @@ public class AsyncService {
                     String listKey = iter.next();
                     if (KeyParser.isObjectBelongToList(asyncData.getObject(), listKey)) {
                         if (!lockerService.lockKeys(listKey)) { // 要不要做成一起加锁， 解锁，增加效率？
-                            ExceptionHelper.handle(ExceptionLevel.Warn, "加锁失败,listKey = " + listKey, null);
+                            throw new MMException("加锁失败,listKey = " + listKey);
                         }
                         // 从缓存中取数据
                         CacheEntity cacheEntity = cacheCenter.get(listKey);
@@ -246,7 +244,7 @@ public class AsyncService {
             }
         }
         if(!success){
-            ExceptionHelper.handle(ExceptionLevel.Fatal,"更新数据库队列满，异步服务器压力过大",null);
+            throw new MMException("更新数据库队列满，异步服务器压力过大");
         }
     }
     public static void main(String[] args){
@@ -326,9 +324,8 @@ public class AsyncService {
             if(running){
                 return asyncDataQueue.offer(asyncData);
             }else{
-                ExceptionHelper.handle(ExceptionLevel.Warn,"异步服务器已经停止运行，或还没有运行",null);
+                throw new MMException("异步服务器已经停止运行，或还没有运行");
             }
-            return false;
         }
 
         public void start(){

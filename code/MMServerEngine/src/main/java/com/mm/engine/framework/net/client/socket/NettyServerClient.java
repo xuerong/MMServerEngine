@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by apple on 16-8-28.
+ * 服务器之间连接时候用的client……
  */
 public class NettyServerClient extends AbServerClient {
     private static final Logger log = LoggerFactory.getLogger(NettyServerClient.class);

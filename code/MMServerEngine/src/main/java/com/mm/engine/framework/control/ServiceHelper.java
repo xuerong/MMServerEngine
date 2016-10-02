@@ -1,7 +1,6 @@
 package com.mm.engine.framework.control;
 
 import com.mm.engine.framework.control.gm.Gm;
-import com.mm.engine.framework.control.gm.GmService;
 import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.control.annotation.*;
 import com.mm.engine.framework.control.annotation.EventListener;
@@ -13,7 +12,6 @@ import com.mm.engine.framework.control.netEvent.NetEventData;
 import com.mm.engine.framework.data.entity.session.Session;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.ServerType;
-import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.mm.engine.framework.tool.helper.ClassHelper;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TShortObjectHashMap;
@@ -23,7 +21,6 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.bytecode.MethodInfo;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.List;
@@ -50,8 +47,8 @@ public final class ServiceHelper {
      * */
     private static Map<Class<?>,Class<?>> serviceClassMap=new HashMap<>();
 
-    // 各个service的初始化方法和销毁方法
-    private static Map<Class<?>,Method> initMethodMap = new HashMap<>();
+    // 各个service的初始化方法和销毁方法,threeMap默认是根据键之排序的
+    private static Map<Integer,Map<Class<?>,Method>> initMethodMap = new TreeMap<>();
     private static Map<Class<?>,Method> destroyMethodMap = new HashMap<>();
     private static Map<String,Method> gmMethod = new HashMap<>();
 
@@ -81,6 +78,7 @@ public final class ServiceHelper {
             for(Class<?> serviceClass : serviceClasses){
                 Service service = serviceClass.getAnnotation(Service.class);
                 String init = service.init();
+                int initPriority = service.initPriority();
                 String destroy = service.destroy();
                 Method[] methods=serviceClass.getMethods();
                 for (Method method : methods){
@@ -103,7 +101,12 @@ public final class ServiceHelper {
                     }
                     // 判断是否是初始化方法和销毁方法
                     if(method.getName().equals(init)){
-                        initMethodMap.put(serviceClass,method);
+                        Map<Class<?>,Method> methodMap = initMethodMap.get(initPriority);
+                        if(methodMap == null){
+                            methodMap = new HashMap<>();
+                            initMethodMap.put(initPriority,methodMap);
+                        }
+                        methodMap.put(serviceClass,method);
                     }
                     if(method.getName().equals(destroy)){
                         destroyMethodMap.put(serviceClass,method);
@@ -311,7 +314,7 @@ public final class ServiceHelper {
     public static Map<Class<?>,Class<?>> getServiceClassMap(){
         return serviceClassMap;
     }
-    public static Map<Class<?>, Method> getInitMethodMap() {
+    public static Map<Integer,Map<Class<?>,Method>>  getInitMethodMap() {
         return initMethodMap;
     }
 

@@ -3,6 +3,7 @@ package com.mm.engine.framework.data.persistence.orm;
 import com.mm.engine.framework.data.persistence.dao.ColumnDesc;
 import com.mm.engine.framework.data.persistence.dao.DatabaseHelper;
 import com.mm.engine.framework.data.persistence.dao.SqlHelper;
+import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.util.ObjectUtil;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -160,7 +161,11 @@ public class DataSet {
             }
             return result;
         }catch (Throwable e){
-            return null;
+            if(e.getMessage().contains("doesn't exist Query: desc")){
+                return null;
+            }else{
+                throw new MMException(e);
+            }
         }
     }
 

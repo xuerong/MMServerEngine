@@ -12,11 +12,11 @@ package com.mm.engine.netTest;
 public class NettyTest {
 
     public static void main(String[] args) throws Throwable{
-        NettyClient nettyClient = new NettyClient("192.168.1.240",8003);
+        NettyClient nettyClient = new NettyClient("192.168.1.102",8003);
         nettyClient.start();
         AccountPB.CSLoginNode.Builder builder = AccountPB.CSLoginNode.newBuilder();
         builder.setAccountId("accountId_1241");
-        builder.setSessionId("Session_0a29c234-ad4a-4717-9c1b-d18a17915a55");
+        builder.setSessionId("Session_af6764cf-be06-49f7-9880-d51f6895243a");
 
         byte[] reData = nettyClient.send(AccountOpcode.CSLoginNode,builder.build().toByteArray());
 

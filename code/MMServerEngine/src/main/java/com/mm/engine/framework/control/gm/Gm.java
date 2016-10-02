@@ -19,5 +19,10 @@ public @interface Gm {
      */
     String id();
     String describe() default "";
+
+    /**
+     * 参数的名字,会显示在gm界面的参数之前,不配置则显示param
+     * @return
+     */
     String[] paramsName() default {};
 }

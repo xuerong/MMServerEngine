@@ -47,7 +47,6 @@ public class RequestJettyPBEntrance extends Entrance {
                 fire(request,response,"RequestJettyPBEntrance");
             }
         };
-
         server = new Server(this.port);
         server.setHandler(entranceHandler);
         server.start();

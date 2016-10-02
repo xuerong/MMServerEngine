@@ -124,6 +124,7 @@ public class DataService {
      */
     public <T> List<T> selectList(Class<T> entityClass, String condition, Object... params) {
         String listKey = KeyParser.parseKeyForList(entityClass,condition,params);
+
         CacheEntity entity = (CacheEntity)cacheService.get(listKey);
         List<T> objectList = null;
         if(entity == null){

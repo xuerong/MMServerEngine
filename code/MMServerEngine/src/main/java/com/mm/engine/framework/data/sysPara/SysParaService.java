@@ -1,6 +1,7 @@
 package com.mm.engine.framework.data.sysPara;
 
 import com.mm.engine.framework.control.annotation.Service;
+import com.mm.engine.framework.control.gm.Gm;
 import com.mm.engine.framework.control.netEvent.RemoteCallService;
 import com.mm.engine.framework.data.tx.LockerService;
 import com.mm.engine.framework.security.exception.MMException;
@@ -24,7 +25,7 @@ import java.util.concurrent.*;
  *
  * mainServer接收gm指令
  */
-@Service(init = "init")
+@Service(init = "init",initPriority = 4)
 public class SysParaService {
 
     private Map<String,String> paraMap = new HashMap<>();
@@ -52,8 +53,10 @@ public class SysParaService {
             paraMap.put(entry.getKey(),entry.getValue());
         }
         storageParaMap = sysParaStorage.getAllSysPara();
-        for(Map.Entry<String,String> entry : storageParaMap.entrySet()){
-            paraMap.put(entry.getKey(),entry.getValue()); // 存在则替换
+        if(storageParaMap != null) {
+            for (Map.Entry<String, String> entry : storageParaMap.entrySet()) {
+                paraMap.put(entry.getKey(), entry.getValue()); // 存在则替换
+            }
         }
     }
 
@@ -126,6 +129,11 @@ public class SysParaService {
             }
         });
         return old;
+    }
+    @Gm(id="SysPara_gmUpdate")
+    public String gmUpdate(String key,String value){
+        String old = put(key,value);
+        return "success , Previous is "+old;
     }
 
 

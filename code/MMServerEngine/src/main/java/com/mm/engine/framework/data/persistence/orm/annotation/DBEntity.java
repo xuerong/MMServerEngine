@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * 定义 DBEntity 类
  *
- * 所有的数据库对象都要添加该注解，如果需要缓存则，继承自CacheEntity接口
+ * 所有的数据库对象都要添加该注解，如果需要缓存则
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

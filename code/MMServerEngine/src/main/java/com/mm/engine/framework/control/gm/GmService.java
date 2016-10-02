@@ -2,6 +2,7 @@ package com.mm.engine.framework.control.gm;
 
 import com.mm.engine.framework.control.ServiceHelper;
 import com.mm.engine.framework.control.annotation.Service;
+import com.mm.engine.framework.control.netEvent.RemoteCallService;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 @Service(init = "init")
 public class GmService {
-
+    private RemoteCallService remoteCallService;
     private Map<String,GmSegment> gmSegments;
     public void init(){
         gmSegments = new HashMap<>();
@@ -58,6 +59,12 @@ public class GmService {
      * @param params
      */
     public Object handle(String id,Object... params){
+        Object result = _handle(id,params);
+        // 广播给其它的服务器
+        remoteCallService.broadcastRemoteCallSyn(GmService.class,"_handle",id,params);
+        return result;
+    }
+    public Object _handle(String id,Object... params){
         GmSegment gmSegment = gmSegments.get(id);
         if(gmSegment == null){
             throw new MMException("gm is not exist , id = "+id);

@@ -39,7 +39,7 @@ import java.util.concurrent.*;
  * 1 先启动的服务器把所有的job给加载了
  * 2 db的job获取之后如何分发？主要是服务器启动有顺序性，况且原来创建该job的服务器未必会启动
  */
-@Service(init = "init")
+@Service(init = "init",initPriority = 4)
 public class JobService {
     private static final Logger log = LoggerFactory.getLogger(JobService.class);
     // 执行job的调度器,这个线程数不用处理器的个数,因为有些job会有数据库操作

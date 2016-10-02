@@ -6,6 +6,7 @@ import com.mm.engine.framework.control.event.EventService;
 import com.mm.engine.framework.data.persistence.orm.DataSet;
 import com.mm.engine.framework.net.entrance.Entrance;
 import com.mm.engine.framework.security.MonitorService;
+import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.configure.EngineConfigure;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
@@ -13,9 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2015/11/16.
@@ -42,13 +41,16 @@ public final class Server {
     public static void start(){
         // Service的初始化
         Map<Class<?>, Object> serviceBeanMap = BeanHelper.getServiceBeans();
-        Map<Class<?>, Method> initMethodMap = ServiceHelper.getInitMethodMap();
+        Map<Integer,Map<Class<?>,Method>> initMethodMap = ServiceHelper.getInitMethodMap();
 
-        for(Map.Entry<Class<?>, Object> entry : serviceBeanMap.entrySet()){
-            Method method = initMethodMap.get(entry.getKey());
-            if(method != null){
+        for(Map.Entry<Integer, Map<Class<?>,Method>> entry : initMethodMap.entrySet()){
+            for(Map.Entry<Class<?>,Method> methodEntry : entry.getValue().entrySet()){
+                Object object = serviceBeanMap.get(methodEntry.getKey());
+                if(object == null){
+                    throw new MMException("find not service object , service class = "+methodEntry.getKey());
+                }
                 try {
-                    method.invoke(entry.getValue());
+                    methodEntry.getValue().invoke(object);
                 } catch (IllegalAccessException|InvocationTargetException e) {
                     e.printStackTrace();
                 }finally { // 报异常，这里是停服务器还是继续？
@@ -59,6 +61,7 @@ public final class Server {
         // 启动所有入口
 //        List<Entrance> entranceList = configure.getEntranceList();
         Collection<Entrance> entranceList = BeanHelper.getEntranceBeans().values();
+
         for (Entrance entrance :entranceList) {
             try {
                 entrance.start();
@@ -72,6 +75,7 @@ public final class Server {
                 }
             }
         }
+
         // 等待启动条件完成
         MonitorService monitorService = BeanHelper.getServiceBean(MonitorService.class);
         monitorService.startWait();

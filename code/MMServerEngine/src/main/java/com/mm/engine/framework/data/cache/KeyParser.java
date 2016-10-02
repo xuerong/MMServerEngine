@@ -1,8 +1,7 @@
 package com.mm.engine.framework.data.cache;
 
 import com.mm.engine.framework.data.persistence.orm.EntityHelper;
-import com.mm.engine.framework.security.exception.ExceptionHelper;
-import com.mm.engine.framework.security.exception.ExceptionLevel;
+import com.mm.engine.framework.security.exception.MMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +28,7 @@ public class KeyParser {
         Class<?> cls = entity.getClass();
         Map<String,Method> pkMethodMap = EntityHelper.getPkGetMethodMap(cls);
         if(pkMethodMap.size() == 0){
-            ExceptionHelper.handle(ExceptionLevel.Serious,"没找到主键方法"+cls.getName(),null);
+            throw new MMException("没找到主键方法"+cls.getName());
         }
         StringBuilder sb = new StringBuilder(cls.getName());
 
@@ -50,11 +49,15 @@ public class KeyParser {
      * @return
      */
     public static String parseKeyForObject(Class<?> entityClass, String condition, Object... params){
+        if(condition == null || condition.length() == 0){
+            return entityClass.getName();
+        }
         // 判断条件中的主键
         Map<String,Method> pkMethodMap = EntityHelper.getPkGetMethodMap(entityClass);
+
         Set<String> pks = pkMethodMap.keySet(); // 注意这里面的排序
         if(pks == null || pks.size() == 0){
-            ExceptionHelper.handle(ExceptionLevel.Serious,"没找到主键方法"+entityClass.getName(),null);
+            throw new MMException("没找到主键方法"+entityClass.getName());
         }
         String resultCondition = parseParamsToString(condition,params);
         String[] conditions = resultCondition.split("and");
@@ -64,19 +67,20 @@ public class KeyParser {
             if(conditionStr.length() > 0){
                 String[] pk = conditionStr.split("=");
                 if(pk.length!=2){
-                    ExceptionHelper.handle(ExceptionLevel.Serious,"condition 参数错误,resultCondition = "+resultCondition,null);
+                    throw new MMException("condition 参数错误,resultCondition = "+resultCondition);
                 }
                 pksInConditions.put(pk[0],pk[1]);
             }
         }
         if(pks.size() > pksInConditions.size()){
-            ExceptionHelper.handle(ExceptionLevel.Serious,"condition 参数错误,主键数量，resultCondition = "+resultCondition,null);
+            throw new MMException("condition 参数错误,主键数量，resultCondition = "+resultCondition);
         }
         //拼接key
         StringBuilder sb = new StringBuilder(entityClass.getName());
         for (String pk:pks) {
-            if(!pksInConditions.containsKey(pk)){
-                ExceptionHelper.handle(ExceptionLevel.Serious,"condition 参数错误,缺少主键["+pk+"]+，resultCondition = "+resultCondition,null);
+            String pkStr = pksInConditions.get(pk);
+            if(pkStr == null){
+                throw new MMException("condition 参数错误,缺少主键["+pk+"]+，resultCondition = "+resultCondition);
             }
             sb.append("_"+pksInConditions.get(pk));
         }
@@ -136,7 +140,39 @@ public class KeyParser {
      * @return
      */
     public static String parseKeyForList(Class<?> entityClass, String condition, Object... params){
-        return null;
+        if(condition == null || condition.length()==0){
+            return entityClass.getName()+"#list";
+        }
+        String resultCondition = parseParamsToString(condition,params);
+        String[] conditions = resultCondition.split("and");
+        //拼接key
+        StringBuilder sb = new StringBuilder(entityClass.getName()+"#list");
+        StringBuilder conditionNames = null,conditionValues = null;
+        Map<String,String> pksInConditions = new HashMap<>();
+        for (String conditionStr:conditions) {
+            conditionStr = conditionStr.trim();
+            if(conditionStr.length() > 0){
+                String[] pk = conditionStr.split("=");
+                if(pk.length!=2){
+                    throw new MMException("condition 参数错误,resultCondition = "+resultCondition);
+                }
+                if(conditionNames == null){
+                    conditionNames = new StringBuilder("#"+pk[0]);
+                }else{
+                    conditionNames.append("_"+pk[0]);
+                }
+                if(conditionValues == null){
+                    conditionValues = new StringBuilder("#"+pk[1]);
+                }else{
+                    conditionValues.append("_"+pk[1]);
+                }
+            }
+        }
+        if(conditionNames != null) {
+            sb.append(conditionNames).append(conditionValues);
+        }
+//        System.out.println(sb.toString());
+        return sb.toString();
     }
     ///////---------------------------工具----------------------
     private static String parseParamsToString(String condition, Object... params){
@@ -153,7 +189,7 @@ public class KeyParser {
         for (char c: condition.toCharArray()){
             if(c == '?'){
                 if(params.length <= paramsCount){
-                    ExceptionHelper.handle(ExceptionLevel.Serious,"params 参数错误，参数太少",null);
+                    throw new MMException("params 参数错误，参数太少");
                 }
                 paramsStr = parseParamToString(params[paramsCount]);
                 sb.replace(count,count+1,paramsStr);

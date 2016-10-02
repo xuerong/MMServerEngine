@@ -7,8 +7,7 @@ import com.mm.engine.framework.control.netEvent.NetEventService;
 import com.mm.engine.framework.data.OperType;
 import com.mm.engine.framework.data.cache.CacheCenter;
 import com.mm.engine.framework.data.cache.CacheEntity;
-import com.mm.engine.framework.security.exception.ExceptionHelper;
-import com.mm.engine.framework.security.exception.ExceptionLevel;
+import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.SysConstantDefine;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
@@ -167,8 +166,7 @@ public class LockerService {
                 Thread.sleep(10);
                 olderKey = lockers.putIfAbsent(key,key);
             }catch (InterruptedException e){
-                ExceptionHelper.handle(ExceptionLevel.Warn,"锁异常,key = "+key,e);
-                return false;
+                throw new MMException("锁异常,key = "+key);
             }
         }
         return true;

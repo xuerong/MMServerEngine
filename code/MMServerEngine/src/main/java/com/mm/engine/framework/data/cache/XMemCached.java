@@ -81,10 +81,8 @@ public class XMemCached implements IRemoteCacheClient {
 	public void init() {
 		if (mcc != null)
 			return;
-		log.info("初始化 memcached client .......:XMemCached");
-		log.info("memcached client ip: {}", serverlist);
-		log.info("memcached client 读写缓冲区最大大小：{}", readBufSize);
-		log.info("memcached client 连接数：{}", connectionPoolSize);
+		log.info("初始化XMemCached,ip:{},readBufSize:{},connectionPoolSize:{}",serverlist,readBufSize,connectionPoolSize);
+
 
 		try {
 			Configuration.MAX_READ_BUFFER_SIZE = Configuration.MAX_READ_BUFFER_SIZE * 2;
