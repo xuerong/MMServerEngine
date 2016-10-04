@@ -2,7 +2,8 @@ package com.mm.engine.framework.control.gm;
 
 import com.mm.engine.framework.control.ServiceHelper;
 import com.mm.engine.framework.control.annotation.Service;
-import com.mm.engine.framework.control.netEvent.RemoteCallService;
+import com.mm.engine.framework.control.netEvent.remote.BroadcastRPC;
+import com.mm.engine.framework.control.netEvent.remote.RemoteCallService;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 
@@ -58,13 +59,8 @@ public class GmService {
      * @param id
      * @param params
      */
+    @BroadcastRPC
     public Object handle(String id,Object... params){
-        Object result = _handle(id,params);
-        // 广播给其它的服务器
-        remoteCallService.broadcastRemoteCallSyn(GmService.class,"_handle",id,params);
-        return result;
-    }
-    public Object _handle(String id,Object... params){
         GmSegment gmSegment = gmSegments.get(id);
         if(gmSegment == null){
             throw new MMException("gm is not exist , id = "+id);

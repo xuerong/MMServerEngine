@@ -1,7 +1,7 @@
 package com.mm.engine.framework.server;
 
 import com.mm.engine.framework.control.annotation.Service;
-import com.mm.engine.framework.control.netEvent.RemoteCallService;
+import com.mm.engine.framework.control.netEvent.remote.RemoteCallService;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.eclipse.jetty.util.ConcurrentHashSet;

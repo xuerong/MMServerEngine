@@ -4,10 +4,12 @@ import com.mm.engine.framework.control.annotation.*;
 import com.mm.engine.framework.control.event.EventService;
 import com.mm.engine.framework.control.gm.Gm;
 import com.mm.engine.framework.control.netEvent.NetEventData;
+import com.mm.engine.framework.control.netEvent.remote.BroadcastRPCService;
 import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.control.event.EventData;
 import com.mm.engine.framework.data.entity.session.Session;
 import com.mm.engine.framework.server.IdService;
+import com.mm.engine.framework.server.ServerType;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.protocol.OpCode;
 
@@ -88,6 +90,7 @@ public class TestService {
     public void testUpdateSync1(int interval){
 //        System.out.println("testUpdateSync1"+interval);
 //        System.out.println("idService,id:"+idService.acquireInt(TestService.class));
+//        BeanHelper.getServiceBean(BroadcastRPCService.class).testBroadcastRPC(ServerType.getServerTypeName());
     }
     @Updatable(isAsynchronous = true,cronExpression = "1/10 * * * * ? *")
     public void testUpdateSync2(int interval){

@@ -22,6 +22,9 @@ public class NodeServerState {
     public String getKey(){
         return serverInfo.getHost()+":"+serverInfo.getRequestPort();
     }
+    public String getNetEventAdd(){
+        return serverInfo.getHost()+":"+serverInfo.getNetEventPort();
+    }
 
     public synchronized void addAccount(String accountId){
         boolean newOne = accountIdSet.add(accountId);

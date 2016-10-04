@@ -42,6 +42,7 @@ public class SceneService {
         Scene scene = (Scene)BeanHelper.newAopInstance(cls);
         scene.setId(idService.acquireInt(Scene.class));
         scene.init();
+        sceneMap.put(scene.getId(),scene);
         return (T)scene;
     }
 

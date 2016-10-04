@@ -46,6 +46,7 @@ public final class ServiceHelper {
      * 这样确保了同一个Service只实例化一次
      * */
     private static Map<Class<?>,Class<?>> serviceClassMap=new HashMap<>();
+    private final static Map<Class<?>,Class<?>> serviceOriginClass = new HashMap<>();
 
     // 各个service的初始化方法和销毁方法,threeMap默认是根据键之排序的
     private static Map<Integer,Map<Class<?>,Method>> initMethodMap = new TreeMap<>();
@@ -168,7 +169,7 @@ public final class ServiceHelper {
                                 paramStr = "param";
                             }
                             // --------------这个地方要进行强制转换
-                            sb.append("com.mm.engine.framework.control.netEvent.RemoteCallService remoteCallService = (com.mm.engine.framework.control.netEvent.RemoteCallService)com.mm.engine.framework.tool.helper.BeanHelper.getServiceBean(com.mm.engine.framework.control.netEvent.RemoteCallService.class);");
+                            sb.append("com.mm.engine.framework.control.netEvent.remote.RemoteCallService remoteCallService = (com.mm.engine.framework.control.netEvent.remote.RemoteCallService)com.mm.engine.framework.tool.helper.BeanHelper.getServiceBean(com.mm.engine.framework.control.netEvent.remote.RemoteCallService.class);");
                             String invokeStr = "remoteCallService.remoteCallMainServerSyn("+serviceClass.getName()+".class,\""+ctMethod.getName()+"\","+paramStr+");";
                             if(ctMethod.getReturnType().getName().toLowerCase().equals("void")){
                                 sb.append(invokeStr);
@@ -217,6 +218,7 @@ public final class ServiceHelper {
                     newServiceClass=generateUpdatableHandlerClass(newServiceClass,serviceClass);
                 }
                 serviceClassMap.put(serviceClass,newServiceClass);
+                serviceOriginClass.put(newServiceClass,serviceClass);
                 // request
                 if(opcodeList!=null){
                     for(short opcode : opcodeList){
@@ -313,6 +315,9 @@ public final class ServiceHelper {
 
     public static Map<Class<?>,Class<?>> getServiceClassMap(){
         return serviceClassMap;
+    }
+    public static Class<?> getOriginServiceClass(Class<?> cls){
+        return serviceOriginClass.get(cls);
     }
     public static Map<Integer,Map<Class<?>,Method>>  getInitMethodMap() {
         return initMethodMap;

@@ -2,6 +2,8 @@ package com.mm.engine.framework.control.aop;
 
 import com.mm.engine.framework.control.aop.annotation.Aspect;
 import com.mm.engine.framework.control.aop.annotation.AspectMark;
+import com.mm.engine.framework.control.netEvent.remote.RemoteCallService;
+import com.mm.engine.framework.data.sysPara.SysPara;
 import com.mm.engine.framework.tool.helper.ClassHelper;
 
 import java.lang.annotation.Annotation;
@@ -58,7 +60,10 @@ public class AopUtil {
     }
     protected static boolean isExecuteByAnnotation(Class<?> targetClass,Aspect aspect){
         List<Class<? extends Annotation>> annotationList=getAnnotationClassList(aspect);
-        return isExecuteAllByAnnotation(targetClass,annotationList) || isExecutePartByAnnotation(targetClass,annotationList);
+
+        boolean result = isExecuteAllByAnnotation(targetClass,annotationList) || isExecutePartByAnnotation(targetClass,annotationList);
+
+        return result;
     }
     protected static boolean isExecuteByMark(Class<?> targetClass,Aspect aspect){
         List<String> markList=getMarkList(aspect);

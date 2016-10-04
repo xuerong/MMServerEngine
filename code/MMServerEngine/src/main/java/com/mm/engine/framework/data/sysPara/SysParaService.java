@@ -2,7 +2,7 @@ package com.mm.engine.framework.data.sysPara;
 
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.gm.Gm;
-import com.mm.engine.framework.control.netEvent.RemoteCallService;
+import com.mm.engine.framework.control.netEvent.remote.RemoteCallService;
 import com.mm.engine.framework.data.tx.LockerService;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.BeanHelper;

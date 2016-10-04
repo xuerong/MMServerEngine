@@ -1,8 +1,10 @@
 package com.mm.engine.framework.data.persistence.orm;
 
+import com.mm.engine.framework.data.entity.account.sendMessage.SendMessageGroup;
 import com.mm.engine.framework.data.persistence.dao.ColumnDesc;
 import com.mm.engine.framework.data.persistence.orm.annotation.Column;
 import com.mm.engine.framework.data.persistence.orm.annotation.DBEntity;
+import com.mm.engine.framework.data.sysPara.SysPara;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.ClassHelper;
 import com.mm.engine.framework.tool.util.ObjectUtil;
@@ -135,6 +137,7 @@ public class EntityHelper {
             log.warn("table is not exist ,tableName = "+tableName+",DBEntity = "+entityClass.getName());
             return;
         }
+
         Set<String> columnNameSet = new HashSet<>(columnDescList.size());
         for(ColumnDesc columnDesc : columnDescList){
             columnNameSet.add(columnDesc.getField());
@@ -158,8 +161,8 @@ public class EntityHelper {
                 // 若已存在，则使用该注解中定义的列名
                 columnName = field.getAnnotation(Column.class).value();
             } else {
-                // 若不存在，则将字段名转换为下划线风格的列名
-                columnName = camelhumpToUnderline(fieldName);
+                // 若不存在，则直接用列名
+                columnName = fieldName;//camelhumpToUnderline(fieldName);
             }
             if(columnNameSet.contains(columnName)) {
                 fieldMap.put(fieldName, columnName);

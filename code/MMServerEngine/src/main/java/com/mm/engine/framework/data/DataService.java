@@ -200,7 +200,7 @@ public class DataService {
             List<String> keys = (List<String>) entity.getEntity();
             if(keys.size()>0) {
                 // TODO 取出多个值,如果有不存在的还要去数据库中取
-                List<CacheEntity> cacheEntitieList = cacheService.getList((String[]) keys.toArray());
+                List<CacheEntity> cacheEntitieList = cacheService.getList(keys.toArray(new String[keys.size()]));
                 // 这里是否需要筛选掉无效的?是不需要的,因为在其它线程置无效标志的时候,就将相应的列表删除完了
                 objectList = new ArrayList<T>();
                 for (CacheEntity cacheEntity : cacheEntitieList) {

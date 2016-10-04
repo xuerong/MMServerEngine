@@ -12,7 +12,7 @@ import java.util.Date;
 @DBEntity(tableName = "account",pks = {"id"})
 public class Account implements SessionClient {
 
-    //
+    // accountId,有一定要求,比如要求(字母,数字,下划线,不准有空格,逗号之类的)
     protected String id;
     protected String name;
     protected String icon;

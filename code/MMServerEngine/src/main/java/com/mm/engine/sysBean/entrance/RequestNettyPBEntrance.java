@@ -2,6 +2,7 @@ package com.mm.engine.sysBean.entrance;
 
 import com.mm.engine.framework.control.request.RequestService;
 import com.mm.engine.framework.data.entity.account.AccountSysService;
+import com.mm.engine.framework.data.entity.account.MessageSender;
 import com.mm.engine.framework.data.entity.session.Session;
 import com.mm.engine.framework.data.entity.session.SessionService;
 import com.mm.engine.framework.net.code.RetPacket;
@@ -10,6 +11,7 @@ import com.mm.engine.framework.net.entrance.socket.NettyHelper;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.SysConstantDefine;
 import com.mm.engine.framework.tool.helper.BeanHelper;
+import com.mm.engine.sysBean.service.NettyPBMessageSender;
 import com.protocol.AccountOpcode;
 import com.protocol.AccountPB;
 import io.netty.channel.Channel;
@@ -67,19 +69,16 @@ public class RequestNettyPBEntrance extends Entrance {
             try {
                 NettyPBPacket nettyPBPacket = (NettyPBPacket) msg;
                 String sessionId = ctx.channel().attr(sessionKey).get();
-                if (nettyPBPacket.getOpcode() == AccountOpcode.CSLoginNode) { // 必须是登陆消息
+                if (nettyPBPacket.getOpcode() == AccountOpcode.CSLoginNode) { // 登陆消息
                     AccountPB.CSLoginNode csLoginNode = AccountPB.CSLoginNode.parseFrom(nettyPBPacket.getData());
                     sessionId = csLoginNode.getSessionId();
                     ctx.channel().attr(sessionKey).set(sessionId);
+                    // 推送消息用的工具
+                    Session session = checkAndGetSession(sessionId);
+                    MessageSender messageSender = new NettyPBMessageSender(ctx.channel());
+                    session.setMessageSender(messageSender);
                 }
-                if (sessionId == null || sessionId.length() == 0){
-                    throw new MMException("won't get sessionId:"+sessionId);
-                }
-                // 不是login，可以处理消息
-                Session session = sessionService.get(sessionId);
-                if(session == null){
-                    throw new MMException("login timeout , please login again");
-                }
+                Session session = checkAndGetSession(sessionId);
                 RetPacket retPacket = requestService.handle(nettyPBPacket.getOpcode(),nettyPBPacket.getData(),session);
                 if(retPacket == null){
                     throw new MMException("server error!");
@@ -94,7 +93,17 @@ public class RequestNettyPBEntrance extends Entrance {
                 throw new MMException(e);
             }
         }
-
+        private Session checkAndGetSession(String sessionId){
+            if (sessionId == null || sessionId.length() == 0){
+                throw new MMException("won't get sessionId while loginNode:"+sessionId);
+            }
+            // 不是login，可以处理消息
+            Session session = sessionService.get(sessionId);
+            if(session == null){
+                throw new MMException("login timeout , please login again");
+            }
+            return session;
+        }
 
 
         @Override

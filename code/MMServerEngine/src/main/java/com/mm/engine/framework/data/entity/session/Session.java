@@ -1,11 +1,13 @@
 package com.mm.engine.framework.data.entity.session;
 
 import com.mm.engine.framework.data.cache.CacheEntity;
+import com.mm.engine.framework.data.entity.account.MessageSender;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Administrator on 2015/11/16.
@@ -26,6 +28,7 @@ public final class Session extends CacheEntity{
     private final String ip;
     private final Date createTime;
     private Date lastUpdateTime;
+    private MessageSender messageSender;
     // 属性
     private Map<String,Object> attrs;
 
@@ -36,7 +39,7 @@ public final class Session extends CacheEntity{
         this.ip=ip;
         this.createTime=createTime;
         this.lastUpdateTime=createTime;
-        attrs = new HashMap<>();
+        attrs = new ConcurrentHashMap<>();
     }
 
     public Object getAttr(String key){
@@ -84,5 +87,13 @@ public final class Session extends CacheEntity{
 
     public void setExpired() {
         lastUpdateTime.setTime(0);
+    }
+
+    public MessageSender getMessageSender() {
+        return messageSender;
+    }
+
+    public void setMessageSender(MessageSender messageSender) {
+        this.messageSender = messageSender;
     }
 }

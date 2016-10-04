@@ -29,6 +29,7 @@ public final class BeanHelper {
     private final static Map<Class<?>,Object> engineBeans=new HashMap<Class<?>,Object>();
     private final static Map<Class<?>,Object> userBeans=new HashMap<Class<?>,Object>();
 
+
     private final static Map<Class<?>,Object> serviceBeans=new HashMap<Class<?>,Object>();
     private final static Map<String,Entrance> entranceBeans = new HashMap<>();
 

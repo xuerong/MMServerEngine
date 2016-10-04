@@ -2,6 +2,8 @@ package com.mm.engine.framework.server.configure;
 
 import com.mm.engine.framework.control.job.JobStorage;
 import com.mm.engine.framework.data.cache.CacheCenter;
+import com.mm.engine.framework.data.entity.account.sendMessage.SendMessageGroup;
+import com.mm.engine.framework.data.entity.account.sendMessage.SendMessageGroupStorage;
 import com.mm.engine.framework.data.persistence.dao.DataAccessor;
 import com.mm.engine.framework.data.persistence.ds.DataSourceFactory;
 import com.mm.engine.framework.data.sysPara.SysParaStorage;
@@ -46,6 +48,7 @@ public final class EngineConfigure {
         configureBeans.put(CacheCenter.class,getBeanFromConfigure("cacheCenter"));
         configureBeans.put(JobStorage.class,getBeanFromConfigure("jobStorage"));
         configureBeans.put(SysParaStorage.class,getBeanFromConfigure("sysParaStorage"));
+        configureBeans.put(SendMessageGroupStorage.class,getBeanFromConfigure("sendMessageGroupStorage"));
 
         defaultRequestController="DefaultRequestController";
         // 初始化入口

@@ -4,9 +4,10 @@ import com.mm.engine.framework.control.annotation.EventListener;
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.event.EventData;
 import com.mm.engine.framework.control.event.EventService;
-import com.mm.engine.framework.control.netEvent.RemoteCallService;
+import com.mm.engine.framework.control.netEvent.remote.RemoteCallService;
 import com.mm.engine.framework.control.netEvent.ServerInfo;
 import com.mm.engine.framework.data.DataService;
+import com.mm.engine.framework.data.entity.account.sendMessage.SendMessageService;
 import com.mm.engine.framework.data.entity.session.Session;
 import com.mm.engine.framework.data.entity.session.SessionService;
 import com.mm.engine.framework.data.tx.Tx;
@@ -57,12 +58,25 @@ public class AccountSysService {
     private RemoteCallService remoteCallService;
     private MonitorService monitorService;
     private EventService eventService;
+    private SendMessageService sendMessageService;
 
     public void init(){
         dataService = BeanHelper.getServiceBean(DataService.class);
         sessionService = BeanHelper.getServiceBean(SessionService.class);
         remoteCallService = BeanHelper.getServiceBean(RemoteCallService.class);
         eventService = BeanHelper.getServiceBean(EventService.class);
+    }
+    public String getAccountLoginServerAdd(String accountId){
+        String nodeServerKey = mainServerAccountLoginMap.get(accountId);
+        if(nodeServerKey == null){
+            return null;
+        }
+        NodeServerState nodeServerState = nodeServerMap.get(nodeServerKey);
+        if(nodeServerState == null){
+            log.warn("nodeServerState is not exist , nodeServerKey = "+nodeServerKey);
+            return null;
+        }
+        return nodeServerState.getNetEventAdd();
     }
     @EventListener(event = SysConstantDefine.Event_EntranceStart)
     public void entranceStart(EventData eventData){
@@ -213,6 +227,7 @@ public class AccountSysService {
             throw new MMException("account is not exist , id = "+id);
         }
         session.setSessionClient(account);
+        sendMessageService.login(id,session);
     }
     /**
     * nodeServer接收，来自mainServer的一个account的login请求
@@ -226,7 +241,7 @@ public class AccountSysService {
         String olderSessionId = nodeServerLoginMark.put(id,session.getSessionId());
         if(olderSessionId != null){
             // 通知下线
-            doLogout(olderSessionId,LogoutReason.replaceLogout);
+            doLogout(id,olderSessionId,LogoutReason.replaceLogout);
         }
         eventService.fireEventSyn(session,SysConstantDefine.Event_AccountLogin);
         return session.getSessionId();
@@ -242,7 +257,7 @@ public class AccountSysService {
         if(sessionId == null){
             throw new MMException("sessionId is not exist , accountId = "+id+"");
         }
-        doLogout(sessionId,LogoutReason.userLogout);
+        doLogout(id,sessionId,LogoutReason.userLogout);
     }
 
     /**
@@ -258,7 +273,7 @@ public class AccountSysService {
                 accountId = account.getId();
             }
         }
-        doLogout(sessionId,LogoutReason.netDisconnect);
+        doLogout(accountId,sessionId,LogoutReason.netDisconnect);
         //
         if(accountId == null){
             throw new MMException("account is not exist while netDisconnect,sessionId = "+sessionId);
@@ -285,13 +300,14 @@ public class AccountSysService {
      * @param sessionId
      * @param logoutReason
      */
-    private void doLogout(String sessionId , LogoutReason logoutReason){
+    private void doLogout(String accountId,String sessionId , LogoutReason logoutReason){
         Session session = sessionService.removeSession(sessionId);
 
         LogoutEventData logoutEventData = new LogoutEventData();
         logoutEventData.setSession(session);
         logoutEventData.setLogoutReason(logoutReason);
         eventService.fireEventSyn(logoutEventData,SysConstantDefine.Event_AccountLogout);
+        sendMessageService.logout(accountId,session);
     }
 
     /**
@@ -316,6 +332,7 @@ public class AccountSysService {
     /**
      * 创建一个account
      * TODO 这个要初始化哪些数据呢？
+     * accountId,有一定要求,比如要求(字母,数字,下划线,不准有空格,逗号之类的)
      * @param id
      * @return
      */
@@ -324,4 +341,6 @@ public class AccountSysService {
         account.setId(id);
         return account;
     }
+
+
 }

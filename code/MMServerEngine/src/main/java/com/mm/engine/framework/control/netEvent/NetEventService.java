@@ -289,7 +289,9 @@ public class NetEventService {
                     public void run() {
                         try{ // TODO 这里尽量做到不捕获异常，提高效率
                             NetEventData ret = (NetEventData)entry.getValue().send(netEvent);
-                            result.put(entry.getKey(),ret);
+                            if(ret == null) {
+                                result.put(entry.getKey(), new NetEventData(netEvent.getNetEvent()));
+                            }
                         }finally {
                             latch.countDown();
                         }

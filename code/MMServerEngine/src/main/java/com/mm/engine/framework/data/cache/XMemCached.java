@@ -125,6 +125,8 @@ public class XMemCached implements IRemoteCacheClient {
 						@Override
 						public void run() {
 							System.out.println("修改过的xMemcached shutdown thread,什么也不做....");
+							// TDOD 关闭的时候清空memecache,后面要改过来
+							
 						}
 					};
 					shutdownHookThread.set(mcc, thread);
