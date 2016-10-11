@@ -7,6 +7,7 @@ import com.mm.engine.framework.net.entrance.Entrance;
 import com.mm.engine.framework.net.code.netty.DefaultNettyDecoder;
 import com.mm.engine.framework.net.code.netty.DefaultNettyEncoder;
 import com.mm.engine.framework.security.exception.MMException;
+import com.mm.engine.framework.server.SysConstantDefine;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import io.netty.channel.*;
 import io.netty.util.Attribute;
@@ -39,31 +40,46 @@ public class NetEventNettyEntrance extends Entrance {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) { // (2)
-//            String session = ctx.channel().attr(sessionKey).get();
             NetEventData netEventData = null;
             int id = -1;
-            if(msg instanceof SocketPacket){
-                SocketPacket socketPacket = (SocketPacket)msg;
-                if(socketPacket.getData() instanceof NetEventData){
-                    netEventData = (NetEventData)socketPacket.getData();
+            if (msg instanceof SocketPacket) {
+                SocketPacket socketPacket = (SocketPacket) msg;
+                if (socketPacket.getData() instanceof NetEventData) {
+                    netEventData = (NetEventData) socketPacket.getData();
                 }
                 id = socketPacket.getId();
-            }else if(msg instanceof NetEventData){
-                netEventData = (NetEventData)msg;
+            } else if (msg instanceof NetEventData) {
+                netEventData = (NetEventData) msg;
             }
-            if(netEventData == null){
-                throw new MMException("NetEventNettyEntrance 收到包错误 ："+msg.getClass().getName());
-            }
-            NetEventData retPacket = netEventService.handleNetEventData(netEventData);
-            if(id>0){ // 需要返回的
-                SocketPacket socketPacket = new SocketPacket();
-                socketPacket.setId(id);
-                socketPacket.setData(retPacket);
-                ctx.writeAndFlush(socketPacket);
+            try {
+                if (netEventData == null) {
+                    throw new MMException("NetEventNettyEntrance 收到包错误 ：" + msg.getClass().getName());
+                }
+                NetEventData retPacket = netEventService.handleNetEventData(netEventData);
+                if (id > 0) { // 需要返回的
+                    SocketPacket socketPacket = new SocketPacket();
+                    socketPacket.setId(id);
+                    socketPacket.setData(retPacket);
+                    ctx.writeAndFlush(socketPacket);
+                }
+            }catch (Throwable e){
+                if(id > 0){
+                    SocketPacket socketPacket = new SocketPacket();
+                    socketPacket.setId(id);
+                    NetEventData retPacket = new NetEventData(SysConstantDefine.NETEVENTEXCEPTION);
+                    String errMsg = "net event exception";
+                    if(e instanceof MMException){
+                        MMException mmException = (MMException)e;
+                        errMsg = mmException.getMessage();
+                    }else{
+                        errMsg = e.getMessage();
+                    }
+                    retPacket.setParam(errMsg);
+                    socketPacket.setData(retPacket);
+                    ctx.writeAndFlush(socketPacket);
+                }
             }
         }
-
-
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) { // (4)

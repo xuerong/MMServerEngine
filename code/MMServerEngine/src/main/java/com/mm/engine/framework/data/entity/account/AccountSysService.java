@@ -226,7 +226,8 @@ public class AccountSysService {
         if(account == null){
             throw new MMException("account is not exist , id = "+id);
         }
-        session.setSessionClient(account);
+        //
+        session.setAccountId(account.getId());
         sendMessageService.login(id,session);
     }
     /**
@@ -267,7 +268,7 @@ public class AccountSysService {
         Session session = sessionService.get(sessionId);
         String accountId = null;
         if(session != null){
-            Account account = (Account)session.getSessionClient();
+            Account account = dataService.selectObject(Account.class,"id="+session.getAccountId());
             if(account!=null){
                 nodeServerLoginMark.remove(account.getId());
                 accountId = account.getId();

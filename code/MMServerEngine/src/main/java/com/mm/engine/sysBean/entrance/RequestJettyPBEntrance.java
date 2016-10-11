@@ -8,8 +8,11 @@ import com.mm.engine.framework.net.code.HttpDecoder;
 import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.net.entrance.Entrance;
 import com.mm.engine.framework.security.exception.MMException;
+import com.mm.engine.framework.security.exception.ToClientException;
 import com.mm.engine.framework.server.SysConstantDefine;
 import com.mm.engine.framework.tool.util.Util;
+import com.protocol.BaseOpcode;
+import com.protocol.BasePB;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
@@ -81,9 +84,34 @@ public class RequestJettyPBEntrance extends Entrance {
             response.getOutputStream().flush();
 //            response.getOutputStream().close();
         }catch (Throwable e){
-            // TODO 两种更可能：MMException和非MMException
-            e.printStackTrace();
-            throw new RuntimeException(entranceName+" Exception");
+            int errCode = -1000;
+            String errMsg = "系统异常";
+            if(e instanceof MMException){
+                MMException mmException = (MMException)e;
+                log.error("MMException:"+mmException.getMessage());
+            }else if(e instanceof ToClientException){
+                ToClientException toClientException = (ToClientException)e;
+                errCode = toClientException.getErrCode();
+                errMsg = toClientException.getMessage();
+                log.error("ToClientException:"+toClientException.getMessage());
+            }else if(e instanceof IOException){
+                log.error("");
+                throw new RuntimeException(e);
+            }
+            BasePB.SCException.Builder scException = BasePB.SCException.newBuilder();
+            scException.setErrCode(errCode);
+            scException.setErrMsg(errMsg);
+            byte[] reData = scException.build().toByteArray();
+
+            response.setHeader(SysConstantDefine.opcodeKey,""+BaseOpcode.SCException);
+            response.setBufferSize(reData.length+1);
+            response.setContentLength(reData.length);
+            try {
+                response.getOutputStream().write(reData, 0, reData.length);
+                response.getOutputStream().flush();
+            }catch (IOException e1){
+                e1.printStackTrace();
+            }
         }
     }
 

@@ -80,7 +80,4 @@ public class AccountService {
         return retPacket;
     }
 
-    public void sendMessage(String accountId,int opcode,byte[] data){
-//sessionService.get
-    }
 }

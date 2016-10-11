@@ -9,11 +9,14 @@ import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.net.entrance.Entrance;
 import com.mm.engine.framework.net.entrance.socket.NettyHelper;
 import com.mm.engine.framework.security.exception.MMException;
+import com.mm.engine.framework.security.exception.ToClientException;
 import com.mm.engine.framework.server.SysConstantDefine;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.mm.engine.sysBean.service.NettyPBMessageSender;
 import com.protocol.AccountOpcode;
 import com.protocol.AccountPB;
+import com.protocol.BaseOpcode;
+import com.protocol.BasePB;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -66,8 +69,8 @@ public class RequestNettyPBEntrance extends Entrance {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) { // (2)
+            NettyPBPacket nettyPBPacket = (NettyPBPacket) msg;
             try {
-                NettyPBPacket nettyPBPacket = (NettyPBPacket) msg;
                 String sessionId = ctx.channel().attr(sessionKey).get();
                 if (nettyPBPacket.getOpcode() == AccountOpcode.CSLoginNode) { // 登陆消息
                     AccountPB.CSLoginNode csLoginNode = AccountPB.CSLoginNode.parseFrom(nettyPBPacket.getData());
@@ -87,10 +90,23 @@ public class RequestNettyPBEntrance extends Entrance {
                 nettyPBPacket.setData((byte[])retPacket.getRetData());
                 ctx.writeAndFlush(nettyPBPacket);
             }catch (Exception e){
+                int errCode = -1000;
+                String errMsg = "系统异常";
                 if(e instanceof MMException){
-
+                    MMException mmException = (MMException)e;
+                    log.error("MMException:"+mmException.getMessage());
+                }else if(e instanceof ToClientException){
+                    ToClientException toClientException = (ToClientException)e;
+                    errCode = toClientException.getErrCode();
+                    errMsg = toClientException.getMessage();
+                    log.error("ToClientException:"+toClientException.getMessage());
                 }
-                throw new MMException(e);
+                BasePB.SCException.Builder scException = BasePB.SCException.newBuilder();
+                scException.setErrCode(errCode);
+                scException.setErrMsg(errMsg);
+                nettyPBPacket.setOpcode(BaseOpcode.SCException);
+                nettyPBPacket.setData(scException.build().toByteArray());
+                ctx.writeAndFlush(nettyPBPacket);
             }
         }
         private Session checkAndGetSession(String sessionId){

@@ -288,7 +288,7 @@ public class NetEventService {
                     @Override
                     public void run() {
                         try{ // TODO 这里尽量做到不捕获异常，提高效率
-                            NetEventData ret = (NetEventData)entry.getValue().send(netEvent);
+                            NetEventData ret = sendNetEvent(entry.getValue(),netEvent);//(NetEventData)entry.getValue().send(netEvent);
                             if(ret == null) {
                                 result.put(entry.getKey(), new NetEventData(netEvent.getNetEvent()));
                             }
@@ -334,7 +334,7 @@ public class NetEventService {
             return handleNetEventData(netEvent);
         }
         if(mainServerClient != null){
-            return (NetEventData) mainServerClient.send(netEvent);
+            return sendNetEvent(mainServerClient,netEvent);
         }
         throw new MMException("mainServerClient is null");
     }
@@ -361,7 +361,7 @@ public class NetEventService {
             return handleNetEventData(netEvent);
         }
         if(asyncServerClient != null){
-            return (NetEventData)asyncServerClient.send(netEvent);
+            return sendNetEvent(asyncServerClient,netEvent);
         }
         throw new MMException("asyncServerClient is null");
     }
@@ -391,8 +391,16 @@ public class NetEventService {
         }
         ServerClient serverClient = serverClientMap.get(add);
         if(serverClient != null){
-            return (NetEventData)serverClient.send(netEvent);
+            return sendNetEvent(serverClient,netEvent);
         }
         throw new MMException("serverClient is null");
+    }
+
+    public NetEventData sendNetEvent(ServerClient serverClient,NetEventData netEvent){
+        NetEventData ret = (NetEventData)serverClient.send(netEvent);
+        if(ret.getNetEvent() == SysConstantDefine.NETEVENTEXCEPTION){
+            throw new MMException((String)ret.getParam());
+        }
+        return ret;
     }
 }

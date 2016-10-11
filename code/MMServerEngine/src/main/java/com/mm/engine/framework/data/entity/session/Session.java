@@ -19,12 +19,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * TODO session放缓存的时候是不是需要把它作为CacheEntity的object，而不是继承自它
  */
 
-public final class Session extends CacheEntity{
+public class Session extends CacheEntity{
     private String url;
     // sessionid的组成包括两部分，一是前缀，用来记录和登陆相关的一些信息，二是cacheEntity的id
     private final String sessionId;
     // session所对应的客户端,这个当客户端登陆的时候赋值,以便在后续的使用中从session中找到它
-    private SessionClient sessionClient;
+//    private SessionClient sessionClient;
+    private String accountId;
     private final String ip;
     private final Date createTime;
     private Date lastUpdateTime;
@@ -61,8 +62,12 @@ public final class Session extends CacheEntity{
         return sessionId;
     }
 
-    public SessionClient getSessionClient() {
-        return sessionClient;
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public String getIp() {
@@ -75,10 +80,6 @@ public final class Session extends CacheEntity{
 
     public Date getLastUpdateTime() {
         return lastUpdateTime;
-    }
-
-    public void setSessionClient(SessionClient sessionClient) {
-        this.sessionClient = sessionClient;
     }
 
     public void setLastUpdateTime(Date lastUpdateTime) {

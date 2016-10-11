@@ -2,7 +2,9 @@ package com.mm.engine.framework.data.entity.session;
 
 import com.mm.engine.framework.control.annotation.Service;
 import com.mm.engine.framework.control.annotation.Updatable;
+import com.mm.engine.framework.data.DataService;
 import com.mm.engine.framework.data.cache.CacheService;
+import com.mm.engine.framework.data.entity.account.Account;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.configure.EngineConfigure;
 import com.mm.engine.framework.tool.helper.BeanHelper;
@@ -29,6 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SessionService {
     private static final Logger log = LoggerFactory.getLogger(SessionService.class);
     private ConcurrentHashMap<String,Session> sessionMap;
+
+    private DataService dataService;
 
     public void init(){
         sessionMap = new ConcurrentHashMap<>();
@@ -77,9 +81,8 @@ public class SessionService {
             log.warn("session == null while remove session");
             return;
         }
-        if(session.getSessionClient() != null) {
-            session.getSessionClient().destroySession();
-        }
+        Account account = dataService.selectObject(Account.class,"id="+session.getAccountId());
+        account.destroySession();
         sessionMap.remove(session.getSessionId());
     }
 

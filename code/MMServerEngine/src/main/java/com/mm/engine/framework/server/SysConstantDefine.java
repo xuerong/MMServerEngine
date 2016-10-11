@@ -12,6 +12,7 @@ public final class SysConstantDefine {
     public static final String serverPort = "serverPort";
     public static final String sessionId = "sessionId";
     // -------------------------------------------------------------------------------------------------NetEvent------------------------
+    public static final int NETEVENTEXCEPTION = -1000; // netEvent异常返回
     public static final int CACHEUPDATE = 1000; // 缓存更新
     public static final int LOCKKEYSANDCHECK = 1001; // 加锁并校验版本等
     public static final int UNLOCKKEYS = 1002; //解锁

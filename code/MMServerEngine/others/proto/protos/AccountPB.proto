@@ -22,4 +22,3 @@ message CSLoginNode{
 message SCLoginNode{
 
 }
-
