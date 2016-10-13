@@ -2,8 +2,10 @@ package com.mm.engine.framework.net.entrance.socket;
 
 import com.mm.engine.framework.control.room.RoomNetData;
 import com.mm.engine.framework.control.room.RoomService;
+import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.net.code.netty.*;
 import com.mm.engine.framework.net.entrance.Entrance;
+import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -34,9 +36,13 @@ public class RoomNettyEntrance extends Entrance {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) { // (2)
-            RoomNetData roomNetData = (RoomNetData)msg;
-            Object retData = roomService.handle(null,roomNetData.getRoomId(), roomNetData.getOpcode(), roomNetData.getData());
-            roomNetData.setData(retData);
+            try {
+                RoomNetData roomNetData = (RoomNetData) msg;
+                RetPacket retPacket = roomService.handle(null, roomNetData.getRoomId(), roomNetData.getOpcode(), roomNetData.getData());
+                roomNetData.setData((byte[]) retPacket.getRetData());
+            }catch (Throwable e){
+                throw new MMException(e);
+            }
         }
 
         @Override

@@ -5,4 +5,5 @@ package com.mm.engine.framework.data.entity.account;
  */
 public interface MessageSender {
     public void sendMessage(int opcode,byte[] data) throws Throwable;
+    public void sendMessageSync(int opcode,byte[] data) throws Throwable;
 }

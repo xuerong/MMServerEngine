@@ -1,0 +1,16 @@
+option java_package = "com.protocol";
+//option java_outer_classname = "RoomPB";
+message CSEnterRoom{
+	required string accountId 			= 1;
+}
+message SCEnterRoom{
+
+}
+message CSOutRoom{
+
+}
+message SCOutRoom{
+
+}
+
+

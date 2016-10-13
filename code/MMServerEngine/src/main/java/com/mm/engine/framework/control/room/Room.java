@@ -3,6 +3,7 @@ package com.mm.engine.framework.control.room;
 import com.mm.engine.framework.data.DataService;
 import com.mm.engine.framework.data.entity.account.Account;
 import com.mm.engine.framework.data.entity.session.Session;
+import com.mm.engine.framework.net.code.RetPacket;
 import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
@@ -61,6 +62,9 @@ public abstract class Room<T extends RoomAccount> {
         onDestroy();
     }
 
+    public RoomAccount getRoomAccount(String accountId){
+        return accountMap.get(accountId);
+    }
     public void enterRoom(Session session){
         Account account =dataService.selectObject(Account.class,"id="+session.getAccountId());
         if(account == null){
@@ -90,6 +94,14 @@ public abstract class Room<T extends RoomAccount> {
         onPeopleOutRoom(roomAccount);
     }
 
+    public void disConnect(Session session){
+        RoomAccount roomAccount = accountMap.remove(session.getAccountId());
+        if(roomAccount == null){
+            throw new MMException("outRoom account == null,id="+session.getAccountId());
+        }
+        onDisconnection(roomAccount);
+    }
+
     public void broadcast(final int opcode,final byte[] data){
         executor.execute(new Runnable() {
             @Override
@@ -110,13 +122,15 @@ public abstract class Room<T extends RoomAccount> {
 
     public abstract void onInit();
 
-    public abstract Object handle(Session session, int opcode, Object data);
+    public abstract RetPacket handle(Session session, int opcode, byte[] data) throws Throwable;
 
     public abstract void onDestroy();
 
     public abstract void onPeopleEnterRoom(RoomAccount roomAccount);
 
     public abstract void onPeopleOutRoom(RoomAccount roomAccount);
+
+    public abstract void onDisconnection(RoomAccount roomAccount);
 
 
     public int getId() {

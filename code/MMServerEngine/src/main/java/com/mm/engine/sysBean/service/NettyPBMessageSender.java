@@ -6,11 +6,27 @@ import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * Created by apple on 16-10-4.
  */
 public class NettyPBMessageSender implements MessageSender{
     private static final Logger log = LoggerFactory.getLogger(NettyPBMessageSender.class);
+    private static final ScheduledExecutorService asyncExecutor = new ScheduledThreadPoolExecutor(100, new RejectedExecutionHandler() {
+        @Override
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+            // 拒绝执行处理
+
+        }
+    }){
+        protected void afterExecute(Runnable r, Throwable t) {
+            // 执行后处理，注意异常的处理
+        }
+    };
     private Channel channel;
 
     public NettyPBMessageSender(Channel channel){
@@ -18,7 +34,19 @@ public class NettyPBMessageSender implements MessageSender{
     }
 
     @Override
-    public void sendMessage(int opcode, byte[] data) throws Throwable{
+    public void sendMessage(final int opcode, final byte[] data) throws Throwable{
+        asyncExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                NettyPBPacket nettyPBPacket = new NettyPBPacket();
+                nettyPBPacket.setData(data);
+                nettyPBPacket.setOpcode(opcode);
+                channel.writeAndFlush(nettyPBPacket);
+            }
+        });
+    }
+    @Override
+    public void sendMessageSync(int opcode,byte[] data) throws Throwable{
         NettyPBPacket nettyPBPacket = new NettyPBPacket();
         nettyPBPacket.setData(data);
         nettyPBPacket.setOpcode(opcode);

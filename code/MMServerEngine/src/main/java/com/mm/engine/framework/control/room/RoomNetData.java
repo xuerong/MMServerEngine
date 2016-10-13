@@ -6,7 +6,16 @@ package com.mm.engine.framework.control.room;
 public class RoomNetData {
     private int roomId;
     private int opcode;
-    private Object data;
+    private int id;
+    private byte[] data;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getRoomId() {
         return roomId;
@@ -24,11 +33,11 @@ public class RoomNetData {
         this.opcode = opcode;
     }
 
-    public Object getData() {
+    public byte[] getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(byte[] data) {
         this.data = data;
     }
 }

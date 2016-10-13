@@ -35,6 +35,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * 登陆对外接口：loginMain，传出LoginSegment
  * 登出对外接口：logout
  *
+ * TODO 有三个东西要具有一致性：账号、session、socket连接
+ *
  * TODO 有必要再登陆登出的时候给sessionId和accountId们加锁，以防止出现并发问题
  * TODO 在mainServer上面登陆后，如果在指定时间内没有在nodeServer上面登陆，则清除掉它
  */
