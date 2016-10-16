@@ -37,6 +37,7 @@ import java.util.concurrent.*;
  * 发给单个服务器的，要发给自己
  * 自己不连自己，而是直接调用
  * TODO 被忘了设定超时机制
+ * TODO 调用的方法命名有点混乱
  */
 @Service(init = "init")
 public class NetEventService {

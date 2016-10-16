@@ -29,10 +29,6 @@ public class BroadcastRPCService {
     public void init(){
 
     }
-    @BroadcastRPC
-    public void testBroadcastRPC(String str){
-        System.out.println("testBroadcastRPC  "+ str);
-    }
     public void afterMethod(Object object, Class<?> cls, Method method, Object[] params, Object result){
         if(isRpc.get()){
             BroadcastRPC broadcastRPC = method.getAnnotation(BroadcastRPC.class);

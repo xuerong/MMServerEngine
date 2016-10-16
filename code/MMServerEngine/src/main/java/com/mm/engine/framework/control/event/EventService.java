@@ -72,6 +72,7 @@ public class EventService {
 
     /**
      * 事件是异步的
+     * TODO 发出事件改为四种:同步|异步*广播|不广播
      * **/
     public void fireEvent(final EventData eventData){
         fireEvent(eventData,false);

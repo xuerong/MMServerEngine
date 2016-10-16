@@ -15,6 +15,7 @@ import java.util.*;
 
 /**
  * Created by apple on 16-9-15.
+ * TODO 把所有的方法补全
  */
 @Service(init = "init")
 public class RemoteCallService {
@@ -88,7 +89,7 @@ public class RemoteCallService {
         return retData.getParam();
     }
 
-    public List broadcastRemoteCallSyn(Class cls, String methodName, Object... params){
+    public Map<String,Object> broadcastRemoteCallSyn(Class cls, String methodName, Object... params){
         NetEventData netEventData = new NetEventData(SysConstantDefine.remoteCall);
         RemoteCallData remoteCallData = new RemoteCallData();
         remoteCallData.setCls(cls);
@@ -97,9 +98,9 @@ public class RemoteCallService {
         netEventData.setParam(remoteCallData);
 
         Map<String,NetEventData> retData = netEventService.broadcastNetEventSyn(netEventData,false);
-        List result = new ArrayList(retData.size());
-        for(NetEventData re : retData.values()){
-            result.add(re.getParam());
+        Map result = new HashMap(retData.size());
+        for(Map.Entry<String,NetEventData> re : retData.entrySet()){
+            result.put(re.getKey(),re.getValue().getParam());
         }
         return result;
     }
