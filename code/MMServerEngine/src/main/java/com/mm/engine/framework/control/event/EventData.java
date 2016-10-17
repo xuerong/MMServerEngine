@@ -2,6 +2,7 @@ package com.mm.engine.framework.control.event;
 
 /**
  * Created by Administrator on 2015/11/18.
+ * TODO short改为int
  */
 public class EventData {
     private short event;

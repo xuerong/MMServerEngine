@@ -21,6 +21,7 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.bytecode.MethodInfo;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.List;
@@ -299,6 +300,26 @@ public final class ServiceHelper {
     }
 
     //get set
+    public static Map<Class,List<Method>> getMethodsByAnnotation(Class<? extends Annotation> cls){
+        List<Class<?>> serviceClasses= ClassHelper.getClassListByAnnotation(Service.class);
+        Map<Class,List<Method>> result = new HashMap<>();
+        for(Class<?> serviceClass : serviceClasses) {
+            Service service = serviceClass.getAnnotation(Service.class);
+            Method[] methods = serviceClass.getMethods();
+            for (Method method : methods) {
+                Annotation annotation = method.getAnnotation(cls);
+                if(annotation != null){
+                    List<Method> list = result.get(serviceClass);
+                    if(list == null){
+                        list = new ArrayList<>();
+                        result.put(serviceClass,list);
+                    }
+                    list.add(method);
+                }
+            }
+        }
+        return result;
+    }
     public static TIntObjectHashMap<Class<?>> getRequestHandlerMap(){
         return requestHandlerClassMap;
     }
