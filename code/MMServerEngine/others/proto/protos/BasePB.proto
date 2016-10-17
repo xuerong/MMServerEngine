@@ -1,6 +1,8 @@
 option java_package = "com.protocol";
 //option java_outer_classname = "BasePB";
-message SCException{
+// opcode_start=10101
+message SCException
+{
 	required int32 errCode			=1;
 	required string errMsg			=2;
 }

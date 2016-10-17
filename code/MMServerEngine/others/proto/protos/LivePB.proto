@@ -1,53 +1,66 @@
 option java_package = "com.protocol";
 //option java_outer_classname = "LivePB";
-
-message CSStart{
-
-}
-message SCStart{
+// 11001
+message CSStart
+{
 
 }
-message CSMoveTo{
-	required float direction 			= 1; // 0-2π,复数为不动
+message SCStart
+{
+
 }
-message SCMoveTo{
+message CSMoveTo
+{
+	required int32 direction 			= 1; // 暂时的改动，c#不支持float 0-2π,复数为不动
+}
+message SCMoveTo
+{
 	required PBStatus status			= 1; // 位置校对
 }
-message CSAttack{
+message CSAttack
+{
 
 }
-message SCAttack{
+message SCAttack
+{
 	required PBStatus status			= 1; // 位置校对
 }
-message CSSetRobot{
+message CSSetRobot
+{
 	required int32 count			= 1; // 机器人数量
 }
-message SCSetRobot{
+message SCSetRobot
+{
 
 }
 // 其它玩家状态，一般发生在某玩家走动，或定时发送
-message SCStatus{
+message SCStatus
+{
 	required PBStatus status			= 1; // 其它状态
 }
 // 打击结果推送事件
-message SCAttackResult{
+message SCAttackResult
+{
 	repeated PBStatus status			= 1; // 被打击玩家的状态
 }
 // 广播自动死亡，自动掉血会导致死亡
-message SCDie{
+message SCDie
+{
 	repeated string accountId			= 1;
 }
 // 战斗结束
-message SCOver{
+message SCOver
+{
 	required string accountIds			= 1;// 玩家的名次逗号隔开
 }
 
 // 玩家状态
-message PBStatus{
+message PBStatus
+{
 	required string accountId 			= 1; // 原位置
 	required int32 x 			= 2; // 原位置
 	required int32 y 			= 3; //
-	required float direction 			= 4; // 方向
+	required int32 direction 			= 4; //暂时的改动，c#不支持float 方向
 	required int32 blood			= 5;
 }
 
