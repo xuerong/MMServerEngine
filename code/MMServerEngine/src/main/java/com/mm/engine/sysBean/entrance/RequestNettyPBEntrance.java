@@ -55,6 +55,7 @@ public class RequestNettyPBEntrance extends Entrance {
         @Override
         public void channelActive(final ChannelHandlerContext ctx) throws Exception { // (1)
             super.channelActive(ctx);
+            System.out.println("link"+ctx.channel().remoteAddress().toString());
         }
         @Override
         public void channelInactive(ChannelHandlerContext ctx) throws Exception {

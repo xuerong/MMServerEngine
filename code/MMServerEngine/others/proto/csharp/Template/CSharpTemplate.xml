@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pbbuffer>
+  <!--Inner descript $N$ =\n $L$ =< $R$ = '>'-->
+  
+  <descript>//This code create by CodeEngine, don't modify</descript>
+  
+  <import>
+    using System;$N$
+    using scg = global::System.Collections.Generic;$N$
+    using pb = global::Google.ProtocolBuffers;$N$
+    using pbc = global::Google.ProtocolBuffers.Collections;$N$
+
+    #pragma warning disable
+  </import>
+  
+  <namespace>namespace  $namespace$ </namespace>
+  <classhead>$N$[Serializable]$N$public  class $classname$ : PacketDistributed </classhead>
+
+  <!--This below is Body-->
+
+  <serializedsize>
+    $N$ private int memoizedSerializedSize = -1;$N$
+    public override int SerializedSize()$N$
+    {$N$
+    int size = memoizedSerializedSize;$N$
+    if (size != -1) return size;$N$
+    size = 0;$N$
+    $FULLSIZE$
+    memoizedSerializedSize = size;$N$
+    return size;$N$
+    }$N$
+  </serializedsize>
+
+  <isinitialized>
+    public override bool IsInitialized() {$N$    
+    $FULLINIT$
+    return true;$N$  
+    }$N$
+  </isinitialized>
+  
+  <pbwrite>
+    $N$public override void WriteTo(pb::CodedOutputStream output)$N$
+    {$N$
+    int size = SerializedSize();$N$
+    $FULLWRITE$
+    }$N$
+  </pbwrite>
+
+  <mergedfrom>
+    public override PacketDistributed MergeFrom(pb::CodedInputStream input,PacketDistributed _base)
+    {$N$
+    $classname$ _inst = ($classname$) _base;$N$
+    while (true) {$N$
+    uint tag = input.ReadTag();$N$
+    switch (tag) {$N$
+    case 0:$N$
+    {$N$
+    return _inst;$N$
+    }$N$
+    $FULLREAD$$N$
+    }$N$
+    }$N$
+    return _inst;$N$
+    }$N$//end merged$N$
+  </mergedfrom>
+  
+    <required>
+      $N$public const int $variable$FieldNumber = $currentindex$;$N$
+      private bool has$Variable$;$N$
+      private $type$ $variable$_ = $defautvalue$;$N$
+      public bool Has$Variable$ {$N$
+      get { return has$Variable$; }$N$
+      }$N$
+      public  $type$ $Variable$ {$N$
+      get { return $variable$_; }$N$
+      set { Set$Variable$(value); }$N$
+      }$N$
+      public void Set$Variable$($type$ value) { $N$
+      has$Variable$ = true;$N$
+      $variable$_ = value;$N$
+      }$N$
+    </required>
+
+  <repeated>
+    $N$public const int $variable$FieldNumber = $currentindex$;$N$
+    private pbc::PopsicleList$L$$type$$R$   $variable$_ = new pbc::PopsicleList$L$$type$$R$();$N$
+    public scg::IList$L$$type$$R$  $variable$List {$N$
+    get { return pbc::Lists.AsReadOnly($variable$_); }$N$
+    }$N$
+    $N$ public int $variable$Count {$N$
+    get { return $variable$_.Count; }$N$
+    }$N$
+    $N$public $type$ Get$Variable$(int index) {$N$
+    return $variable$_[index];$N$
+    }$N$
+    public void Add$Variable$($type$ value) {$N$
+    $variable$_.Add(value);$N$
+    }$N$
+  </repeated>
+
+  <optional>
+    $N$public const int $variable$FieldNumber = $currentindex$;$N$
+    private bool has$Variable$;$N$
+    private $type$ $variable$_ = $defautvalue$;$N$
+    public bool Has$Variable$ {$N$
+    get { return has$Variable$; }$N$
+    }$N$
+    public  $type$ $Variable$ {$N$
+    get { return $variable$_; }$N$
+    set { Set$Variable$(value); }$N$
+    }$N$
+    public void Set$Variable$($type$ value) { $N$
+    has$Variable$ = true;$N$
+    $variable$_ = value;$N$
+    }$N$
+  </optional>
+    
+
+</pbbuffer>
+
+

@@ -1,5 +1,6 @@
 option java_package = "com.protocol";
 //option java_outer_classname = "AccountPB";
+//10001
 message CSLoginMain{
 	required string accountId 			= 1;
 }

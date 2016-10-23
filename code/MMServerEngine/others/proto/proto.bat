@@ -13,4 +13,4 @@ copy .\com\protocol\%java_class_name% ..\..\src\main\java\com\protocol\%java_cla
 ..\python\python idcreator.py .\protos\%proto_file_name% %opcode_class_name% %start_index%
 copy .\com\protocol\%opcode_class_name% ..\..\src\main\java\com\protocol\%opcode_class_name%
 
-//pause
+::pause
