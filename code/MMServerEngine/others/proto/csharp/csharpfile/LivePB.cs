@@ -16,6 +16,53 @@ namespace Example
     /// <summary>
     /// <para>option java_outer_classname = "LivePB";</para>
     /// <para> 11001</para>
+    /// <para>------------------------------------------------------房间外的</para>
+    /// </summary>
+    public partial class CSCreateLiveRoom
+    {
+    }
+
+    public partial class SCCreateLiveRoom
+    {
+        public int RoomId { get; set; }
+
+        /// <summary> 房间id</summary>
+        public string Host { get; set; }
+
+        public int Port { get; set; }
+
+    }
+
+    public partial class CSGetRoomList
+    {
+    }
+
+    public partial class SCGetRoomList
+    {
+        public List<Example.PBRoomInfo> RoomInfo { get; set; }
+
+    }
+
+    public partial class PBRoomInfo
+    {
+        public int RoomId { get; set; }
+
+        public int Member { get; set; }
+
+        /// <summary> 人数</summary>
+        public int Status { get; set; }
+
+        /// <summary> 状态</summary>
+        public string Host { get; set; }
+
+        /// <summary> 状态</summary>
+        public int Port { get; set; }
+
+    }
+
+    /// <summary>
+    /// <para>------------------------------------------------------房间里面的</para>
+    /// <para> 下面在时room中的</para>
     /// </summary>
     public partial class CSStart
     {
@@ -27,7 +74,7 @@ namespace Example
 
     public partial class CSMoveTo
     {
-        public int Direction { get; set; }
+        public float Direction { get; set; }
 
     }
 
@@ -43,8 +90,6 @@ namespace Example
 
     public partial class SCAttack
     {
-        public Example.PBStatus Status { get; set; }
-
     }
 
     public partial class CSSetRobot
@@ -57,7 +102,10 @@ namespace Example
     {
     }
 
-    /// <summary> 其它玩家状态，一般发生在某玩家走动，或定时发送</summary>
+    /// <summary>
+    /// <para>------------------------------------------------------房间里的推送信息</para>
+    /// <para> 其它玩家状态，一般发生在某玩家走动，或定时发送</para>
+    /// </summary>
     public partial class SCStatus
     {
         public Example.PBStatus Status { get; set; }
@@ -67,7 +115,10 @@ namespace Example
     /// <summary> 打击结果推送事件</summary>
     public partial class SCAttackResult
     {
-        public List<Example.PBStatus> Status { get; set; }
+        public Example.PBStatus Attack { get; set; }
+
+        /// <summary> 打击玩家的状态</summary>
+        public List<Example.PBStatus> BeAttack { get; set; }
 
     }
 
@@ -85,6 +136,25 @@ namespace Example
 
     }
 
+    public partial class SCRoomChange
+    {
+        public Example.PBRoomInfo RoomInfo { get; set; }
+
+    }
+
+    /// <summary> 游戏开始的时候，推送开始消息，即所有玩家的状态</summary>
+    public partial class SCStartGame
+    {
+        public List<Example.PBStatus> Status { get; set; }
+
+    }
+
+    public partial class SCRoomClose
+    {
+        public int Reason { get; set; }
+
+    }
+
     /// <summary> 玩家状态</summary>
     public partial class PBStatus
     {
@@ -96,10 +166,12 @@ namespace Example
         /// <summary> 原位置</summary>
         public int Y { get; set; }
 
-        public int Direction { get; set; }
+        public float Direction { get; set; }
 
-        /// <summary>暂时的改动，c#不支持float 方向</summary>
+        /// <summary>暂时的改动，</summary>
         public int Blood { get; set; }
+
+        public int Speed { get; set; }
 
     }
 

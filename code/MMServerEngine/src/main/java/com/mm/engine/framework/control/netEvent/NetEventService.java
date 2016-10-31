@@ -202,7 +202,7 @@ public class NetEventService {
         serverInfo.setNetEventPort(Server.getEngineConfigure().getNetEventPort());
         serverInfo.setType(ServerType.getServerType());
         serverInfo.setRequestPort(Server.getEngineConfigure().getRequestPort());
-        serverInfo.setScenePort(Server.getEngineConfigure().getScenePort());
+        serverInfo.setScenePort(Server.getEngineConfigure().getRoomPort());
         netEventData.setParam(serverInfo);
 
         NetEventData ret = fireMainServerNetEventSyn(netEventData); //通知主服务器，并获取其它服务器列表

@@ -34,20 +34,22 @@ public class NettyPBMessageSender implements MessageSender{
     }
 
     @Override
-    public void sendMessage(final int opcode, final byte[] data) throws Throwable{
+    public void sendMessage(final int opcode, final byte[] data){
         asyncExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                NettyPBPacket nettyPBPacket = new NettyPBPacket();
-                nettyPBPacket.setData(data);
-                nettyPBPacket.setOpcode(opcode);
-                channel.writeAndFlush(nettyPBPacket);
+                try {
+                    sendMessageSync(opcode,data);
+                }catch (Throwable e){
+                    e.printStackTrace();
+                }
             }
         });
     }
     @Override
-    public void sendMessageSync(int opcode,byte[] data) throws Throwable{
+    public void sendMessageSync(int opcode,byte[] data){
         NettyPBPacket nettyPBPacket = new NettyPBPacket();
+        nettyPBPacket.setId(-1); // 没有的时候为-1
         nettyPBPacket.setData(data);
         nettyPBPacket.setOpcode(opcode);
         channel.writeAndFlush(nettyPBPacket);

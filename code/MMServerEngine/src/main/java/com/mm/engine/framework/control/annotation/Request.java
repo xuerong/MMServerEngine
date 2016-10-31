@@ -9,6 +9,9 @@ import java.lang.annotation.Target;
  * Created by Administrator on 2015/11/16.
  * 外部进来的访问
  * 任何一个opcode在整个应用中只有一个处理方法
+ *
+ * 方法的格式：
+ * public RetPacket xxx(Object clientData, Session session)
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

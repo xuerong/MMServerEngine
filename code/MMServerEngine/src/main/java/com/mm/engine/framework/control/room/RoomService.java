@@ -29,6 +29,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * 离开房间
  *
  * 房间消息
+ *
+ *
+ * room但服务器，多服务器的问题需要考虑呀
  */
 @Service(init = "init")
 public class RoomService {
@@ -116,7 +119,8 @@ public class RoomService {
         if(roomMap != null){
             roomMap.remove(roomId);
         }else{
-            log.error("roomMap == null while outRoom,roomId="+roomId+",accountId="+session.getAccountId()+",sessionId="+session.getSessionId());
+            log.warn("roomMap == null while outRoom,roomId="+roomId+",accountId="+session.getAccountId()+",sessionId="+session.getSessionId());
+            return false;
         }
         room.outRoom(session);
         int size = roomMap.size();

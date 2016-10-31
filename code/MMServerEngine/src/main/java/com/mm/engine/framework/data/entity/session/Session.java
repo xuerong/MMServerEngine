@@ -1,5 +1,6 @@
 package com.mm.engine.framework.data.entity.session;
 
+import com.mm.engine.framework.control.room.RoomMessageSender;
 import com.mm.engine.framework.data.cache.CacheEntity;
 import com.mm.engine.framework.data.entity.account.MessageSender;
 
@@ -30,6 +31,7 @@ public class Session extends CacheEntity{
     private final Date createTime;
     private Date lastUpdateTime;
     private MessageSender messageSender;
+    private RoomMessageSender roomMessageSender;
     // 属性
     private Map<String,Object> attrs;
 
@@ -96,5 +98,13 @@ public class Session extends CacheEntity{
 
     public void setMessageSender(MessageSender messageSender) {
         this.messageSender = messageSender;
+    }
+
+    public RoomMessageSender getRoomMessageSender() {
+        return roomMessageSender;
+    }
+
+    public void setRoomMessageSender(RoomMessageSender roomMessageSender) {
+        this.roomMessageSender = roomMessageSender;
     }
 }

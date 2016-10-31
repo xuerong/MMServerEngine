@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -28,6 +30,12 @@ public class LockerService {
     private static final int maxTryLockTimes = 20;
 
     private ConcurrentHashMap<String,String> lockers = new ConcurrentHashMap<>();
+    private ThreadLocal<Map<String,Integer>> threadLocalLockers = new ThreadLocal<Map<String,Integer>>(){
+        @Override
+        protected Map<String, Integer> initialValue() {
+            return new HashMap<>();
+        }
+    }; // 做可重入锁
     private CacheCenter cacheCenter;
 
     private NetEventService netEventService;
@@ -55,16 +63,36 @@ public class LockerService {
     }
     // TODO 如果确保每个服务在自己返回的时候，即使发生异常，也会把加的锁释放
     // TODO 有没有必要先做个排序，防止死锁
+    // TODO: 2016/10/27 这里后面选择抛异常吧
     public boolean lockKeys(String... keys){
+        if(keys == null || keys.length==0){
+            log.warn("do lockKeys,but keys = "+keys);
+            return true;
+        }
         Arrays.sort(keys); //先做个排序 防止死锁
         NetEventData eventData = new NetEventData(SysConstantDefine.LOCKKEYS);
         eventData.setParam(keys);
         NetEventData ret = netEventService.fireMainServerNetEventSyn(eventData); // 需要同步发送
         Boolean result = (Boolean)ret.getParam();
         if(result == null){
+            log.error("locker result = null");
             result = false;
         }
         return result;
+    }
+
+    public <T> T doLockTask(LockTask<T> task, String... keys) {
+        boolean lockResult = lockKeys(keys);
+        if(!lockResult){
+            throw new MMException("lock error");
+        }
+        try {
+            return task.run();
+        }catch (Throwable e){
+            throw new MMException(e);
+        }finally {
+            unlockKeys(keys);
+        }
     }
     //// ----------------------------------外部代用end
     @NetEventListener(netEvent = SysConstantDefine.LOCKKEYS)
@@ -156,10 +184,16 @@ public class LockerService {
         String olderKey = lockers.putIfAbsent(key,key);
         int lockTime = 0;
         while(olderKey != null){ // 加锁失败,稍等再加
+            Integer count = threadLocalLockers.get().get(key);
+            if(count != null && count >0){
+                // 重入
+                threadLocalLockers.get().put(key,++count);
+                return true;
+            }
             if(lockTime++>maxTryLockTimes){
                 // 这个地方不能用异常,因为加锁失败,要清理之前加成功的锁:如果考虑用最终捕获异常来清理锁，也可以考虑，但还是不如这样
 //                ExceptionHelper.handle(ExceptionLevel.Warn,"锁超时,key = "+key,null);
-                log.warn("锁超时,key = "+key);
+                log.warn("锁超时,key = "+key+",olderKey="+olderKey);
                 return false;
             }
             try {
@@ -169,10 +203,16 @@ public class LockerService {
                 throw new MMException("锁异常,key = "+key);
             }
         }
+        threadLocalLockers.get().put(key,1);
         return true;
     }
     private void unlock(String key){
-        lockers.remove(key);
+        Integer count = threadLocalLockers.get().get(key);
+        if(count == null || count <=1){
+            lockers.remove(key);
+        }else{
+            threadLocalLockers.get().put(key,--count);
+        }
     }
 
     public static class LockerData implements Serializable,Comparable<LockerData>{

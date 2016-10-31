@@ -69,14 +69,15 @@ public class AccountService {
     @Request(opcode = AccountOpcode.CSLoginNode)
     public RetPacket loginNode(Object data,Session session) throws Throwable{
 
-        System.out.println("doLogin,sessionId = "+session.getSessionId());
-
         AccountPB.CSLoginNode csLoginNode = AccountPB.CSLoginNode.parseFrom((byte[])data);
 
         accountSysService.loginNodeServer(csLoginNode.getAccountId(),csLoginNode.getSessionId());
 
         AccountPB.SCLoginNode.Builder builder = AccountPB.SCLoginNode.newBuilder();
-        RetPacket retPacket = new RetPacketImpl(AccountOpcode.SCLoginNode,false,builder.build().toByteArray());
+        byte[] retData = builder.build().toByteArray();
+//        System.out.println(retData.length);
+        RetPacket retPacket = new RetPacketImpl(AccountOpcode.SCLoginNode,false,retData);
+        System.out.println("doLogin,sessionId = "+session.getSessionId()+",accountId:"+session.getAccountId());
         return retPacket;
     }
 

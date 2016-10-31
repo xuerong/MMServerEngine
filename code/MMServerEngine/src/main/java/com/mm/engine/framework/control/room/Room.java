@@ -9,8 +9,6 @@ import com.mm.engine.framework.tool.helper.BeanHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -70,28 +68,37 @@ public abstract class Room<T extends RoomAccount> {
         if(account == null){
             throw new MMException("enterRoom account == null,id="+session.getAccountId());
         }
-        RoomAccount roomAccount = new RoomAccount(account);
-        roomAccount.setMessageSender(session.getMessageSender());
 
+        RoomAccount roomAccount = new RoomAccount(account);
+        roomAccount.setMessageSender(session.getRoomMessageSender());
+        beforePeopleEnterRoom(roomAccount);
         RoomAccount oldRoomAccount = accountMap.putIfAbsent(roomAccount.getAccountId(),roomAccount);
         if(oldRoomAccount!=null){
             log.warn("already in the room,accountId="+account.getId()+",roomId="+this.id);
         }else{
-            onPeopleEnterRoom(roomAccount);
+            afterPeopleEnterRoom(roomAccount);
         }
     }
 
 
-
-    public void outRoom(Session session){
-        RoomAccount roomAccount = accountMap.remove(session.getAccountId());
+    /**
+     * 如果从房间离开，返回true，如果不在房间内，返回false
+     * @param session
+     * @return
+     */
+    public boolean outRoom(Session session){
+        RoomAccount roomAccount = accountMap.get(session.getAccountId());
         if(roomAccount == null){
-            throw new MMException("outRoom account == null,id="+session.getAccountId());
+            log.warn("outRoom account == null,id="+session.getAccountId());
+            return false;
         }
+        beforePeopleOutRoom(roomAccount);
+        roomAccount = accountMap.remove(session.getAccountId());
+        afterPeopleOutRoom(roomAccount);
         if(roomAccount == host){
             host = null;
         }
-        onPeopleOutRoom(roomAccount);
+        return true;
     }
 
     public void disConnect(Session session){
@@ -113,7 +120,7 @@ public abstract class Room<T extends RoomAccount> {
     public void broadcastSyn(final int opcode,final byte[] data){
         for(RoomAccount roomAccount : accountMap.values()){
             try {
-                roomAccount.getMessageSender().sendMessage(opcode, data);
+                roomAccount.getMessageSender().sendMessage(opcode,id, data);
             }catch (Throwable e){
                 log.error("room send message error,roomId="+this.id+",accountId="+roomAccount.getAccountId()+",cause="+e.getMessage());
             }
@@ -125,10 +132,10 @@ public abstract class Room<T extends RoomAccount> {
     public abstract RetPacket handle(Session session, int opcode, byte[] data) throws Throwable;
 
     public abstract void onDestroy();
-
-    public abstract void onPeopleEnterRoom(RoomAccount roomAccount);
-
-    public abstract void onPeopleOutRoom(RoomAccount roomAccount);
+    public abstract void beforePeopleEnterRoom(RoomAccount roomAccount);
+    public abstract void afterPeopleEnterRoom(RoomAccount roomAccount);
+    public abstract void beforePeopleOutRoom(RoomAccount roomAccount);
+    public abstract void afterPeopleOutRoom(RoomAccount roomAccount);
 
     public abstract void onDisconnection(RoomAccount roomAccount);
 

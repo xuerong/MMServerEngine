@@ -5,7 +5,7 @@ package com.mm.engine.framework.security.exception;
  * 发往前端的异常,一般可用于弹框提示错误
  */
 public class ToClientException extends RuntimeException {
-    private int errCode = -10001;// 异常代号
+    private int errCode = -10001;// TODO 异常代号:注意，这里不是访问号啊，后面要加一个
     private String errMsg = null;
 
     public ToClientException(){

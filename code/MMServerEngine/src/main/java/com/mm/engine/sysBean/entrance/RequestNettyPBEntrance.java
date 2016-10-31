@@ -55,11 +55,12 @@ public class RequestNettyPBEntrance extends Entrance {
         @Override
         public void channelActive(final ChannelHandlerContext ctx) throws Exception { // (1)
             super.channelActive(ctx);
-            System.out.println("link"+ctx.channel().remoteAddress().toString());
+            System.out.println("connect "+ctx.channel().remoteAddress().toString());
         }
         @Override
         public void channelInactive(ChannelHandlerContext ctx) throws Exception {
             super.channelInactive(ctx);
+            System.out.println("disConnect"+ctx.channel().remoteAddress().toString());
             String sessionId = ctx.channel().attr(sessionKey).get();
             if(sessionId != null) {
                 accountSysService.netDisconnect(sessionId);
@@ -112,7 +113,7 @@ public class RequestNettyPBEntrance extends Entrance {
         }
         private Session checkAndGetSession(String sessionId){
             if (sessionId == null || sessionId.length() == 0){
-                throw new MMException("won't get sessionId while loginNode:"+sessionId);
+                throw new MMException("won't get sessionId while :"+sessionId);
             }
             // 不是login，可以处理消息
             Session session = sessionService.get(sessionId);

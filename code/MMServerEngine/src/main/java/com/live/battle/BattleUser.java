@@ -7,10 +7,10 @@ import javafx.geometry.Pos;
  * 对它数据的修改都放在本函数中，以便加锁
  */
 public class BattleUser {
-    public static int initBlood = 100;
+    public static int initBlood = 2000;
     public static int initAttackValue = 10;
-    public static int initSpeed = 20;
-    public static int initAttackDistance = 10;
+    public static int initSpeed = 200;
+    public static int initAttackDistance = 100;
     public static int initLostBloodValuePer = 10;
     public static int initSuckBlood = 20;
 
@@ -64,8 +64,12 @@ public class BattleUser {
         long curTime = System.currentTimeMillis();
         int dis = (int)((curTime-time)*speed/1000);
         if(dis>0){
-            x+=(dis*Math.sin(direction));
-            y+=(dis*Math.cos(direction));
+            int _x=x+(int)(dis*Math.cos(direction));
+            int _y=y+(int)(dis*Math.sin(direction));
+
+            x=_x<0?0:(_x>BattleRoom.roomSizeWidth?BattleRoom.roomSizeWidth:_x);
+            y=_y<0?0:(_y>BattleRoom.roomSizeHeight?BattleRoom.roomSizeHeight:_y);
+
             this.time = curTime;
         }
         PosInfo posInfo = new PosInfo();
@@ -79,6 +83,7 @@ public class BattleUser {
         PosInfo posInfo = getPosInfo();
         this.direction=direction;
         this.time = System.currentTimeMillis();
+        posInfo.setDirection(direction);
         return posInfo;
     }
 

@@ -1,12 +1,17 @@
+// id服务的持久化
 // 很多TODO
 // 要仔细看看各个service在多个服务器同步问题是否解决
 // 过滤系统,敏感字：即国际化里面，可以研究一下，显然可以在ToClientException中过滤即可
 // 部署
 // 测试工具
 
+short类型的opcode和event改成int
+runOnEveryServer改为singleService
+在BeanHelper中添加一个方法,通过注解获取方法列表,方便用户自定义服务组件
+文档的注释
 // 小游戏
 
-
+// 添加一个异步存储的功能：调用线程立即返回的，比如在room中用
 
 写服务器说明文档之后考虑的东西：
 // 运营：初步考虑
@@ -14,7 +19,7 @@
 // 加密：
 // excel的文本类型可能导致问题,如果文本类型里面填写的是数字类型,导致:100->100.0
 // 防沉迷
-// 对于分区分服的游戏的跨服service
+// 对于分区分服的游戏的跨服service:我觉得这个不属于这个系统要解决的问题,可以定义相应的service和entrance来实现
 
 // 心跳
 
@@ -30,3 +35,13 @@
 
 
 弄个小游戏试一下游戏：活到最后，一群人在一个房间中打架，不打自动掉血，打吸血，看谁活的时间长，可加机器人
+
+
+
+Controler:Aop,EventService,GmService,JobService,NetEventService,UpdateService,RequestService,RoomService,
+Data:DataService,CacheService(),SessionService,AccountService,DataSet,SysParaService,AsyncService,LockerService,TxCacheService,
+Net:ServerClient,Entrance(sorts of entrance)
+Security:MMException,ToClientException,MonitorService
+Server:Configure,IdService,SysConstantDefine,ServerType
+Tool:BeanHepler,Util
+SysBean:

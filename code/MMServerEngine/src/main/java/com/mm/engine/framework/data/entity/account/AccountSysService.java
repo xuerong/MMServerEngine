@@ -88,7 +88,7 @@ public class AccountSysService {
             if(entrance.getName().equals("request")) {
                 ServerInfo serverInfo = new ServerInfo();
                 serverInfo.setRequestPort(Server.getEngineConfigure().getRequestPort());
-                serverInfo.setScenePort(Server.getEngineConfigure().getScenePort());
+                serverInfo.setScenePort(Server.getEngineConfigure().getRoomPort());
                 serverInfo.setNetEventPort(Server.getEngineConfigure().getNetEventPort());
                 serverInfo.setType(ServerType.getServerType());
                 serverInfo.setHost(Util.getHostAddress());

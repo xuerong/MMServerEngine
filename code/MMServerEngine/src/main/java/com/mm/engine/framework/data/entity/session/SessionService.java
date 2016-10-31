@@ -5,6 +5,7 @@ import com.mm.engine.framework.control.annotation.Updatable;
 import com.mm.engine.framework.data.DataService;
 import com.mm.engine.framework.data.cache.CacheService;
 import com.mm.engine.framework.data.entity.account.Account;
+import com.mm.engine.framework.security.exception.MMException;
 import com.mm.engine.framework.server.Server;
 import com.mm.engine.framework.server.configure.EngineConfigure;
 import com.mm.engine.framework.tool.helper.BeanHelper;
@@ -82,7 +83,9 @@ public class SessionService {
             return;
         }
         Account account = dataService.selectObject(Account.class,"id="+session.getAccountId());
-        account.destroySession();
+        if(account != null){
+            account.destroySession();
+        }
         sessionMap.remove(session.getSessionId());
     }
 

@@ -1,6 +1,35 @@
 option java_package = "com.protocol";
 //option java_outer_classname = "LivePB";
 // 11001
+//------------------------------------------------------房间外的
+message CSCreateLiveRoom
+{
+
+}
+message SCCreateLiveRoom
+{
+	required int32 roomId 			= 1; // 房间id
+	required string host			= 2;
+	required int32 port				= 3;
+}
+message CSGetRoomList
+{
+
+}
+message SCGetRoomList
+{
+	repeated PBRoomInfo roomInfo 			= 1;
+}
+message PBRoomInfo
+{
+	required int32 roomId 			= 1; //
+	required int32 member 			= 2; // 人数
+	required int32 status 			= 3; // 状态
+	required string host 			= 4; // 状态
+	required int32 port 			= 5; // 状态
+}
+//------------------------------------------------------房间里面的
+// 下面在时room中的
 message CSStart
 {
 
@@ -11,7 +40,7 @@ message SCStart
 }
 message CSMoveTo
 {
-	required int32 direction 			= 1; // 暂时的改动，c#不支持float 0-2π,复数为不动
+	required float direction 			= 1; // 暂时的改动，
 }
 message SCMoveTo
 {
@@ -23,7 +52,7 @@ message CSAttack
 }
 message SCAttack
 {
-	required PBStatus status			= 1; // 位置校对
+
 }
 message CSSetRobot
 {
@@ -33,6 +62,7 @@ message SCSetRobot
 {
 
 }
+//------------------------------------------------------房间里的推送信息
 // 其它玩家状态，一般发生在某玩家走动，或定时发送
 message SCStatus
 {
@@ -41,7 +71,8 @@ message SCStatus
 // 打击结果推送事件
 message SCAttackResult
 {
-	repeated PBStatus status			= 1; // 被打击玩家的状态
+	required PBStatus attack			= 1; // 打击玩家的状态
+	repeated PBStatus beAttack			= 2; // 被打击玩家的状态
 }
 // 广播自动死亡，自动掉血会导致死亡
 message SCDie
@@ -53,6 +84,19 @@ message SCOver
 {
 	required string accountIds			= 1;// 玩家的名次逗号隔开
 }
+message SCRoomChange
+{
+	required PBRoomInfo roomInfo 			= 1;
+}
+// 游戏开始的时候，推送开始消息，即所有玩家的状态
+message SCStartGame
+{
+	repeated PBStatus status			= 1; // 被打击玩家的状态
+}
+message SCRoomClose
+{
+	required int32 reason				= 1; // 关闭的原因 1,房主退出
+}
 
 // 玩家状态
 message PBStatus
@@ -60,8 +104,9 @@ message PBStatus
 	required string accountId 			= 1; // 原位置
 	required int32 x 			= 2; // 原位置
 	required int32 y 			= 3; //
-	required int32 direction 			= 4; //暂时的改动，c#不支持float 方向
+	required float direction 			= 4; //暂时的改动，
 	required int32 blood			= 5;
+	required int32 speed			= 6;
 }
 
 

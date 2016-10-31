@@ -1,6 +1,7 @@
 package com.mm.engine.sysBean.entrance;
 
 import com.mm.engine.framework.control.room.Room;
+import com.mm.engine.framework.control.room.RoomMessageSender;
 import com.mm.engine.framework.control.room.RoomNetData;
 import com.mm.engine.framework.control.room.RoomService;
 import com.mm.engine.framework.data.entity.account.MessageSender;
@@ -14,6 +15,7 @@ import com.mm.engine.framework.security.exception.ToClientException;
 import com.mm.engine.framework.tool.helper.BeanHelper;
 import com.mm.engine.framework.tool.util.Util;
 import com.mm.engine.sysBean.service.NettyPBMessageSender;
+import com.mm.engine.sysBean.service.NettyPBRoomMessageSender;
 import com.protocol.*;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -47,7 +49,7 @@ public class RoomNettyPBEntrance  extends Entrance {
     }
 
     public static class RoomNettyPBHandler extends ChannelInboundHandlerAdapter {
-        static AttributeKey<String> sessionKey = AttributeKey.newInstance("sessionKey");
+        static AttributeKey<String> sessionKey = AttributeKey.newInstance("roomSessionKey");
         @Override
         public void channelActive(final ChannelHandlerContext ctx) throws Exception { // (1)
             super.channelActive(ctx);
@@ -90,19 +92,21 @@ public class RoomNettyPBEntrance  extends Entrance {
                         session = sessionService.create(Util.getHostAddress(),ctx.channel().remoteAddress().toString());
                         ctx.channel().attr(sessionKey).set(session.getSessionId());
                         session.setAccountId(csEnterRoom.getAccountId());
-                        MessageSender messageSender = new NettyPBMessageSender(ctx.channel());
-                        session.setMessageSender(messageSender);
+                        RoomMessageSender messageSender = new NettyPBRoomMessageSender(ctx.channel());
+                        session.setRoomMessageSender(messageSender);
                     }
                     roomService.enterRoom(roomNetData.getRoomId(),session);
                     RoomPB.SCEnterRoom.Builder builder = RoomPB.SCEnterRoom.newBuilder();
                     roomNetData.setOpcode(RoomOpcode.SCEnterRoom);
                     roomNetData.setData(builder.build().toByteArray());
+                    ctx.writeAndFlush(roomNetData);
                 }else if(roomNetData.getOpcode() == RoomOpcode.CSOutRoom){
                     Session session =checkAndGetSession(sessionId);
                     roomService.outRoom(roomNetData.getRoomId(),session);
                     RoomPB.SCOutRoom.Builder builder = RoomPB.SCOutRoom.newBuilder();
                     roomNetData.setOpcode(RoomOpcode.SCOutRoom);
                     roomNetData.setData(builder.build().toByteArray());
+                    ctx.writeAndFlush(roomNetData);
                 }else{
                     Session session = checkAndGetSession(sessionId);
                     RetPacket retPacket = roomService.handle(session,roomNetData.getRoomId(),roomNetData.getOpcode(),roomNetData.getData());
@@ -125,6 +129,8 @@ public class RoomNettyPBEntrance  extends Entrance {
                     errCode = toClientException.getErrCode();
                     errMsg = toClientException.getMessage();
                     log.error("ToClientException:"+toClientException.getMessage());
+                }else{
+                    e.printStackTrace();
                 }
                 BasePB.SCException.Builder scException = BasePB.SCException.newBuilder();
                 scException.setErrCode(errCode);

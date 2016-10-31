@@ -18,7 +18,7 @@ public class RoomAccount {
     private String name;
     private Timestamp enterTime;
     private RoomRole roomRole;
-    private MessageSender messageSender;
+    private RoomMessageSender messageSender;
 
     private ConcurrentHashMap<Object,Object> attrs = new ConcurrentHashMap<>();
 
@@ -71,11 +71,11 @@ public class RoomAccount {
         this.roomRole = roomRole;
     }
 
-    public MessageSender getMessageSender() {
+    public RoomMessageSender getMessageSender() {
         return messageSender;
     }
 
-    public void setMessageSender(MessageSender messageSender) {
+    public void setMessageSender(RoomMessageSender messageSender) {
         this.messageSender = messageSender;
     }
 }

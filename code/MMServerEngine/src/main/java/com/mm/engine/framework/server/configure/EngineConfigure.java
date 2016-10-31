@@ -170,7 +170,7 @@ public final class EngineConfigure {
     public int getRequestPort(){
         return requestEntrance.getPort();
     }
-    public int getScenePort(){
+    public int getRoomPort(){
         return roomEntrance.getPort();
     }
 
