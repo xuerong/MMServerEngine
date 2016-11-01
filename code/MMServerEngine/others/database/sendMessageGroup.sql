@@ -1,30 +1,26 @@
 /*
- Navicat Premium Data Transfer
+Navicat MySQL Data Transfer
 
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 50534
- Source Host           : localhost
- Source Database       : test
+Source Server         : 192.168.1.240
+Source Server Version : 50713
+Source Host           : localhost:3306
+Source Database       : test
 
- Target Server Type    : MySQL
- Target Server Version : 50534
- File Encoding         : utf-8
+Target Server Type    : MYSQL
+Target Server Version : 50713
+File Encoding         : 65001
 
- Date: 10/04/2016 22:41:15 PM
+Date: 2016-11-01 11:11:06
 */
 
-SET NAMES utf8;
-SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
---  Table structure for `sendMessageGroup`
+-- Table structure for sendmessagegroup
 -- ----------------------------
-DROP TABLE IF EXISTS `sendMessageGroup`;
-CREATE TABLE `sendMessageGroup` (
+DROP TABLE IF EXISTS `sendmessagegroup`;
+CREATE TABLE `sendmessagegroup` (
   `groupId` varchar(255) NOT NULL,
-  `accountIds` varchar(255) DEFAULT NULL,
+  `accountIds` text,
   PRIMARY KEY (`groupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-SET FOREIGN_KEY_CHECKS = 1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

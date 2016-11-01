@@ -28,7 +28,6 @@ public class IdService {
     private ConcurrentHashMap<Class,IdSegment> intIdSegmentMap;
     private ConcurrentHashMap<Class,IdSegment> longIdSegmentMap;
 
-
     public void init(){
         remoteCallService = BeanHelper.getServiceBean(RemoteCallService.class);
         //TODO 从数据库中载入当前各个id状态
@@ -37,9 +36,6 @@ public class IdService {
     }
 
     public int acquireInt(Class<?> cls){
-//        if(!ServerType.isMainServer()){
-//            return (int)remoteCallService.remoteCallMainServerSyn(IdService.class,"acquireInt",cls);
-//        }
         IdSegment IdSegment = intIdSegmentMap.get(cls);
         if(IdSegment == null){
             IdSegment = new IdSegment(cls);
@@ -50,9 +46,6 @@ public class IdService {
     }
 
     public void releaseInt(Class<?> cls, int id){
-//        if(!ServerType.isMainServer()){
-//            remoteCallService.remoteCallMainServer(IdService.class,"releaseInt",cls,id);
-//        }
         IdSegment IdSegment = intIdSegmentMap.get(cls);
         if(IdSegment == null){
             throw new MMException("IdSegment is not exist,cls = "+cls.getName());

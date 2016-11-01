@@ -1,6 +1,7 @@
 package com.mm.engine.framework.tool.util;
 
 import com.mm.engine.framework.security.exception.MMException;
+import com.mm.engine.framework.server.Server;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.RemoteEndpoint;
@@ -107,6 +108,9 @@ public final class Util {
         }
 //        System.out.println(hostAddress);
         return hostAddress;
+    }
+    public static String getLocalNetEventAdd(){
+        return getHostAddress()+""+ Server.getEngineConfigure().getNetEventEntrance();
     }
     public static boolean isIP(String addr)
     {

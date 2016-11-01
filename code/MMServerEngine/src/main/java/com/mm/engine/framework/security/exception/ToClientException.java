@@ -6,6 +6,7 @@ package com.mm.engine.framework.security.exception;
  */
 public class ToClientException extends RuntimeException {
     private int errCode = -10001;// TODO 异常代号:注意，这里不是访问号啊，后面要加一个
+    private int opcode;
     private String errMsg = null;
 
     public ToClientException(){

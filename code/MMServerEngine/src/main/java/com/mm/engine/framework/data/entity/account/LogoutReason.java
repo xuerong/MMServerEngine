@@ -8,5 +8,6 @@ public enum LogoutReason {
     userLogout, // 从mainServer传过来，清除session信息
     replaceLogout, // 从mainServer传过来，清除session信息
     netErrorLogout,
-    netDisconnect // nodeServer断连,通知mainServer，并清除session信息
+    netDisconnect, // nodeServer断连,通知mainServer，并清除session信息
+    sessionOutTime
 }

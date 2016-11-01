@@ -4,7 +4,8 @@ option java_package = "com.protocol";
 message SCException
 {
 	required int32 errCode			=1;
-	required string errMsg			=2;
+	required int32 opcode			=2;
+	required string errMsg			=3;
 }
 
 

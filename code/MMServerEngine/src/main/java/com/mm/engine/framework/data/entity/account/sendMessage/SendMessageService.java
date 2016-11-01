@@ -9,6 +9,7 @@ import com.mm.engine.framework.data.entity.session.Session;
 import com.mm.engine.framework.data.tx.LockerService;
 import com.mm.engine.framework.data.tx.Tx;
 import com.mm.engine.framework.server.ServerType;
+import com.mm.engine.framework.tool.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +53,7 @@ public class SendMessageService {
         Map<String,Set<String>> map = sendMessageGroupStorage.getAllSendMessageGroup();
         groupMap.putAll(map);
     }
-
+    // TODO 这个地方改成通过捕捉登陆登出事件来完成
     public void login(String accountId, Session session){
         MessageSender messageSender = session.getMessageSender();
         if(messageSender != null){
@@ -86,21 +87,21 @@ public class SendMessageService {
         if(ServerType.isMainServer()){
             // mainServer查看是否在哪个服务器上面,并发送给它
             String add = accountSysService.getAccountLoginServerAdd(accountId);
-            if(add != null){
+            if(add != null && !Util.getLocalNetEventAdd().equals(add)){
                 remoteCallService.remoteCallSyn(add,SendMessageService.class,"receiveSendMessage",accountId,opcode,data);
+                return;
             }
-        }else{
-            // mainServer发送过来的消息
-            try {
-                MessageSender messageSender = messageSenderMap.get(accountId);
-                if(messageSender != null){
-                    messageSender.sendMessage(opcode, data);
-                }else{
-                    log.warn("messageSender is not exist,accountId="+accountId);
-                }
-            }catch (Throwable e){
-                log.error("send message fail ,opcode = " + opcode+",e = "+e.getMessage()+",accountId+"+accountId);
+        }
+        // mainServer发送过来的消息,或者在本机上面运行的
+        try {
+            MessageSender messageSender = messageSenderMap.get(accountId);
+            if(messageSender != null){
+                messageSender.sendMessage(opcode, data);
+            }else{
+                log.warn("messageSender is not exist,accountId="+accountId);
             }
+        }catch (Throwable e){
+            log.error("send message fail ,opcode = " + opcode+",e = "+e.getMessage()+",accountId+"+accountId);
         }
     }
     @BroadcastRPC

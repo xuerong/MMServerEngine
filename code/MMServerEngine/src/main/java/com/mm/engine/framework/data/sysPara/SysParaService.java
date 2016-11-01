@@ -130,7 +130,7 @@ public class SysParaService {
         });
         return old;
     }
-    @Gm(id="SysPara_gmUpdate")
+    @Gm(id="SysPara_gmUpdate",describe = "update system para",paramsName = {"key","value"})
     public String gmUpdate(String key,String value){
         String old = put(key,value);
         return "success , Previous is "+old;
