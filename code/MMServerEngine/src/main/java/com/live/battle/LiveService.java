@@ -97,7 +97,9 @@ public class LiveService {
         final LogoutEventData logoutEventData = (LogoutEventData)data.getData();
 
         final String accountId= logoutEventData.getSession().getAccountId();
-
+        if(accountId == null){
+            return;
+        }
         lockerService.doLockTask(new LockTask<Object>() {
             @Override
             public Object run() {

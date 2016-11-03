@@ -186,6 +186,9 @@ public class AccountSysService {
         loginSegment.setPort(serverInfo.getRequestPort());
         loginSegment.setSessionId(sessionId);
         loginSegment.setAccount(account);
+
+        log.info("accountId="+id+" loginMain success,nodeServerAdd="+serverInfo.getHost()+":"+serverInfo.getRequestPort()+",sessionId="+sessionId);
+
         return loginSegment;
     }
     /**
@@ -205,10 +208,11 @@ public class AccountSysService {
         remoteCallService.remoteCallSyn(
                 serverInfo.getHost()+":"+serverInfo.getNetEventPort(),AccountSysService.class,"applyForLogout",id);
         nodeServerState.removeAccount(id);
+        log.info("accountId="+id+" logoutMain success");
     }
 
     /**
-     * 用sessionId登陆nodeServer，
+     * 用sessionId登陆nodeServer， TODO 这个地方失败了，要清理session
      * @param sessionId
      */
     public void loginNodeServer(String id,String sessionId){
@@ -231,6 +235,7 @@ public class AccountSysService {
         //
         session.setAccountId(account.getId());
         sendMessageService.login(id,session);
+        log.info("accountId="+id+" loginNode success");
     }
     /**
     * nodeServer接收，来自mainServer的一个account的login请求
@@ -246,6 +251,7 @@ public class AccountSysService {
             // 通知下线
             doLogout(id,olderSessionId,LogoutReason.replaceLogout);
         }
+        session.setAccountId(id);
         eventService.fireEventSyn(session,SysConstantDefine.Event_AccountLogin);
         return session.getSessionId();
     }
@@ -268,20 +274,13 @@ public class AccountSysService {
      */
     public void netDisconnect(String sessionId){
         Session session = sessionService.get(sessionId);
-        String accountId = null;
-        if(session != null){
-            Account account = dataService.selectObject(Account.class,"id="+session.getAccountId());
-            if(account!=null){
-                nodeServerLoginMark.remove(account.getId());
-                accountId = account.getId();
-            }
+        if(session == null){
+            // 说明：1还没有登录nodeServer，2正常的登出，该清理的已经清理完成
+            return;
         }
-        doLogout(accountId,sessionId,LogoutReason.netDisconnect);
+        doLogout(session.getAccountId(),sessionId,LogoutReason.netDisconnect);
         //
-        if(accountId == null){
-            throw new MMException("account is not exist while netDisconnect,sessionId = "+sessionId);
-        }
-        remoteCallService.remoteCallMainServerSyn(AccountSysService.class,"tellMainNetDisconnect",accountId);
+        remoteCallService.remoteCallMainServerSyn(AccountSysService.class,"tellMainNetDisconnect",session.getAccountId());
     }
     public void tellMainNetDisconnect(String id){
         if(!ServerType.isMainServer()){
@@ -299,18 +298,27 @@ public class AccountSysService {
     }
 
     /**
-     * 执行登出操作
+     * 执行登出操作 TODO 是否要强制断开socket连接？有必要
      * @param sessionId
      * @param logoutReason
      */
     private void doLogout(String accountId,String sessionId , LogoutReason logoutReason){
         Session session = sessionService.removeSession(sessionId);
-
+        if(session.getAccountId() == null){
+            log.error("session.getAccountId() == null"+logoutReason.toString());
+        }else{
+            Account account = dataService.selectObject(Account.class,"id="+session.getAccountId());
+            if(account!=null){
+                nodeServerLoginMark.remove(account.getId());
+            }
+        }
         LogoutEventData logoutEventData = new LogoutEventData();
         logoutEventData.setSession(session);
         logoutEventData.setLogoutReason(logoutReason);
         eventService.fireEventSyn(logoutEventData,SysConstantDefine.Event_AccountLogout);
         sendMessageService.logout(accountId,session);
+        //强制掉线
+        session.closeConnect();
     }
 
     /**

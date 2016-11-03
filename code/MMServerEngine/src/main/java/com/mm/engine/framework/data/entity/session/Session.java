@@ -32,6 +32,7 @@ public class Session extends CacheEntity{
     private Date lastUpdateTime;
     private MessageSender messageSender;
     private RoomMessageSender roomMessageSender;
+    private ConnectionClose connectionClose;
     // 属性
     private Map<String,Object> attrs;
 
@@ -106,5 +107,19 @@ public class Session extends CacheEntity{
 
     public void setRoomMessageSender(RoomMessageSender roomMessageSender) {
         this.roomMessageSender = roomMessageSender;
+    }
+
+    public ConnectionClose getConnectionClose() {
+        return connectionClose;
+    }
+
+    public void setConnectionClose(ConnectionClose connectionClose) {
+        this.connectionClose = connectionClose;
+    }
+
+    public void closeConnect(){
+        if(this.connectionClose != null){
+            this.connectionClose.close();
+        }
     }
 }

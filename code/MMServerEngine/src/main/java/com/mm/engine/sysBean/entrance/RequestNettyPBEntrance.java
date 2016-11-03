@@ -3,6 +3,7 @@ package com.mm.engine.sysBean.entrance;
 import com.mm.engine.framework.control.request.RequestService;
 import com.mm.engine.framework.data.entity.account.AccountSysService;
 import com.mm.engine.framework.data.entity.account.MessageSender;
+import com.mm.engine.framework.data.entity.session.ConnectionClose;
 import com.mm.engine.framework.data.entity.session.Session;
 import com.mm.engine.framework.data.entity.session.SessionService;
 import com.mm.engine.framework.net.code.RetPacket;
@@ -82,6 +83,14 @@ public class RequestNettyPBEntrance extends Entrance {
                     Session session = checkAndGetSession(sessionId);
                     MessageSender messageSender = new NettyPBMessageSender(ctx.channel());
                     session.setMessageSender(messageSender);
+                    final ChannelHandlerContext _ctx = ctx;
+                    session.setConnectionClose(new ConnectionClose() {
+                        @Override
+                        public void close() {
+                            _ctx.close();
+                        }
+                    });
+//                    ctx.channel().close()
                 }
                 Session session = checkAndGetSession(sessionId);
                 RetPacket retPacket = requestService.handle(nettyPBPacket.getOpcode(),nettyPBPacket.getData(),session);
