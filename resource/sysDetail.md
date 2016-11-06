@@ -496,7 +496,7 @@ MessageSender和RoomMessageSender是两个接口，用于给相应的用户客�
 Session的基本服务由SessionService提供，主要包括session的创建、存储、获取和移除，更多的和Account相关的服务将由AccountSysService提供。
 
 ####3)账号的登陆和登出 
-账号的登陆过程的流程图
+账号的登陆过程的流程图<br>
 ![image](https://github.com/xuerong/MMServerEngine/blob/master/resource/login.png)  
 账号的登出分为多种情况：第一，玩家主动登出，登出消息发送给mainServer，mainServer通知nodeServer该account的登出，并清理相关数据；第二，掉线，nodeServer先收到socket断线消息，然后通知mainServer，并清理相关数据；第三，被替换掉线，这个在mainServer判断出来，并nodeServer，推送原来登陆玩家在其他地方登陆的消息，清理相关数据；第四，session过期，nodeServer收到session过期消息，并推送给前端session过期的消息，强制其退出，并通知mainServer。<br>
 mainServer保持着所有NodeServer的状态，NodeServerState：<br>
@@ -610,7 +610,7 @@ public String xxx(String key,String value){
     return "xxxx";
 }
 ```
-网页中显示:
+网页中显示:<br>
 ![image](https://github.com/xuerong/MMServerEngine/blob/master/resource/gmWeb.png)  
 
 ####4)IdService 
