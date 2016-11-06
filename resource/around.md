@@ -9,7 +9,7 @@
 
 ####3)生成的类和使用方式 
 如果excel的Sheet1配置为<br>
-![image](https://github.com/xuerong/MMServerEngine/blob/master/resource/sheet1.png)
+![image](https://github.com/xuerong/MMServerEngine/blob/master/resource/sheet1.png)<br>
 那么生成的类为：<br>
 ```java
 public final class Sheet1{
