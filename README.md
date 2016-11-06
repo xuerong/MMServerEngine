@@ -1,4 +1,8 @@
 # MMServerEngine 
+
+
+[测试连接](https://github.com/xuerong/MMServerEngine/blob/master/resource/test.md "悬停显示") 
+
 MMServerEngine是一个游戏服务器引擎。支持如下几点：
 * 集群：可设置多个逻辑处理节点。
 * 缓存：支持本地和远程两层缓存
