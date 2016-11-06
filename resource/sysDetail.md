@@ -61,34 +61,45 @@ public @interface AspectMark {
     String[] mark();
 }
 ``
-通过在切面类上面添加注解@AspectOrder类声明该切面的优先级，AspectOrder提供一个参数value来定义切面执行优先级：
+通过在切面类上面添加注解@AspectOrder类声明该切面的优先级，AspectOrder提供一个参数value来定义切面执行优先级：<br>
+```java
 public @interface AspectOrder {
-int value();
+    int value();
 }
-其中value值越小，越优先执行
+``
+其中value值越小，越优先执行。<br>
 
 ####3)Aop扩展 
-BeanHelp提供一个实例化方法：
+BeanHelp提供一个实例化方法：<br>
+```java
 public static <T>T newAopInstance(Class<T> cls);
-通过该实例化方法实例化一个对象，其中的方法将拥有Aop功能。注意：该类必须要在配置文件定义的appPackage中。
-4)	Ioc功能
+``
+通过该实例化方法实例化一个对象，其中的方法将拥有Aop功能。注意：该类必须要在配置文件定义的appPackage中。<br>
+
+####4)Ioc功能 
 所有Service，FrameService和Entrance中定义的Service和FrameService的引用，都会由系统自动为其赋值。注意：变量可以定义为私有
 
 ###4.五大基本控制组件 
 ####1)Request 
-request是接收外部访问的基本组件，每个request拥有一个独有的操作码（opcode），由request入口进入的网络访问将根据opcode定位到request，由request对请求进行执行，并返回请求结果。Request入口的配置在配置文件中的entrance.request参数，具体看【系统配置文件】
-通过对Service中的方法添加@Request注解来生命一个方法为request组件：
+request是接收外部访问的基本组件，每个request拥有一个独有的操作码（opcode），由request入口进入的网络访问将根据opcode定位到request，由request对请求进行执行，并返回请求结果。Request入口的配置在配置文件中的entrance.request参数，具体看【系统配置文件】<br>
+通过对Service中的方法添加@Request注解来生命一个方法为request组件：<br>
+```java
 public @interface Request {
-intopcode();
+    int opcode();
 }
-对应的方法参数类型和返回类型是确定的：
+``
+对应的方法参数类型和返回类型是确定的：<br>
+```java
 public RetPacket xxx(Object clientData, Session session);
-其中clientData为前端传入的数据，session为前端在后端保存的上下文组件（参考Session和Account）。RetPacket为返回给前端的数据：
+``
+其中clientData为前端传入的数据，session为前端在后端保存的上下文组件（参考Session和Account）。RetPacket为返回给前端的数据：<br>
+```java
 public interface RetPacket {
-public int getOpcode(); // 返回的操作码
-public boolean keepSession(); // 是否保存session
-public Object getRetData(); // 返回给客户端的数据
+    public int getOpcode(); // 返回的操作码
+    public boolean keepSession(); // 是否保存session
+    public Object getRetData(); // 返回给客户端的数据
 }
+``
 ####2)Event 
 Event是事件服务，包括四个部分：事件类型，事件数据，时间抛出，事件接收者。
 通过给Service中的方法添加注解@EventListener来定义一个监听组件：
