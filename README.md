@@ -28,3 +28,10 @@ MMServerEngine设计的最主要的目标有两点：
 ## [五、重要原理和文件详述](https://github.com/xuerong/MMServerEngine/blob/master/resource/mainTheory.md) 
 ## [六、基本使用流程](https://github.com/xuerong/MMServerEngine/blob/master/resource/baseUse.md) 
 ## [七、一个小游戏案例Live](https://github.com/xuerong/MMServerEngine/blob/master/resource/live.md) 
+
+## 七、进度 
+MMServerEngine还有许多地方需要完善和优化，主要包括：
+* 插件化基本没有实现，是接下来需要完成的重要一环
+* 上述一到七中所说的没有完成的部分
+* 代码中的诸多TODO提示需要优化的部分
+* 小游戏案例
