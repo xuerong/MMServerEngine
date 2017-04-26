@@ -15,6 +15,8 @@ runOnEveryServer改为singleService
 // 需要看看事务嵌套事务开始与结束
 // 事务失败，事务缓存中的数据是否需要处理：需要主动抛弃吗
 
+// gm的名称是可以获取形参名字的，用javassist或asm
+
 写服务器说明文档之后考虑的东西：
 // 运营：初步考虑
 // 权限系统
@@ -35,6 +37,8 @@ runOnEveryServer改为singleService
 // 社交
 // 支付
 // 版本控制
+
+// lock(String)采用系统的lock方法，不用sleep，
 
 
 

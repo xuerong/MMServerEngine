@@ -5,6 +5,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.EventExecutorGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +60,7 @@ public class NettyHelper {
         public void run() {
             EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
             EventLoopGroup workerGroup = new NioEventLoopGroup();
+            final EventExecutorGroup group = new NioEventLoopGroup();
             try {
                 ServerBootstrap b = new ServerBootstrap(); // (2)
                 b.group(bossGroup, workerGroup)
@@ -68,12 +70,12 @@ public class NettyHelper {
                             public void initChannel(SocketChannel ch) throws Exception {
                                 ch.pipeline().addLast(
                                         (ChannelHandler) decoderClass.newInstance(), // 解码器
-                                        (ChannelHandler) encoderClass.newInstance(), // 编码器
-                                        (ChannelInboundHandlerAdapter) handlerClass.newInstance() //处理器
+                                        (ChannelHandler) encoderClass.newInstance() // 编码器
                                 );
+                                ch.pipeline().addLast(group,"",(ChannelInboundHandlerAdapter) handlerClass.newInstance()); //处理器
                             }
                         })
-                        .option(ChannelOption.SO_BACKLOG, 128)          // (5)
+                        .option(ChannelOption.SO_BACKLOG, 128)          // (5)backlog 指定了内核为此套接口排队的最大连接个数
                         .option(ChannelOption.TCP_NODELAY, true)
                         .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
                 // Bind and start to accept incoming connections.

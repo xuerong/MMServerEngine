@@ -15,6 +15,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.concurrent.EventExecutorGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +49,7 @@ public class NettyClient {
             @Override
             public void run() {
                 EventLoopGroup workerGroup = new NioEventLoopGroup();
+                final EventExecutorGroup group = new NioEventLoopGroup();
                 try {
                     Bootstrap b = new Bootstrap(); // (1)
                     b.group(workerGroup); // (2)
@@ -58,9 +60,9 @@ public class NettyClient {
                         public void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(
                                     new RequestNettyPBEncoder(),
-                                    new RequestNettyPBDecoder(),
-                                    new NettyClientHandler()
+                                    new RequestNettyPBDecoder()
                             );
+                            ch.pipeline().addLast(group,"",new NettyClientHandler()); //处理器
                         }
                     });
                     ChannelFuture f = null;
